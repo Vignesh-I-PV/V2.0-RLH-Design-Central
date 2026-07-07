@@ -1,19 +1,3 @@
-// ============================================================================
-// Network Design Central (RLH Design Central) — v2.0
-// Single-file React app. Edit this file directly; index.html loads it fresh
-// on every page load (no build step, nothing to compile ahead of time).
-//
-// Structure of this file, top to bottom:
-//   1. Helpers   — css(), hoverOn(), hoverOff()
-//   2. View()    — all UI markup (JSX)
-//   3. NDCApp    — all app state & logic (React.Component), + the line at the
-//                  very bottom that mounts it onto the page
-//
-// See context.md for full background before making changes.
-// ============================================================================
-
-// ---- 1. Helpers ----------------------------------------------------------
-
 // Shared helpers for the ported Network Design Central prototype.
 //
 // css() -- turns a plain CSS-text string (e.g. "color:red; padding:4px;")
@@ -56,9 +40,6 @@ function hoverOff(e, baseCssText, hoverCssText) {
     e.currentTarget.style[k] = Object.prototype.hasOwnProperty.call(baseProps, k) ? baseProps[k] : '';
   });
 }
-
-// ---- 2. View() -------------------------------------------------------------
-
 // View() renders the whole app shell from a flat bindings object (B), produced
 // each render by NDCApp.renderVals() in app.jsx. This mirrors the original
 // Claude-Design template's binding model on purpose: every {{ key }} in the
@@ -483,8 +464,8 @@ function View(B, self) {
 {/* 1.7 SC Master — full template columns; 1.8 freeze header via sticky; overflow-x:auto for wide table */}
 <div style={css(`display:flex; flex-direction:column; height:calc(100vh - 300px); min-height:360px; border:1px solid #E6EBF2; border-radius:8px; overflow:hidden; background:#fff;`)}>
 <div style={css(`flex:1; min-height:0; overflow:auto;`)}>
-<div style={css(`min-width:1400px;`)}>
-<div style={css(`display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 160px 160px 160px 160px 160px 160px 160px 160px 80px; background:#E6EBF2; position:sticky; top:0; z-index:6;`)}>
+<div style={css(`min-width:1180px;`)}>
+<div style={css(`display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 140px 80px; background:#E6EBF2; position:sticky; top:0; z-index:6;`)}>
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC CODE</div>
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>NAME</div>
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>CITY, STATE</div>
@@ -498,18 +479,11 @@ function View(B, self) {
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center; white-space:nowrap;`)}>NON-LOCAL TP</div>
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center; white-space:nowrap;`)}>OPEN</div>
 <div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center; white-space:nowrap;`)}>CLOSE</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC OPS ZH</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC-LH OPS ZH</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC OPS CH</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC-LH OPS CH</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC OPS AM-1</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC-LH OPS AM-1</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC OPS AM-2</div>
-<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>SC-LH OPS AM-2</div>
+<div style={css(`padding:9px 10px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>OPS LEADS</div>
 <div style={css(`padding:9px 10px;`)} />
 </div>
 {(scRows || []).map((s, __i16) => (<React.Fragment key={__i16}>
-<div style={css(`display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 160px 160px 160px 160px 160px 160px 160px 160px 80px; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 160px 160px 160px 160px 160px 160px 160px 160px 80px; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 140px 80px; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:90px 130px 160px 90px 80px 90px 90px 70px 70px 60px 80px 72px 72px 140px 80px; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
 <div style={css(`padding:10px 10px; font-size:12px; font-weight:700; color:#003F98; white-space:nowrap;`)}>{s.code}</div>
 <div style={css(`padding:10px 10px; font-size:12px; color:#14171F; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.name}</div>
 <div style={css(`padding:10px 10px; font-size:11.5px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.cityState}</div>
@@ -523,19 +497,28 @@ function View(B, self) {
 <div style={css(`padding:10px 10px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{s.nonLocalTp}</div>
 <div style={css(`padding:10px 10px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{s.openTime}</div>
 <div style={css(`padding:10px 10px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{s.closeTime}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.opsZh}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.lhOpsZh}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.opsCh}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.lhOpsCh}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.opsAm1}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.lhOpsAm1}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.opsAm2}</div>
-<div style={css(`padding:10px 10px; font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{s.contacts.lhOpsAm2}</div>
+<div style={css(`padding:10px 10px;`)}>
+<button onClick={s.togglePoc} style={css(`display:inline-flex; align-items:center; gap:6px; height:26px; padding:0 9px; border:1px solid ${s.pocOpen ? '#003F98' : '#E6EBF2'}; background:${s.pocOpen ? '#EAEEFB' : '#fff'}; color:${s.pocOpen ? '#003F98' : '#5A5E66'}; border-radius:6px; cursor:pointer; font-family:inherit; font-size:11.5px; font-weight:600; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:6px; height:26px; padding:0 9px; border:1px solid ${s.pocOpen ? '#003F98' : '#E6EBF2'}; background:${s.pocOpen ? '#EAEEFB' : '#fff'}; color:${s.pocOpen ? '#003F98' : '#5A5E66'}; border-radius:6px; cursor:pointer; font-family:inherit; font-size:11.5px; font-weight:600; white-space:nowrap;`, `border-color:#003F98; color:#003F98;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{s.pocSummary}<svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} style={css(`transform:rotate(${s.pocOpen ? '180deg' : '0deg'}); transition:transform 120ms;`)}><path d={"M6 9l6 6 6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+</div>
 <div style={css(`padding:7px 10px; display:flex; gap:4px; justify-content:flex-end;`)}>
 <button onClick={s.rowEdit} aria-label={"Edit row"} title={"Edit"} style={css(`width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg aria-hidden={"true"} width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M14 6l4 4M4 20l4-1 9.5-9.5a2 2 0 00-3-3L5 16z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 <button onClick={s.rowDeleteConfirm} aria-label={"Delete row"} title={"Delete"} style={css(`width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#D14B4B; color:#D14B4B;`)} onMouseLeave={(e) => hoverOff(e, `width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`, `border-color:#D14B4B; color:#D14B4B;`)}><svg aria-hidden={"true"} width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M5 7h14M9 7V5h6v2M6 7l1 13h10l1-13"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 </div>
 </div>
+{(s.pocOpen) ? (<>
+<div style={css(`position:fixed; inset:0; z-index:89;`)} onClick={s.togglePoc} />
+<div style={css(`position:fixed; top:${s.pocOpenRect.top}px; left:${s.pocOpenRect.left}px; width:260px; max-height:280px; overflow-y:auto; background:#fff; border:1px solid #E6EBF2; border-radius:10px; box-shadow:0 12px 32px rgba(11,20,48,0.18); z-index:90;`)}>
+{(s.pocList.length === 0) ? (<>
+<div style={css(`padding:14px; font-size:12px; color:#8E96A3;`)}>No Ops Leads on file for this SC.</div>
+</>) : null}
+{(s.pocList || []).map((p, __i900) => (<React.Fragment key={__i900}>
+<div style={css(`padding:9px 13px; border-bottom:1px solid #F2F5FA;`)}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; gap:8px;`)}><span style={css(`font-size:12.5px; font-weight:700; color:#14171F;`)}>{p.name}</span><span style={css(`font-size:10px; font-weight:600; color:#2F4FC6; background:#EAEEFB; padding:1px 7px; border-radius:999px; white-space:nowrap;`)}>{p.role}</span></div>
+<div style={css(`font-size:11px; color:#8E96A3; margin-top:2px;`)}>{p.email}</div>
+</div>
+</React.Fragment>))}
+</div>
+</>) : null}
 </React.Fragment>))}
 </div>
 </div>
@@ -2039,12 +2022,19 @@ function View(B, self) {
 </div>
 </React.Fragment>))}
 </div>
-{/* Plan-level details (read-only) — the planner reviews the pushed plan while awaiting feedback */}
+{/* Plan-level details (read-only) — the planner reviews the pushed plan while awaiting feedback.
+    Same "Plan Details / Route View" tab pattern as Design Review and the Ops-Lead's view. */}
 <div style={css(`margin-top:16px;`)}>
+<div style={css(`display:flex; align-items:center; gap:20px; border-bottom:1px solid #E6EBF2; margin-bottom:16px;`)}>
+{(aSel.sections || []).map((t, __i73b) => (<React.Fragment key={__i73b}><button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button></React.Fragment>))}
+</div>
+{(aSel.secDetails) ? (<>
 <div style={css(`font-size:11px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:10px;`)}>PLAN DETAILS · READ-ONLY</div>
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:14px;`)}>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden;`)}>
 {(aSel.metrics || []).map((m, __i73) => (<React.Fragment key={__i73}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
 </div>
+</>) : null}
+{(aSel.secRoute) ? (<>
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; overflow-x:auto;`)}>
 <div style={css(`min-width:660px;`)}>
 <div style={css(`display:grid; grid-template-columns:88px 1.5fr 44px 52px 88px 68px 80px 58px; background:#F2F5FA; border-bottom:1px solid #E6EBF2;`)}>
@@ -2071,6 +2061,7 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 </div>
+</>) : null}
 </div>
 </>) : null}
 {/* FEEDBACK: rows */}
@@ -2610,25 +2601,8 @@ function View(B, self) {
 </div>
 </div>
 </>) : null}
-{/* NODES */}
-{(oSel.secNodes) ? (<>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; overflow:hidden;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 1fr 0.6fr 1fr; background:#E6EBF2;`)}>
-<div style={css(`padding:10px 13px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE</div>
-<div style={css(`padding:10px 13px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FIRST DC</div>
-<div style={css(`padding:10px 13px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
-<div style={css(`padding:10px 13px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST</div>
-</div>
-{(oSel.nodes || []).map((n, __i97) => (<React.Fragment key={__i97}>
-<div style={css(`display:grid; grid-template-columns:1fr 1fr 0.6fr 1fr; align-items:center; border-top:1px solid #EEF1F6;`)}>
-<div style={css(`padding:11px 13px; font-size:12.5px; font-weight:700; color:#003F98;`)}>{n.routeCode}</div>
-<div style={css(`padding:11px 13px; font-size:12.5px; color:#14171F;`)}>{n.dc}</div>
-<div style={css(`padding:11px 13px; font-size:12.5px; color:#14171F; text-align:center;`)}>{n.tp}</div>
-<div style={css(`padding:11px 13px; font-size:12.5px; color:#14171F; text-align:right;`)}>{n.rtDist}</div>
-</div>
-</React.Fragment>))}
-</div>
-</>) : null}
+{/* Node Details tab removed per product decision -- was route-scoped node info,
+     now redundant with the per-DC drill-down already available from the route table. */}
 </div>
 </>) : null}
 </div>
@@ -2963,8 +2937,9 @@ function View(B, self) {
 </div>
 </React.Fragment>))}
 </div>
-<div style={css(`padding:14px 20px; display:flex; justify-content:flex-end; border-top:1px solid #EEF1F6;`)}>
-<button onClick={closeVolErrModal} style={css(`height:36px; padding:0 18px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `height:36px; padding:0 18px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}>Close</button>
+<div style={css(`padding:14px 20px; display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #EEF1F6;`)}>
+<button onClick={closeVolErrModal} style={css(`height:36px; padding:0 16px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#F2F5FA;`)} onMouseLeave={(e) => hoverOff(e, `height:36px; padding:0 16px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#F2F5FA;`)}>Close</button>
+<button onClick={volErrModalReplace} style={css(`height:36px; padding:0 18px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:7px;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `height:36px; padding:0 18px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:7px;`, `background:#00337D;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M12 16V4M7 9l5-5 5 5M5 20h14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Re-upload corrected file</button>
 </div>
 </div>
 </div>
@@ -3350,9 +3325,6 @@ function View(B, self) {
     );
   }
 }
-
-// ---- 3. NDCApp --------------------------------------------------------------
-
 // NDCApp -- the ported application logic. This class is essentially the
 // original Claude-Design `class Component extends DCLogic` unchanged: same
 // state shape, same buildSeed() fake-data generator, same event-handler
@@ -3671,7 +3643,7 @@ class NDCApp extends React.Component {
       { name: 'July 2026 \u00b7 Sale Peak', type: 'LMDC Landing', rows: 11480, vol: 3520000, date: '10 Jul \u00b7 09:40', by: 'Pranita Sapkal', validated: true, errorCount: 0 },
       { name: 'July 2026 \u00b7 35L Mid', type: 'LMDC Landing', rows: 11450, vol: 3290000, date: '10 Jul \u00b7 10:05', by: 'Komal Rao', validated: true, errorCount: 0 },
       { name: 'June 2026 \u00b7 Finalised (carry)', type: 'LMDC Landing', rows: 11120, vol: 2980000, date: '08 Jun \u00b7 18:22', by: 'Komal Rao', validated: false, errorCount: 4, errorRows: [{ row: 42, msg: 'Missing Planned Volume' }, { row: 88, msg: 'LMDC Code blank' }, { row: 213, msg: 'Volume = 0 (must be > 0)' }, { row: 407, msg: 'Duplicate LMDC Code' }] },
-      { name: 'July 2026 \u00b7 FMSC Manifest', type: 'FMSC Manifestation', rows: 9800, vol: 0, date: '10 Jul \u00b7 08:50', by: 'Dixan Mehta', validated: false, errorCount: 6, active: true, errorRows: [{ row: 12, msg: 'FMSC Code blank' }, { row: 55, msg: 'Planned Volume missing' }, { row: 61, msg: 'Duplicate FMSC Code' }, { row: 88, msg: 'Volume = 0 (must be > 0)' }, { row: 140, msg: 'Invalid FMSC Code format' }, { row: 203, msg: 'Planned Volume not a number' }] },
+      { name: 'July 2026 \u00b7 FMSC Manifest', type: 'FMSC Manifestation', rows: 9800, vol: 0, date: '10 Jul \u00b7 08:50', by: 'Dixan Mehta', validated: false, errorCount: 6, errorRows: [{ row: 12, msg: 'FMSC Code blank' }, { row: 55, msg: 'Planned Volume missing' }, { row: 61, msg: 'Duplicate FMSC Code' }, { row: 88, msg: 'Volume = 0 (must be > 0)' }, { row: 140, msg: 'Invalid FMSC Code format' }, { row: 203, msg: 'Planned Volume not a number' }] },
       { name: 'July 2026 \u00b7 LMSC Manifest', type: 'LMSC Landing', rows: 11432, vol: 0, date: '10 Jul \u00b7 09:12', by: 'Shashvat Jain', validated: true, errorCount: 0, active: true },
     ];
     const nodeAdditions = [
@@ -3895,6 +3867,30 @@ class NDCApp extends React.Component {
   // AutoDML is a read-only input view (no download / no analytical views — full views live on Metabase/Superset).
   // C7 — each volume card downloads a template with ITS OWN columns, not the SC-master CSV.
   downloadTemplate(name, cols) { const headers = (cols || []).map(c => c.k); const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''); this.downloadText((slug || 'template') + '_template.csv', headers.join(',') + '\n'); this.showToast(name + ' template downloaded · ' + headers.length + ' columns', '#128A3E'); }
+  // Simulated CSV validation for volume uploads (no real backend to validate against
+  // yet -- see context.md "Open items"). Deterministic per file (same name+size always
+  // gives the same result) so a demo can be repeated reliably, with two escape hatches
+  // for testing: name the file with "err"/"fail"/"bad"/"invalid"/"reject" in it to force
+  // a failure, or "ok"/"good"/"valid"/"clean"/"correct"/"fixed" to force a pass.
+  validateVolCsv(file, type) {
+    const name = (file && file.name || '').toLowerCase();
+    let seed = 0;
+    for (let i = 0; i < name.length; i++) seed = (seed * 31 + name.charCodeAt(i)) & 0x7fffffff;
+    seed = (seed + (file && file.size || 0) * 7 + 1) & 0x7fffffff;
+    const R = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    const forceFail = /err|fail|bad|invalid|reject/.test(name);
+    const forcePass = /\bok\b|good|valid|clean|correct|fixed/.test(name);
+    const fails = forceFail || (!forcePass && R() < 0.3);
+    const rows = 10800 + Math.floor(R() * 900);
+    const vol = type === 'LMDC Landing' ? 2900000 + Math.floor(R() * 600000) : 0;
+    if (!fails) return { validated: true, errorCount: 0, errorRows: [], rows, vol };
+    const POOL = ['Missing Planned Volume', 'Code column blank', 'Volume = 0 (must be > 0)', 'Duplicate code', 'Invalid code format', 'Planned Volume not a number', 'Zone column blank', 'Row has a trailing delimiter', 'Code does not match AutoDML'];
+    const n = 2 + Math.floor(R() * 5);
+    const errorRows = [];
+    let rowNo = 0;
+    for (let i = 0; i < n; i++) { rowNo += 3 + Math.floor(R() * 90); errorRows.push({ row: rowNo, msg: POOL[Math.floor(R() * POOL.length)] }); }
+    return { validated: false, errorCount: n, errorRows, rows, vol };
+  }
   downloadNodeCsv(rows) { rows = rows || []; const esc = (v) => { const s = String(v == null ? '' : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }; const head = 'LMSC,LMDC Code,LMDC Name,Zone,Capacity,Status,Flag\n'; const body = rows.map(r => [r.lmsc, r.lmdc, r.lmdcName, r.zone, r.capStr, r.statusLabel, r.flagMsg].map(esc).join(',')).join('\n'); this.downloadText('autodml-node-view.csv', head + body + '\n'); this.showToast('AutoDML node view downloaded · ' + rows.length + ' node' + (rows.length === 1 ? '' : 's'), '#128A3E'); }
   pickFile(reject) { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.csv'; inp.onchange = () => { const f = inp.files && inp.files[0]; if (!f) { this.showToast('Upload cancelled', '#5A5E66'); return; } if (reject) this.showToast('Validated ' + f.name + ' · 7 rows rejected (already in AutoDML)', '#C77B00'); else this.showToast('Validated ' + f.name + ' — ready to submit', '#128A3E'); }; inp.click(); }
   ingestRlhPlan() {
@@ -3994,25 +3990,57 @@ class NDCApp extends React.Component {
     // Active-per-type: one volume file is active per type per cycle (default = seeded active; user can Set active from the library).
     const VSHORT = { 'LMDC Landing': 'LMDC', 'LMSC Landing': 'LMSC', 'FMSC Manifestation': 'FMSC', 'FM Hub Manifestation': 'FM Hub' };
     const volActiveSt = st.volActive || {};
-    // Files uploaded this session (via the strip Upload buttons) merge on top of the seeded library.
-    const allVol = (st.uploadedVol || []).concat(d.volumeFiles);
+    const volEditsMap = st.volEdits || {};
+    // Files uploaded this session (via the strip Upload buttons) merge on top of the seeded library;
+    // volEdits overlays corrections from a Replace re-upload onto either an uploaded or seeded row.
+    const allVol = (st.uploadedVol || []).concat(d.volumeFiles).map(f => volEditsMap[f.name] ? Object.assign({}, f, volEditsMap[f.name]) : f);
     const pickVolFile = (type) => {
       const inp = document.createElement('input');
       inp.type = 'file'; inp.accept = '.csv';
       inp.onchange = (e) => {
         const f = e.target.files && e.target.files[0]; if (!f) return;
         const nm = 'July 2026 · ' + f.name.replace(/\.[^.]+$/, '');
-        const rec = { name: nm, type: type, rows: 11000 + ((f.size || 9000) % 900), vol: (type === 'LMDC Landing' ? 3000000 + ((f.size || 0) % 500000) : 0), date: 'Just now', by: 'Pranita Sapkal', validated: true, errorCount: 0, uploaded: true };
-        this.setState({ uploadedVol: [rec].concat(this.state.uploadedVol || []), volActive: Object.assign({}, this.state.volActive || {}, { [type]: nm }), volTypeFilter: 'All', volSearch: '' });
-        this.showToast('Validated ' + nm + ' — added to the library & set active', '#128A3E');
+        const v = this.validateVolCsv(f, type);
+        const rec = { name: nm, type: type, rows: v.rows, vol: v.vol, date: 'Just now', by: 'Pranita Sapkal', validated: v.validated, errorCount: v.errorCount, errorRows: v.errorRows, uploaded: true };
+        const patch = { uploadedVol: [rec].concat(this.state.uploadedVol || []), volTypeFilter: 'All', volSearch: '' };
+        if (v.validated) {
+          patch.volActive = Object.assign({}, this.state.volActive || {}, { [type]: nm });
+          this.setState(patch);
+          this.showToast('Validated ' + nm + ' — added to the library & set active', '#128A3E');
+        } else {
+          patch.volErrModal = { name: nm, type: type, rows: v.errorRows };
+          this.setState(patch);
+          this.showToast(v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' in ' + nm + ' — fix and re-upload; the active file for this type is unchanged', '#D14B4B');
+        }
+      };
+      inp.click();
+    };
+    const replaceVolFile = (name, type) => {
+      const inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = '.csv';
+      inp.onchange = (e) => {
+        const f = e.target.files && e.target.files[0]; if (!f) return;
+        const v = this.validateVolCsv(f, type);
+        const edits = Object.assign({}, this.state.volEdits || {});
+        edits[name] = { rows: v.rows, vol: v.vol, validated: v.validated, errorCount: v.errorCount, errorRows: v.errorRows, date: 'Just now', by: 'You (Planner)' };
+        const patch = { volEdits: edits };
+        if (v.validated) { patch.volActive = Object.assign({}, this.state.volActive || {}, { [type]: name }); patch.volErrModal = null; }
+        else { patch.volErrModal = { name: name, type: type, rows: v.errorRows }; }
+        this.setState(patch);
+        this.showToast(v.validated ? (name + ' re-validated — corrections accepted & set active') : (v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' still found in ' + name), v.validated ? '#128A3E' : '#D14B4B');
       };
       inp.click();
     };
     const activeNameOf = (type) => {
       if (volActiveSt[type] !== undefined) return volActiveSt[type];
       const fs = allVol.filter(f => f.type === type);
-      const seeded = fs.find(f => f.active);
-      return seeded ? seeded.name : ((fs.find(f => f.validated && f.errorCount === 0) || fs[0] || {}).name || null);
+      const seeded = fs.find(f => f.active && f.validated && f.errorCount === 0);
+      if (seeded) return seeded.name;
+      // No explicit seed marker (or it failed validation) -- fall back to any validated,
+      // error-free file for this type. Never fall back to a file with errors: an invalid
+      // file must never be shown as "active" (matches the upload-gating rule above).
+      const ok = fs.find(f => f.validated && f.errorCount === 0);
+      return ok ? ok.name : null;
     };
     // (setVolActive removed — the library "Set active" control it powered was removed; active file is now display-only in volActiveStrip)
     const volActiveStrip = VF.slice().reverse().map(o => {
@@ -4038,9 +4066,9 @@ class NDCApp extends React.Component {
         return {
           name: f.name, type: f.type, rows: fmtInt(f.rows), vol: f.vol ? fmtL(f.vol) : '—', date: f.date, by: f.by || '—',
           valLabel: valLabel, valBg: valBg, valFg: valFg, hasErrors: hasErrors, hasNoErrors: !hasErrors,
-          onViewErrors: hasErrors ? (() => this.setState({ volErrModal: { name: f.name, rows: f.errorRows || [] } })) : null,
+          onViewErrors: hasErrors ? (() => this.setState({ volErrModal: { name: f.name, type: f.type, rows: f.errorRows || [] } })) : null,
           downloadCsv: () => this.downloadVolumeFile(f),
-          onReplace: () => this.showToast('Replace ' + f.name + ' — coming soon', '#C77B00'),
+          onReplace: () => replaceVolFile(f.name, f.type),
           onDelete: () => this.showToast(f.name + ' deleted from library', '#D14B4B'),
         };
       });
@@ -4148,6 +4176,7 @@ class NDCApp extends React.Component {
     const volErrModalOpen = !!(st.volErrModal);
     const volErrModal = st.volErrModal || { name: '', rows: [] };
     const closeVolErrModal = () => this.setState({ volErrModal: null });
+    const volErrModalReplace = () => { const m = st.volErrModal; this.setState({ volErrModal: null }); if (m && m.type) replaceVolFile(m.name, m.type); };
     const _addedScs = (st.addedScs || []).filter(s => (zf === 'All' || s.zone === zf) && (!q || s.code.toLowerCase().indexOf(q) >= 0 || (s.name || '').toLowerCase().indexOf(q) >= 0));
     const scRemovedMap = st.scRemoved || {};
     const scFiltered = _addedScs.concat(anFiltered).filter(s => !scRemovedMap[s.code]);
@@ -4174,8 +4203,13 @@ class NDCApp extends React.Component {
       const openTime = String(openHour).padStart(2, '0') + ':00';
       const closeTime = String(closeHour).padStart(2, '0') + ':00';
       const codeLC = s.code.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const contacts = { opsZh: 'ops.zh.' + codeLC + '@valmo.in', lhOpsZh: 'lh.zh.' + codeLC + '@valmo.in', opsCh: 'ops.ch.' + codeLC + '@valmo.in', lhOpsCh: 'lh.ch.' + codeLC + '@valmo.in', opsAm1: 'ops.am1.' + codeLC + '@valmo.in', lhOpsAm1: 'lh.am1.' + codeLC + '@valmo.in', opsAm2: 'ops.am2.' + codeLC + '@valmo.in', lhOpsAm2: 'lh.am2.' + codeLC + '@valmo.in' };
-      return { code: s.code, name: s.name, zone: s.zone, cityState: s.name + ' / ' + (ZSTATE[s.zone] || s.zone), scType: s.dcCount >= 170 ? 'Hybrid' : s.dcCount >= 110 ? 'LMSC' : 'FMSC', sortCap: fmtInt(s.sortCap), volCap: fmtInt(s.volCap), docks: s.docks, nlhDocks: nlhDocks, rlhDocks: rlhDocks, localTp: localTp, nonLocalTp: nonLocalTp, openTime: openTime, closeTime: closeTime, contacts: contacts, dcCount: s.dcCount, pocCount: pl.length, pocList: pl.map((n, i) => ({ name: n, role: POC_ROLES[i] || ('POC ' + (i + 1)) })), pocOpen: pocOpenRow === s.code, togglePoc: () => this.setState({ pocOpenRow: pocOpenRow === s.code ? null : s.code }), rowEdit: () => this.openScEdit(s.code), rowDelete: () => { const r = Object.assign({}, this.state.scRemoved || {}); r[s.code] = true; this.setState({ scRemoved: r }); this.showToast(s.code + ' removed from SC master', '#D14B4B', () => { const rr = Object.assign({}, this.state.scRemoved || {}); delete rr[s.code]; this.setState({ scRemoved: rr }); }); }, rowDeleteConfirm: () => this.setState({ delConfirm: { kind: 'sc', key: s.code, label: s.code + ' / ' + s.name } }) };
+      const pocOpenRect = st.pocOpenRect || { top: 0, left: 0 };
+      return { code: s.code, name: s.name, zone: s.zone, cityState: s.name + ' / ' + (ZSTATE[s.zone] || s.zone), scType: s.dcCount >= 170 ? 'Hybrid' : s.dcCount >= 110 ? 'LMSC' : 'FMSC', sortCap: fmtInt(s.sortCap), volCap: fmtInt(s.volCap), docks: s.docks, nlhDocks: nlhDocks, rlhDocks: rlhDocks, localTp: localTp, nonLocalTp: nonLocalTp, openTime: openTime, closeTime: closeTime, dcCount: s.dcCount,
+        pocCount: pl.length, pocSummary: pl.length ? (pl.length + ' lead' + (pl.length === 1 ? '' : 's')) : 'None on file',
+        pocList: pl.map((n, i) => ({ name: n, role: POC_ROLES[i] || ('Ops Lead ' + (i + 1)), email: n.toLowerCase().replace(/[^a-z\s]/g, '').trim().replace(/\s+/g, '.') + '@valmo.in' })),
+        pocOpen: pocOpenRow === s.code, pocOpenRect: pocOpenRect,
+        togglePoc: (e) => { if (pocOpenRow === s.code) { this.setState({ pocOpenRow: null }); return; } const r = e.currentTarget.getBoundingClientRect(); this.setState({ pocOpenRow: s.code, pocOpenRect: { top: r.bottom + 4, left: Math.min(r.left, window.innerWidth - 270) } }); },
+        rowEdit: () => this.openScEdit(s.code), rowDelete: () => { const r = Object.assign({}, this.state.scRemoved || {}); r[s.code] = true; this.setState({ scRemoved: r }); this.showToast(s.code + ' removed from SC master', '#D14B4B', () => { const rr = Object.assign({}, this.state.scRemoved || {}); delete rr[s.code]; this.setState({ scRemoved: rr }); }); }, rowDeleteConfirm: () => this.setState({ delConfirm: { kind: 'sc', key: s.code, label: s.code + ' / ' + s.name } }) };
     });
     // C13 — Vehicle Master derives from the canonical d.VEH fleet (unified source of truth).
     // vehEdits / vehRemoved / addedVehTypes are applied over the same base so Master edits
@@ -4380,7 +4414,7 @@ class NDCApp extends React.Component {
       nodeStats: nodeStats, autodmlFilterCards: autodmlFilterCards, nodeRows: autodmlPager.pageRows, autodmlPager: autodmlPager, nodeShown: nodeShown, nodeEmpty: nodeEmpty, nodeCountLabel: nodeCountLabel,
       nodeLmscSearch: st.nodeLmscSearch || '', onNodeLmscSearch: (e) => this.setState({ nodeLmscSearch: e.target.value, pgAutodml: 1 }), nodeFilterDirty: nodeFilterDirty, clearNodeFilters: clearNodeFilters, onDownloadNodeCsv: () => this.downloadNodeCsv(nodeRows),
       autodmlCards, nodeAdditions, nodeClosures: d.nodeClosures, migrations: d.migrations, nodeChanges,
-      volErrModalOpen, volErrModal, closeVolErrModal,
+      volErrModalOpen, volErrModal, closeVolErrModal, volErrModalReplace,
       zoneChips, scSearch: st.inputsSearch || '', onInputsSearch: (e) => this.setState({ inputsSearch: e.target.value, pgScMaster: 1, pgAvail: 1 }),
       isScMaster: st.mastersTab === 'sc', isVehMaster: st.mastersTab === 'vehicle', isAvail: st.mastersTab === 'avail',
       mastersTabs: [['sc', 'Sort Center Master', d.scs.length, 'Canonical SC master — one row per Sort Centre with zone, capacity and location.'], ['avail', 'SC Vehicle Availability', (d.scVehAvail || []).length, 'Vehicles available per SC (one row per vehicle type per SC) — capped by the Touch Point Limit.'], ['vehicle', 'Vehicle Master', vehTypeCount, 'Vehicle types and their capacity, distance limit, touch-point cap and LH feasibility.']].map(t => ({ label: t[1] + ' (' + t[2] + ')', tip: t[3], attention: false, active: st.mastersTab === t[0], color: st.mastersTab === t[0] ? '#003F98' : '#5A5E66', weight: st.mastersTab === t[0] ? '700' : '500', bg: st.mastersTab === t[0] ? '#fff' : 'transparent', bd: st.mastersTab === t[0] ? '#D7DCE5' : 'transparent', onClick: () => this.setState({ mastersTab: t[0] }) })),
@@ -5399,6 +5433,8 @@ class NDCApp extends React.Component {
         reviewProgress: opsLeads.filter(o => o.done).length + ' of ' + opsLeads.length + ' submitted', reminded: !!((st.remindedPlans || {})[plan.id]),
         onNudge: () => { const rp = Object.assign({}, this.state.remindedPlans || {}); rp[plan.id] = true; this.setState({ remindedPlans: rp }); this.showToast('Reminder sent to ' + (plan.reviewerNames.join(', ') || 'the reviewers'), '#1E6FB8'); },
         isPushed: ps === 'Pushed', showFeedback: ps !== 'Pushed', isAck: ps === 'Acknowledged', isFinal: ps === 'Finalised', locked, notLocked: !locked,
+        sections: [['details', 'Plan Details'], ['route', 'Route View']].map(sx => ({ label: sx[1], active: (st.alignSection || 'details') === sx[0], color: (st.alignSection || 'details') === sx[0] ? '#003F98' : '#5A5E66', weight: (st.alignSection || 'details') === sx[0] ? '700' : '600', onClick: () => this.setState({ alignSection: sx[0] }) })),
+        secDetails: (st.alignSection || 'details') === 'details', secRoute: (st.alignSection || 'details') === 'route',
         // D (2026-07-05) — Accept/Reject unlocks the moment feedback is received (In Alignment), per row, BEFORE Acknowledge.
         // Acknowledge stays the irreversible freeze that locks reviewers; Finalise still requires Acknowledge + all rows decided.
         canDecide: ps === 'In Alignment' || ps === 'Acknowledged', decideLocked: ps === 'Finalised', showActionBar: ps === 'In Alignment' || ps === 'Acknowledged',
@@ -5805,20 +5841,20 @@ class NDCApp extends React.Component {
           dcRows: _dcRows, notEditable: planLocked, tpReorderTouched: _tpTouched, tpReorderValid: _tpValid, tpReorderMsg: _tpMsg }; });
       const alignedN = rows.filter(r => r.decision === 'Aligned').length, ncN = rows.filter(r => r.decision === 'Needs Change').length, pendN = rows.filter(r => r.decision === 'Pending').length;
       const mix = {}; plan.rows.forEach(r => { mix[r.veh] = (mix[r.veh] || 0) + 1; }); const mixArr = Object.keys(mix).map(k => ({ veh: k, n: mix[k], pctW: Math.round(mix[k] / plan.rows.length * 100) + '%' }));
-      const nodes = plan.rows.slice(0, 9).map(r => ({ routeCode: r.routeCode, dc: r.dcs[0], tp: r.tp, rtDist: r.rtDist + ' km', cutoff: r.outCutoff, tat: r.breakdownTat + 'h' }));
+      // (per-route "Node Details" list removed with the Node Details tab)
       // §10 O2 — plan-level co-reviewer summary + roster (awareness "the same way" the planner sees feedback received).
       const propRows = rows.filter(r => r.hasProposed && r.proposedBy !== 'Rahul Sharma');
       const propByNames = [...new Set(propRows.map(r => r.proposedBy))].filter(Boolean);
       const oProp = propRows.length;
       const coReviewerLabel = (plan.reviewerNames || []).filter(n => n !== 'Rahul Sharma').join(', ');
-      const SECS = [['summary', 'Overall Summary'], ['vehicle', 'Vehicle Plan'], ['nodes', 'Node Details']];
+      const SECS = [['summary', 'Plan Details'], ['vehicle', 'Route View']];
       oSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone, sentDate: plan.sentDate, submitted, notSubmitted: !submitted,
         planLocked, opsAck: planStatus === 'Acknowledged', opsFinal: planStatus === 'Finalised',
         rows, alignedN, ncN, pendN, rowCount: rows.length, allReviewed: pendN === 0, reviewLabel: (rows.length - pendN) + ' / ' + rows.length + ' reviewed',
         hasProp: oProp > 0 && !submitted, propN: oProp, propSummary: (propByNames.join(' & ') || 'A co-reviewer') + ' proposed ' + oProp + ' change' + (oProp === 1 ? '' : 's') + ' on this plan', coReviewerLabel, hasCoReviewers: coReviewerLabel.length > 0,
         submittedRecord: submitted ? ('Submitted by ' + subBySel + (subAtSel ? ' · ' + subAtSel : '')) : '',
         metrics: [{ label: 'Routes', value: plan.metrics.routes }, { label: 'Vehicles', value: plan.metrics.vehicles }, { label: 'CPS', value: '\u20b9' + plan.metrics.cps.toFixed(2) }, { label: 'Coverage', value: pct(plan.metrics.coverage) }, { label: 'Distance', value: plan.metrics.distance.toLocaleString('en-IN') + ' km' }, { label: 'Avg TAT', value: plan.metrics.avgTat + 'h' }],
-        mixArr, nodes, secSummary: sec === 'summary', secVehicle: sec === 'vehicle', secNodes: sec === 'nodes',
+        mixArr, secSummary: sec === 'summary', secVehicle: sec === 'vehicle',
         sections: SECS.map(s => ({ label: s[1], active: sec === s[0], color: sec === s[0] ? '#003F98' : '#5A5E66', weight: sec === s[0] ? '700' : '600', onClick: () => this.setState({ opsSection: s[0] }) })),
         onAcceptAll: () => { if (pendN > 0) this.setState({ alignAllOpen: true, alignAllPlanId: plan.id }); }, acceptAllDisabled: pendN === 0, onReset: () => this.resetOps(plan.id), onMapView: () => this.setState({ mapSC: plan.scCode, view: 'map' }),
         onOpsValidate: () => { const dec = st.opsRowDec[plan.id] || {}; const ncRows = Object.values(dec).filter(v => v === 'Needs Change').length; const tpOk = plan.rows.every(r => r.tp <= 7); const checks = [ (tpOk ? '✓' : '✗') + ' Touch points within guard', ncRows > 0 ? ncRows + ' row' + (ncRows === 1 ? '' : 's') + ' need change — add remarks before submitting' : '✓ No changes flagged', '✓ All vehicles feasible' ]; this.showToast('Validate · ' + plan.scCode + ' — ' + checks.join(' · '), tpOk ? '#128A3E' : '#C77B00'); },
