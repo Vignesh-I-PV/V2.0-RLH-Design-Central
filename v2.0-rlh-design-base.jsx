@@ -1613,7 +1613,6 @@ function View(B, self) {
 <span style={css(`font-size:12px; font-weight:700; color:#14171F;`)}>Runs</span>
 {(rqHasQueue) ? (<>
 <div style={css(`display:flex; align-items:center; gap:5px;`)}>
-{(rqShowQueued) ? (<><span style={css(`display:inline-flex; align-items:center; padding:2px 7px; border-radius:999px; font-size:10px; font-weight:700; background:#F2F5FA; color:#5A5E66;`)}>{rqQueuedN} Planned</span></>) : null}
 {(rqShowProg) ? (<><span style={css(`display:inline-flex; align-items:center; padding:2px 7px; border-radius:999px; font-size:10px; font-weight:700; background:#FBF1DF; color:#C77B00;`)}>{rqProgN} In Progress</span></>) : null}
 <span style={css(`display:inline-flex; align-items:center; padding:2px 7px; border-radius:999px; font-size:10px; font-weight:700; background:#E7F4EC; color:#128A3E;`)}>{rqDoneN} Completed</span>
 </div>
@@ -1626,22 +1625,7 @@ function View(B, self) {
 {(reviewZoneChips || []).map((z, __i57) => (<React.Fragment key={__i57}><button onClick={z.onClick} style={css(`border:1px solid ${z.bd}; background:${z.bg}; color:${z.fg}; font-family:inherit; font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; cursor:pointer;`)}>{z.label}</button></React.Fragment>))}
 </div>
 <div style={css(`flex:1; overflow-y:auto; padding:0 10px 12px;`)}>
-{/* In-flight section: Queued + In Progress runs (non-clickable status rows) */}
-{(rqHasInflight) ? (<>
-<div style={css(`padding:2px 4px 5px; margin-bottom:2px;`)}>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; padding:4px 6px 6px;`)}>IN FLIGHT</div>
-{(rqInflightItems || []).map((qi, __i58) => (<React.Fragment key={__i58}>
-<div style={css(`display:flex; align-items:center; gap:9px; padding:8px 10px; margin-bottom:2px; border:1px solid #EEF1F6; border-radius:8px; background:#FAFBFD;`)}>
-{(qi.isRunning) ? (<><span style={css(`width:7px; height:7px; border-radius:50%; background:#C77B00; flex-shrink:0; animation:ndcpulse 1s ease-in-out infinite;`)} /></>) : null}
-{(qi.isQueued) ? (<><span style={css(`width:7px; height:7px; border-radius:50%; border:1.5px solid #8E96A3; background:transparent; flex-shrink:0;`)} /></>) : null}
-<span style={css(`flex:1; font-size:12px; font-weight:600; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{qi.scCode}</span>
-<span style={css(`display:inline-flex; align-items:center; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:700; background:${qi.statusBg}; color:${qi.statusFg}; flex-shrink:0;`)}>{qi.statusLabel}</span>
-</div>
-</React.Fragment>))}
-<div style={css(`height:1px; background:#EEF1F6; margin:8px 4px 6px;`)} />
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; padding:0 6px 6px;`)}>COMPLETED · CLICK TO REVIEW</div>
-</div>
-</>) : null}
+{/* In-flight section removed per product decision -- the rail now just lists completed runs. */}
 {/* Completed runs (clickable, as before) */}
 {(reviewList || []).map((r, __i59) => (<React.Fragment key={__i59}>
 <div style={css(`padding:0 2px; margin-bottom:3px;`)}>
@@ -1699,50 +1683,56 @@ function View(B, self) {
 {(reviewPushed) ? (<><span style={css(`display:inline-flex; align-items:center; gap:7px; height:36px; padding:0 14px; border-radius:8px; background:#E7F0F8; color:#1E6FB8; font-size:12.5px; font-weight:600;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Pushed to alignment</span></>) : null}
 </div>
 </div>
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:14px;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:10px;`)}>
 {(planCards || []).map((c, __i60) => (<React.Fragment key={__i60}>
-<div style={css(`border:1px solid #E6EBF2; background:#fff; border-radius:13px; padding:17px 18px; display:flex; flex-direction:column;`)}>
-{/* card header: run id + HW parameter + triggered date + map/detail icons */}
-<div style={css(`display:flex; align-items:flex-start; gap:9px; margin-bottom:13px;`)}>
-<div style={css(`flex:1; min-width:0;`)}>
+<div style={css(`width:100%; box-sizing:border-box; border:1px solid #E6EBF2; background:#fff; border-radius:13px; padding:16px 20px; display:flex; align-items:center; gap:22px; flex-wrap:wrap;`)}>
+{/* Full-width row card, one per line (list, not a grid) — this stays true at any
+    viewport width since the parent is a column flex stack, not a multi-column grid. */}
+{/* run id + HW parameter + triggered date + map/detail icons */}
+<div style={css(`display:flex; flex-direction:column; gap:4px; width:190px; flex-shrink:0;`)}>
 <div style={css(`display:flex; align-items:center; gap:8px; flex-wrap:wrap;`)}>
 <span style={css(`font-size:13.5px; font-weight:700; color:#003F98;`)}>{c.runId}</span>
-<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:#EAEEFB; color:#2F4FC6;`)}>{c.hwLabel} · {c.hwTag}</span>
 {(c.pushed) ? (<><span style={css(`padding:2px 9px; border-radius:999px; font-size:10px; font-weight:700; background:${c.pushedTagBg}; color:${c.pushedTagFg};`)}>{c.pushedTag}</span></>) : null}
 </div>
-<div style={css(`font-size:11px; color:#8E96A3; margin-top:4px;`)}>Triggered {c.triggeredAt} · {c.triggeredBy}</div>
+<div><span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:#EAEEFB; color:#2F4FC6;`)}>{c.hwLabel} · {c.hwTag}</span></div>
+<div style={css(`font-size:10.5px; color:#8E96A3;`)}>Triggered {c.triggeredAt} · {c.triggeredBy}</div>
+<div style={css(`display:flex; gap:6px; margin-top:2px;`)}>
+<button onClick={c.onMap} aria-label={"Open this run on the map"} title={"View routes on map"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={c.onDownloadCsv} aria-label={"Download this plan as CSV"} title={"Download plan summary CSV"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={c.onDetail} aria-label={"Open full plan detail"} title={"Open full plan detail"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h7M15 3h6v6M10 14L21 3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 </div>
-<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
-<button onClick={c.onMap} aria-label={"Open this run on the map"} title={"View routes on map"} style={css(`display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={c.onDownloadCsv} aria-label={"Download this plan as CSV"} title={"Download plan summary CSV"} style={css(`display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={c.onDetail} aria-label={"Open full plan detail"} title={"Open full plan detail"} style={css(`display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h7M15 3h6v6M10 14L21 3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 </div>
-</div>
+{/* divider */}
+<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
 {/* INPUTS */}
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>INPUTS</div>
-<div style={css(`display:flex; flex-wrap:wrap; gap:14px 22px; margin-bottom:14px;`)}>
-<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Nodes</div><div style={css(`font-size:13px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.nodes}</div></div>
-<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Volume</div><div style={css(`font-size:13px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.volume}</div></div>
-<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Historical weight</div><div style={css(`font-size:13px; font-weight:600; color:#14171F;`)}>{c.hwLabel}</div></div>
-<div style={css(`flex-basis:100%;`)}><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Vehicle type · count</div><div style={css(`font-size:12.5px; font-weight:600; color:#14171F;`)}>{c.vehInput}</div></div>
+<div style={css(`width:220px; flex-shrink:0;`)}>
+<div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>INPUTS</div>
+<div style={css(`display:flex; flex-wrap:wrap; gap:10px 18px;`)}>
+<div><div style={css(`font-size:10px; color:#5A5E66;`)}>Nodes</div><div style={css(`font-size:12.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.nodes}</div></div>
+<div><div style={css(`font-size:10px; color:#5A5E66;`)}>Volume</div><div style={css(`font-size:12.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.volume}</div></div>
+<div style={css(`flex-basis:100%;`)}><div style={css(`font-size:10px; color:#5A5E66;`)}>Vehicle type · count</div><div style={css(`font-size:11.5px; font-weight:600; color:#14171F;`)}>{c.vehInput}</div></div>
 </div>
+</div>
+<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
 {/* OUTPUTS */}
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>OUTPUT METRICS</div>
-<div style={css(`display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:13px;`)}>
-<div style={css(`background:#fff; padding:10px 11px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:${c.coverageColor}; line-height:1;`)}>{c.coverage}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>Coverage</div>{(c.coverageGap) ? (<><div style={css(`font-size:9px; font-weight:700; color:#D14B4B; margin-top:3px; white-space:nowrap; line-height:1.3;`)}>{c.coverageGapText}</div></>) : null}</div>
-<div style={css(`background:#fff; padding:10px 11px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:${c.utilColor}; line-height:1;`)}>{c.util}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>Utilisation</div></div>
-<div style={css(`background:#fff; padding:10px 11px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:#14171F; line-height:1;`)}>{c.cps}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>CPS</div>{(c.cpsRefOn) ? (<><div style={css(`font-size:9.5px; font-weight:600; color:${c.cpsDeltaColor}; margin-top:4px; white-space:nowrap;`)} title={c.cpsDeltaTooltip}>{c.cpsDeltaLabel}</div></>) : null}</div>
-<div style={css(`background:#fff; padding:10px 11px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:#14171F; line-height:1;`)}>{c.routes}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>Routes</div></div>
-<div style={css(`background:#fff; padding:10px 11px;`)} title={c.rdrTooltip}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:${c.rdrColor}; line-height:1;`)}>{c.rdrLabel}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>RDR <span style={css(`font-size:9.5px; color:#8E96A3;`)}>Route disruption</span></div></div>
-<div style={css(`background:#fff; padding:10px 11px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:#14171F; line-height:1; font-variant-numeric:tabular-nums;`)}>{c.distance}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:5px;`)}>Distance</div></div>
+<div style={css(`flex:1; min-width:420px;`)}>
+<div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>OUTPUT METRICS</div>
+<div style={css(`display:grid; grid-template-columns:repeat(6, 1fr); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden;`)}>
+<div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:${c.coverageColor}; line-height:1;`)}>{c.coverage}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Coverage</div>{(c.coverageGap) ? (<><div style={css(`font-size:8.5px; font-weight:700; color:#D14B4B; margin-top:3px; line-height:1.3;`)}>{c.coverageGapText}</div></>) : null}</div>
+<div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:${c.utilColor}; line-height:1;`)}>{c.util}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Utilisation</div></div>
+<div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:#14171F; line-height:1;`)}>{c.cps}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>CPS</div>{(c.cpsRefOn) ? (<><div style={css(`font-size:8.5px; font-weight:600; color:${c.cpsDeltaColor}; margin-top:3px;`)} title={c.cpsDeltaTooltip}>{c.cpsDeltaLabel}</div></>) : null}</div>
+<div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:#14171F; line-height:1;`)}>{c.routes}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Routes</div></div>
+<div style={css(`background:#fff; padding:8px 10px;`)} title={c.rdrTooltip}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:${c.rdrColor}; line-height:1;`)}>{c.rdrLabel}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>RDR</div></div>
+<div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:500; color:#14171F; line-height:1; font-variant-numeric:tabular-nums;`)}>{c.distance}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Distance</div></div>
 </div>
-{/* §P3.4 — route util chip: shows when ≥1 route is >90% or <40% utilised */}
-{(c.hasUtilChip) ? (<><div style={css(`display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:6px; background:#FBF1DF; border:1px solid #F5DEB8; font-size:11px; font-weight:600; color:#C77B00; margin-bottom:9px;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{c.utilChipLabel}</div></>) : null}
-{/* flags + push + finalise — single row (pill · push fills · finalise), wraps only if too narrow */}
-<div style={css(`display:flex; align-items:center; gap:8px; margin-top:auto; flex-wrap:wrap;`)}>
-<span style={css(`flex-shrink:0; display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:11px; font-weight:600; background:${c.flagBg}; color:${c.flagFg};`)}><span style={css(`width:7px; height:7px; border-radius:50%; background:${c.flagDot};`)} />{c.flagLabel}</span>
-<button onClick={c.onPush} aria-label={"Push this run to Ops Alignment"} style={css(`flex:1; min-width:150px; display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `flex:1; min-width:150px; display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `background:#00337D;`)}>Push to alignment<svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M5 12h14M13 6l6 6-6 6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={c.onFinaliseDirect} aria-label={"Finalise this run directly without Ops alignment"} style={css(`flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C77B00; color:#C77B00;`)} onMouseLeave={(e) => hoverOff(e, `flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `border-color:#C77B00; color:#C77B00;`)}>Finalise directly</button>
+{(c.hasUtilChip) ? (<><div style={css(`display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:6px; background:#FBF1DF; border:1px solid #F5DEB8; font-size:10.5px; font-weight:600; color:#C77B00; margin-top:8px;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{c.utilChipLabel}</div></>) : null}
+</div>
+<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
+{/* flags + push + finalise */}
+<div style={css(`display:flex; flex-direction:column; align-items:stretch; gap:8px; width:210px; flex-shrink:0;`)}>
+<span style={css(`align-self:flex-start; display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:10.5px; font-weight:600; background:${c.flagBg}; color:${c.flagFg};`)}><span style={css(`width:7px; height:7px; border-radius:50%; background:${c.flagDot};`)} />{c.flagLabel}</span>
+<button onClick={c.onPush} aria-label={"Push this run to Ops Alignment"} style={css(`display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `background:#00337D;`)}>Push to alignment<svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M5 12h14M13 6l6 6-6 6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={c.onFinaliseDirect} aria-label={"Finalise this run directly without Ops alignment"} style={css(`display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C77B00; color:#C77B00;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `border-color:#C77B00; color:#C77B00;`)}>Finalise directly</button>
 </div>
 </div>
 </React.Fragment>))}
@@ -1871,13 +1861,12 @@ function View(B, self) {
 </div>
 </>) : null}
 {(reviewDetail.noFlags) ? (<><div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:#128A3E;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>No validation flags on this run.</div></>) : null}
-{/* per-route breakdown — §P3.2 toggle: Route View / Detail View (DC × Route) */}
+{/* per-route breakdown — §P3.2 toggle: Detail View (DC × Route) / Route View, left-aligned */}
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; overflow:hidden;`)}>
-<div style={css(`padding:12px 16px; border-bottom:1px solid #EEF1F6; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;`)}>
-<span style={css(`font-size:13.5px; font-weight:700; color:#14171F;`)}>{reviewDetail.routeHeader}</span>
+<div style={css(`padding:12px 16px; border-bottom:1px solid #EEF1F6; display:flex; align-items:center; gap:12px; flex-wrap:wrap;`)}>
 <div style={css(`display:flex; border:1px solid #E6EBF2; border-radius:6px; overflow:hidden; flex-shrink:0;`)}>
-<button onClick={reviewDetail.onRouteView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; border-right:1px solid #E6EBF2; cursor:pointer; font-family:inherit; background:${reviewDetail.routeViewBg}; color:${reviewDetail.routeViewFg};`)}>Route View</button>
-<button onClick={reviewDetail.onDcView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; cursor:pointer; font-family:inherit; background:${reviewDetail.dcViewBg}; color:${reviewDetail.dcViewFg};`)}>Detail View (DC × Route)</button>
+<button onClick={reviewDetail.onDcView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; border-right:1px solid #E6EBF2; cursor:pointer; font-family:inherit; background:${reviewDetail.dcViewBg}; color:${reviewDetail.dcViewFg};`)}>Detail View (DC × Route)</button>
+<button onClick={reviewDetail.onRouteView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; cursor:pointer; font-family:inherit; background:${reviewDetail.routeViewBg}; color:${reviewDetail.routeViewFg};`)}>Route View</button>
 </div>
 </div>
 {/* Route View (Pivot at Route) — default */}
@@ -3306,7 +3295,7 @@ function View(B, self) {
 </div>
 <div style={css(`font-size:19px; font-weight:700; color:#14171F; margin-top:18px;`)}>{moduleTitle}</div>
 <div style={css(`font-size:13px; color:#5A5E66; margin-top:9px; line-height:1.55;`)}>This module is coming soon. Today's workflow: <strong style={css(`color:#4A4F5E;`)}>Design Inputs → Design Creation → Design Review → Ops Alignment → Map.</strong></div>
-<button onClick={goCommand} style={css(`margin-top:20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; height:38px; padding:0 18px; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `margin-top:20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; height:38px; padding:0 18px; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}>Back to Command Center</button>
+<button onClick={goCommand} style={css(`margin-top:20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; height:38px; padding:0 18px; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `margin-top:20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; height:38px; padding:0 18px; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}>Back to Design Inputs</button>
 </div>
 </div>
 </>) : null}
@@ -3349,7 +3338,7 @@ class NDCApp extends React.Component {
     super(props);
     this.state = {
       persona: 'planner',
-      view: 'command',
+      view: 'inputs', // Command Center hidden for now -- see nav comment near plannerNav
       showCoach: props.showFtux !== false,
       toast: null,
       inputsTab: 'volume',
@@ -3718,7 +3707,7 @@ class NDCApp extends React.Component {
   runUndo() { const t = this.state.toast; clearTimeout(this._t); this.setState({ toast: null }); if (t && t.undo) t.undo(); }
   // C8a — entering Creation always starts at step 1 so re-entry never resumes mid-wizard.
   go(view) { if (view === 'creation' && this.state.view !== 'creation') this.setState({ view, creationStep: 1, fixReturnStep: null, focusSC: null, creationView: 'wizard' }); else this.setState({ view }); }
-  setPersona(p) { this.setState({ persona: p, view: p === 'ops' ? 'align' : 'command' }); }
+  setPersona(p) { this.setState({ persona: p, view: p === 'ops' ? 'align' : 'inputs' }); }
   comingSoon(label) { this.showToast((label || 'This action') + ' — coming soon', '#C77B00'); }
   // Reusable table pager. PAGE SIZE = 10. Given the full post-filter list, the raw page from state,
   // and the state key to write, returns the current page's rows + the footer control model.
@@ -6426,7 +6415,7 @@ class NDCApp extends React.Component {
       csCpsNote: data.cpsNote,
       csZones: data.zones.map(z => ({ zone: z.zone + ' Zone', plans: z.plans, avgCps: z.avgCps, cov: z.cov, routes: z.routes.toLocaleString('en-IN'), veh: z.veh.toLocaleString('en-IN'), dist: z.dist })),
       csTotalPlans: data.zones.reduce((s, z) => s + z.plans, 0),
-      onBackActive: () => { this.setState({ designCycle: 'July 2026', view: 'command' }); this.showToast('Switched to July 2026 · active cycle', '#003F98'); },
+      onBackActive: () => { this.setState({ designCycle: 'July 2026', view: 'inputs' }); this.showToast('Switched to July 2026 · active cycle', '#003F98'); },
       onExportSummary: () => this.comingSoon('Export cycle summary (PDF)'),
       csFinCount: st.data.plans.length,
       onDownloadAll: () => this.showToast('Downloading all ' + st.data.plans.length + ' finalised plans (CSV)…', '#1E6FB8'),
@@ -6620,7 +6609,7 @@ class NDCApp extends React.Component {
         nodes: fmtInt(detailRun.dcCount), volume: fmtInt(detailRun.volume), vehInput: (detailRun.vehInput && detailRun.vehInput.length ? detailRun.vehInput.join(' · ') : '—'),
         metrics: dMetrics, vehArr: dVehArr, hasVeh: dVehArr.length > 0, vehTotal: detailRun.vehicles,
         flags: dFlags, hasFlags: dFlags.length > 0, noFlags: dFlags.length === 0,
-        routeRows: dRouteRows, routeHeader: 'Route breakdown — ' + dRouteRows.length + ' route' + (dRouteRows.length === 1 ? '' : 's'),
+        routeRows: dRouteRows,
         isRouteView: rdv === 'route', isDcView: rdv === 'dc',
         routeViewBg: rdv === 'route' ? '#003F98' : '#F2F5FA', routeViewFg: rdv === 'route' ? '#fff' : '#5A5E66',
         dcViewBg: rdv === 'dc' ? '#003F98' : '#F2F5FA', dcViewFg: rdv === 'dc' ? '#fff' : '#5A5E66',
@@ -6641,20 +6630,10 @@ class NDCApp extends React.Component {
     // so the reviewer can see what is still cooking alongside the completed set.
     // Non-completed items are non-clickable status rows (matching CC + Step-3 pill colors).
     const rq = st.runQueue || [];
-    const rqQueuedN = rq.filter(r => r.status === 'Queued').length;
     const rqProgN   = rq.filter(r => r.status === 'In Progress').length;
     const rqDoneN   = rq.filter(r => r.status === 'Completed').length;
-    const rqHasInflight = (rqQueuedN + rqProgN) > 0;
-    const rqInflightItems = rq.filter(r => r.status !== 'Completed').map(r => ({
-      scCode: r.scCode,
-      isQueued: r.status === 'Queued', isRunning: r.status === 'In Progress',
-      statusLabel: r.status === 'Queued' ? 'Planned' : 'In Progress',
-      statusBg: r.status === 'In Progress' ? '#FBF1DF' : '#F2F5FA',
-      statusFg: r.status === 'In Progress' ? '#C77B00' : '#5A5E66',
-    }));
     const rqHasQueue = rq.length > 0;
     const rqNoQueue = !rqHasQueue;
-    const rqShowQueued = rqQueuedN > 0;
     const rqShowProg   = rqProgN > 0;
 
     return {
@@ -6664,7 +6643,7 @@ class NDCApp extends React.Component {
       reviewList, reviewSearch: st.reviewSearch || '', onReviewSearch: (e) => this.setState({ reviewSearch: e.target.value }),
       reviewZoneChips: ['All', 'North', 'South', 'East', 'West', 'Central'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ reviewZone: z }) })),
       reviewShown: listSCs.length, reviewTotal: completedSCs.length,
-      rqQueuedN, rqProgN, rqDoneN, rqHasInflight, rqInflightItems, rqHasQueue, rqNoQueue, rqShowQueued, rqShowProg,
+      rqProgN, rqDoneN, rqHasQueue, rqNoQueue, rqShowProg,
       curCode, curName: curSC ? curSC.name : '', curZone: curSC ? curSC.zone : '', curDcCount: curSC ? curSC.dcCount : 0,
       planCards, runCountLabel: scRuns.length + ' run' + (scRuns.length === 1 ? '' : 's') + ' generated this cycle', hasPlanCards: planCards.length > 0,
       reviewDetail,
@@ -6733,7 +6712,10 @@ class NDCApp extends React.Component {
     const NAVEMOJI = { command: '🏠', inputs: '📥', creation: '🛠️', review: '📊', align: '📋', map: '🗺️', cyclesummary: '📋' };
     const isPastCycle = (st.designCycle || 'July 2026') !== 'July 2026';
     const plannerNav = [
-      { label: 'HOME', items: [{ key: 'command', label: 'Command Center', icon: ICON.dash }] },
+      // Command Center hidden for now (product decision -- "retrieve it later"). The HOME
+      // group and its nav item are intentionally commented out rather than deleted, so it's a
+      // one-line restore: uncomment the line below and it's back in the sidebar.
+      // { label: 'HOME', items: [{ key: 'command', label: 'Command Center', icon: ICON.dash }] },
       { label: 'PLAN', items: [{ key: 'inputs', label: 'Design Inputs', icon: ICON.inputs, badge: inputChecks ? String(inputChecks) : '', tone: 'warn' }, { key: 'creation', label: 'Design Creation', icon: ICON.create }] },
       { label: 'REVIEW & ALIGN', items: [{ key: 'review', label: 'Design Review', icon: ICON.review }, { key: 'align', label: 'Ops Alignment', icon: ICON.align, badge: needsDecision ? String(needsDecision) : '', tone: 'accent' }, { key: 'map', label: 'Network Map', icon: ICON.map, badge: 'NEW', tone: 'new' }] },
     ];
@@ -7069,14 +7051,14 @@ class NDCApp extends React.Component {
       toggleCyclePicker: () => this.setState({ cyclePickerOpen: !st.cyclePickerOpen }),
       cyclePickerOpen: !!st.cyclePickerOpen,
       cyclePickerChevron: st.cyclePickerOpen ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6',
-      cycleOptions: [['July 2026', 'Current · active', false], ['June 2026', 'Last month · Finalised', true]].map(c => ({ name: c[0], meta: c[1], active: (st.designCycle || 'July 2026') === c[0], rowBg: (st.designCycle || 'July 2026') === c[0] ? '#1E2C57' : 'transparent', onSelect: () => { this.setState({ designCycle: c[0], cycleOpen: false, cyclePickerOpen: false, view: c[2] ? 'cyclesummary' : 'command' }); this.showToast('Switched to ' + c[0], '#003F98'); } })),
+      cycleOptions: [['July 2026', 'Current · active', false], ['June 2026', 'Last month · Finalised', true]].map(c => ({ name: c[0], meta: c[1], active: (st.designCycle || 'July 2026') === c[0], rowBg: (st.designCycle || 'July 2026') === c[0] ? '#1E2C57' : 'transparent', onSelect: () => { this.setState({ designCycle: c[0], cycleOpen: false, cyclePickerOpen: false, view: c[2] ? 'cyclesummary' : 'inputs' }); this.showToast('Switched to ' + c[0], '#003F98'); } })),
       pastCycleOptions: [['May 2026', 'Archived'], ['April 2026', 'Archived'], ['March 2026', 'Archived']].map(c => ({ name: c[0], meta: c[1], active: (st.designCycle || 'July 2026') === c[0], rowBg: (st.designCycle || 'July 2026') === c[0] ? '#1E2C57' : 'transparent', onSelect: () => { this.setState({ designCycle: c[0], cycleOpen: false, cyclePickerOpen: false, view: 'cyclesummary' }); this.showToast('Switched to ' + c[0] + ' · read-only', '#003F98'); } })),
       freezeMiniText: daysToFreeze + 'd to freeze · ' + health.label, freezeMiniBg: health.miniBg, freezeMiniFg: health.miniFg,
       plannerSegBg: planner ? '#fff' : 'transparent', plannerSegFg: planner ? '#003F98' : '#5A5E66',
       opsSegBg: !planner ? '#fff' : 'transparent', opsSegFg: !planner ? '#003F98' : '#5A5E66',
       setPlanner: () => this.setPersona('planner'), setOps: () => this.setPersona('ops'),
       comingSoonSearch: () => this.showToast('Search is coming — use the filters and zone chips to narrow your view for now.', '#1E6FB8'), openCycle: () => this.comingSoon('Cycle switcher'),
-      goCommand: () => this.go('command'), dismissCoach: () => this.setState({ showCoach: false }),
+      goCommand: () => this.go('inputs'), dismissCoach: () => this.setState({ showCoach: false }),
       showCoach: st.showCoach,
       hero: { days: daysToFreeze, healthLabel: health.label, healthBg: health.bg, healthFg: health.fg, healthDot: health.dot,
         freezeSub: 'Acknowledge (freeze) by Jul 12 · designs due Jul 5 · finalise by Jul 15' },
