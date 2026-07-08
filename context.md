@@ -52,7 +52,10 @@ freezes, and finalises.
 - **V1 scope = 3 modules only:** Design Inputs → Design Creation → Design
   Review & Ops Alignment, plus a Network Map. (A parent "5-module NDC
   vision" — OCF Simulator, Network Simulator, Change Management — is **out
-  of V1**. Don't add them without a product decision.)
+  of V1**. Don't add them without a product decision.) **Command Center is
+  currently hidden** from the nav and default view (product decision —
+  "retrieve it later"); the code and data behind it are still intact, just
+  not linked from the sidebar. See Changelog.
 - **Platform:** Desktop-first, expert internal ops users.
 - **Owner (design):** Pranita Sapkal · **Product owner:** Vignesh Iyer ·
   **Org:** Meesho / Valmo.
@@ -67,7 +70,8 @@ freezes, and finalises.
 | **Ops Lead / Regional PoC** (secondary) | Reviews pushed plans row-by-row, gives structured feedback | Stripped shell — Ops Alignment + Map only |
 
 In production this is a real per-user login. The app fakes it with a
-**"View as: Planner / Ops Lead"** toggle in the top-right.
+**"View as: Planner / Ops Lead"** toggle — shown **only on the Ops
+Alignment screen** (top-right), not on other screens.
 
 ### Domain glossary
 | Term | Meaning |
@@ -86,6 +90,7 @@ In production this is a real per-user login. The app fakes it with a
 | **Acknowledge** | Irreversible freeze — locks Ops-Lead editing. A first-class guarded action with a confirm dialog |
 | **Simulate** | Shows metric movement (Δ km/cost/time/vehicles) for a proposed change — NOT a full re-plan |
 | **Lifecycle** | Draft → Running → Created → In Review → Pushed → In Alignment → Acknowledged → Finalised → (RFQ handoff) |
+| **L1→L4 pattern** | The navigation shape shared by Design Review and Ops Alignment: **L1** status/zone chips (rail header) → **L2** SC list (rail body) → **L3** a compact plan **card** in the main pane (one per plan; click a card's icon to drill in) → **L4** the full plan detail (Plan Details / Route View tabs). See "L3/L4 card pattern" below before touching either screen. |
 
 **Flaggable cells (Ops Lead):** Vehicle Type · Touchpoint · Route Code · Lat
 · Lng · Round-Trip Distance · Breakdown TAT · Out Cutoff. (Non-flaggable: SC
@@ -134,6 +139,13 @@ below; currently falls back to system fonts.
 - Free-text global search (top bar) is stubbed to a "coming soon" toast.
 - "Open in new tab" is stubbed to a toast.
 - Ops-Lead two-snapshot diff; phased-release option — under discussion.
+
+### Pending fixes (as of the last session — ask before assuming these are resolved)
+The UI was signed off as "largely good" with **a few specific fixes still
+to come**, but they weren't itemized before the session ended. **If you're
+an AI picking this up: ask the person what those fixes are before doing
+unrelated work** — don't guess and don't assume silence means it's all
+settled. Once you get the list, replace this paragraph with the actual items.
 
 ---
 
@@ -196,7 +208,122 @@ over — this is not a rough draft.
 3. **`NDCApp`** — the component: state, the fake/sample data generator, and
    every button/action's logic. The last two lines mount it onto the page.
 
-### Known cosmetic (non-bug) items
+### The L3/L4 card pattern (Design Review + Ops Alignment)
+Both screens follow the same shape: selecting an SC in the left rail (L2)
+doesn't jump straight to the full plan — it shows a compact **card** (L3)
+in the main pane first. The card's top-right icons (eye = view detail, map,
+download CSV) are the only way into the full plan (L4: metrics + Plan
+Details / Route View tabs). A "Back to plans" control returns from L4 to L3.
+
+- State: `st.opsDetailOpen` (Ops Lead) / a plan is "open" once its detail
+  view is entered — look for `showCard` / `detailOpen` / `openDetail` /
+  `backToCards` (or the align-side equivalents) in `oSel`/`aSel` if you need
+  to trace it.
+- Each SC currently has exactly **one** plan, so L3 always renders a single
+  card today — it's still written as a mapped list/stack on purpose so
+  adding multiple plans per SC later doesn't require restructuring, just a
+  longer array.
+- Card layout convention (apply this to any new plan/run card): identity +
+  status pills top-left, **view/map/download icons top-right**, compact
+  metrics strip in the middle, **primary actions (Push/Simulate/Acknowledge/
+  Finalise) bottom-right**. Keep cards as short as possible — full summary,
+  minimum height.
+- Ops Alignment's three Planner states (Pending/Received/Finalised) and
+  four Ops-Lead states (To Review/Submitted/Acknowledged/Finalised) each
+  have their own card content (see the card markup directly above each
+  `isPushed`/`isFinal`/etc. condition) but all share this same layout
+  convention and icon/action placement.
+- The "Received" filter tab intentionally includes **both** `In Alignment`
+  and `Acknowledged` plans (comment: "gives every plan exactly one home
+  across the 3 tabs") — an Acknowledged plan showing under "Received" is
+  correct, not a bug.
+- **L4 (full plan detail) now opens as a full-screen overlay everywhere**
+  (Design Review and both Ops Alignment personas, in every state) — see
+  "Unified L4 full-screen detail" below.
+
+### Unified L4 full-screen detail (Design Review + Ops Alignment, both personas)
+As of 2026-07-08, the L4 "click the eye icon" plan detail uses **one shared
+visual template** across Design Review and Ops Alignment (Planner and Ops
+Lead, every status). Previously Design Review opened L4 as a full-screen
+fixed overlay while Ops Alignment expanded it inline in the same layout —
+these are now the same shape:
+
+- **Full-screen overlay** (`position:fixed; inset:0`) with a top bar (Back,
+  identity + status tags, context actions — Simulate/Map/Download as
+  applicable — and a Close `✕`) and a scrollable body below it.
+- **Two tabs inside the body: "Plan Detail" and "Route View."** Nothing
+  else is a top-level tab.
+  - **Plan Detail** = the summary: inputs strip, output metrics grid,
+    vehicle mix/vehicles-by-type, status banners (awaiting feedback /
+    acknowledged-locked / finalised / needs-acknowledge-to-decide), and
+    reviewer/co-reviewer info. Nothing route-by-route lives here.
+  - **Route View** = the route-level content: Design Review's read-only
+    route breakdown (still has its own inner Detail-View-by-DC / Route-View
+    toggle — that's a second, narrower choice nested *inside* this tab, not
+    a competing top-level tab); Ops Alignment Planner's per-route
+    Accept/Reject change cards; Ops Alignment Ops Lead's per-route
+    Aligned/Needs-Change decision table. This fixes a prior bug where the
+    Ops-Lead's tab was labelled "Route View" but actually rendered the
+    vehicle-mix summary — vehicle mix now lives under Plan Detail, where it
+    belongs.
+- Each context (`reviewDetail`, `aSel`, `oSel`) still computes its own data
+  shape and keeps its own state key for which one is open — this was a
+  visual/structural unification, not a data-model merge. Don't assume
+  `reviewDetail`/`aSel`/`oSel` share fields beyond the tab-name convention
+  (`secDetails`/`secRoute` or equivalent).
+- Any sticky bottom action bar for a given context (Ops Alignment's
+  Validate/Accept-all/Acknowledge/Finalise bar, Ops Lead's Validate/Mark-
+  all-Aligned/Simulate/Submit bar) now lives **inside** that context's
+  full-screen overlay (sibling to the scrollable body, at the bottom of the
+  same fixed-position flex column) — not at the page layout level like
+  before.
+
+### Ops Alignment: Accept/Reject now gated on Acknowledge & Freeze
+As of 2026-07-08, the **Planner** can no longer Accept/Reject a flagged
+change while a plan is still `In Alignment`. They can review what Ops
+flagged (read-only), run Simulate, and Acknowledge & Freeze — but the
+Accept/Reject buttons on each flagged route/DC change only unlock once the
+plan is `Acknowledged`. This reverses the prior "decide before freezing"
+flow (see the old inline comment that used to read "Accept/Reject unlocks
+the moment feedback is received (In Alignment), per row, BEFORE
+Acknowledge" — that's no longer true). Acknowledge itself still only
+depends on Ops feedback having been submitted, not on any rows being
+decided — an Acknowledge with pending rows now leads *into* the
+decide-every-row-then-Finalise step rather than skipping it. Reflect this if
+you touch `alignVals()`'s `canDecide`/`decideLocked` computation or the
+`In Alignment` banner copy. This does **not** touch the Ops Lead's own
+Aligned/Needs-Change flagging — that's a different, still-immediate
+mechanism (it's Ops proposing changes, not Planner deciding on them).
+
+### "Nudge reviewers" removed from Ops Alignment (Planner side)
+As of 2026-07-08, the "Nudge reviewers" button (bell icon + label, shown on
+a `Pushed`-status plan card and in that state's sticky action bar) has been
+removed from the Planner's Ops Alignment view, per product decision. The
+underlying `remindedPlans` state, `onNudge` handler, and the Ops-Lead-side
+"Reminder from planner" chip in their rail list were left in place (now
+functionally unreachable/dead, matching this file's convention of leaving
+superseded logic intact rather than deleting it — see the Command Center
+precedent above) rather than torn out, in case nudging comes back in a
+different form. Don't re-wire that dead code without a product decision.
+
+### Volume upload validation (Design Inputs)
+Uploading a volume CSV now runs through `validateVolCsv()` (a deterministic
+fake validator — see its comment for the naming escape-hatches to force
+pass/fail while testing/demoing). A file that fails is added to the library
+with its errors visible but is **never** set active — whatever was active
+for that type stays active until a corrected re-upload passes. `volEdits`
+(state, keyed by file name) overlays corrections from a "Replace" re-upload
+onto either a seeded or session-uploaded row, the same pattern `scEdits`
+uses for SC Master. `activeNameOf()` will never fall back to a file that
+has errors — double-check that invariant if you touch it.
+
+### SC Master "Ops Leads" dropdown
+The 8 old per-role email columns were replaced with one "N leads" column;
+`pocList` (name + role + a derived email) drives a `position:fixed`
+dropdown anchored to the clicked button's bounding rect (not
+`position:absolute` — the table scrolls, and `fixed` avoids clipping).
+
+
 - A couple of `<select>`s have an `<option selected={...}>` ported as-is
   from the original — React may log a console note about this; harmless.
 - Repeated list rows use their position in the list as their React "key"
@@ -215,3 +342,56 @@ nothing about the product behavior was meant to change in the conversion.
   original design handoff (unused volume-library "set active" machinery,
   an always-off `mapNational` flag); simplified from a multi-file project
   down to these 3 files.
+- **2026-07-08** —
+  - **Volume Inputs validation gating**: uploads are now actually
+    validated (`validateVolCsv()`); a failing file shows row-level errors
+    and is never set active; added a "Replace" re-upload flow that
+    re-validates in place (`volEdits` overlay).
+  - **SC Master**: collapsed 8 per-role email columns into one "Ops Leads"
+    column with a `position:fixed` dropdown (name/role/email per lead).
+  - **Ops-Lead Ops Alignment tabs** renamed *Overall Summary → Plan
+    Details*, *Vehicle Plan → Route View*; *Node Details* tab removed.
+    Same two-tab pattern added to the Planner's Ops Alignment read-only
+    state; Design Review already had this exact pattern.
+  - **Design Review**: run cards converted from a 2-column grid to a
+    full-width list (one per row); "Finalise directly" now shows the
+    confirm-dialog copy: *"Bypassing Ops Alignment... This action cannot
+    be undone."*; the Runs-bar "Planned" bubble and "In Flight" section
+    were removed; Detail View / Route View toggle moved to the left with
+    Detail View shown first and the "Route Breakdown" label removed.
+  - **Command Center hidden** from the sidebar and as the default view
+    (now defaults to Design Inputs) — product decision to bring it back
+    later; code/data left intact.
+  - **"View as" toggle** scoped to the Ops Alignment screen only (was
+    showing on every screen).
+  - **Design Review Detail View (DC × Route)**: rows for the same route are
+    now visually boxed together (outside border around the group), matching
+    how the source planning spreadsheet groups a route's rows.
+  - **Ops Alignment rebuilt to the same L1→L4 pattern as Design Review**
+    (status/zone → SC → plan card → full detail) for both personas —
+    Planner's Pending/Received/Finalised and Ops Lead's To Review/
+    Submitted/Acknowledged/Finalised each get their own card content
+    (metrics, reviewer status, Simulate/Acknowledge, lock banners) per spec.
+    Plan cards across Design Review and Ops Alignment now consistently put
+    view/map/download icons top-right and primary actions bottom-right.
+  - Read (but did not yet build against) a sample plan-output spreadsheet
+    (`DS Output`/`Ops Feedback` × `Details`/`Route View`, plus `Metrics`)
+    establishing: the Details↔Route View pivot relationship (conceptual,
+    not literal formulas), route rows visually grouped with an outside
+    border, and that a route-code/touch-point re-sort + Route View
+    recompute only happens on **Simulate or Finalise**, not on every edit.
+  - Signed off as "largely good" — a handful of further fixes are planned
+    but weren't itemized before the session ended; see "Pending fixes" above.
+  - **L4 plan detail unified across Design Review + Ops Alignment (both
+    personas, every state)**: same full-screen overlay chrome, same
+    "Plan Detail" / "Route View" two-tab body. Fixed the Ops-Lead tab
+    mislabel where "Route View" rendered the vehicle-mix summary instead of
+    a route table — vehicle mix moved to Plan Detail, Route View now shows
+    the actual per-route Aligned/Needs-Change table. See "Unified L4
+    full-screen detail" above.
+  - **"Nudge reviewers" removed** from the Planner's Ops Alignment view
+    (card action + sticky bar); see "'Nudge reviewers' removed" above.
+  - **Planner Accept/Reject now gated on Acknowledge & Freeze**: a flagged
+    change can no longer be decided while a plan is `In Alignment`; the
+    Planner must Acknowledge & Freeze first. See "Accept/Reject now gated
+    on Acknowledge & Freeze" above.
