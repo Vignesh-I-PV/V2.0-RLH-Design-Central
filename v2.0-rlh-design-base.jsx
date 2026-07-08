@@ -1688,38 +1688,33 @@ function View(B, self) {
 <div style={css(`display:flex; flex-direction:column; gap:10px;`)}>
 {(planCards || []).map((c, __i60) => (<React.Fragment key={__i60}>
 <div style={css(`width:100%; box-sizing:border-box; border:1px solid #E6EBF2; background:#fff; border-radius:13px; padding:16px 20px; display:flex; align-items:center; gap:22px; flex-wrap:wrap;`)}>
-{/* Full-width row card, one per line (list, not a grid) — this stays true at any
-    viewport width since the parent is a column flex stack, not a multi-column grid. */}
-{/* run id + HW parameter + triggered date + map/detail icons */}
-<div style={css(`display:flex; flex-direction:column; gap:4px; width:190px; flex-shrink:0;`)}>
+{/* Full-width row card, one per line (list, not a grid). Compact top-to-bottom flow (not a wide
+    multi-column spread) so each card takes the least vertical+horizontal space that still shows
+    the complete summary -- icons top-right, primary actions bottom-right. */}
+<div style={css(`width:100%; box-sizing:border-box;`)}>
+{/* TOP ROW: identity (left) + view/map/download icons (top-right) */}
+<div style={css(`display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;`)}>
+<div style={css(`min-width:0;`)}>
 <div style={css(`display:flex; align-items:center; gap:8px; flex-wrap:wrap;`)}>
 <span style={css(`font-size:13.5px; font-weight:700; color:#003F98;`)}>{c.runId}</span>
 {(c.pushed) ? (<><span style={css(`padding:2px 9px; border-radius:999px; font-size:10px; font-weight:700; background:${c.pushedTagBg}; color:${c.pushedTagFg};`)}>{c.pushedTag}</span></>) : null}
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:#EAEEFB; color:#2F4FC6;`)}>{c.hwLabel} · {c.hwTag}</span>
 </div>
-<div><span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:#EAEEFB; color:#2F4FC6;`)}>{c.hwLabel} · {c.hwTag}</span></div>
-<div style={css(`font-size:10.5px; color:#8E96A3;`)}>Triggered {c.triggeredAt} · {c.triggeredBy}</div>
-<div style={css(`display:flex; gap:6px; margin-top:2px;`)}>
+<div style={css(`font-size:10.5px; color:#8E96A3; margin-top:3px;`)}>Triggered {c.triggeredAt} · {c.triggeredBy}</div>
+</div>
+<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
 <button onClick={c.onMap} aria-label={"Open this run on the map"} title={"View routes on map"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 <button onClick={c.onDownloadCsv} aria-label={"Download this plan as CSV"} title={"Download plan summary CSV"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 <button onClick={c.onDetail} aria-label={"Open full plan detail"} title={"Open full plan detail"} style={css(`display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)} onMouseLeave={(e) => hoverOff(e, `display:flex; align-items:center; justify-content:center; width:28px; height:28px; border:1px solid #E6EBF2; border-radius:7px; background:#fff; cursor:pointer; color:#5A5E66;`, `border-color:#003F98; color:#003F98; background:#F3F7FE;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h7M15 3h6v6M10 14L21 3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 </div>
 </div>
-{/* divider */}
-<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
-{/* INPUTS */}
-<div style={css(`width:220px; flex-shrink:0;`)}>
-<div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>INPUTS</div>
-<div style={css(`display:flex; flex-wrap:wrap; gap:10px 18px;`)}>
-<div><div style={css(`font-size:10px; color:#5A5E66;`)}>Nodes</div><div style={css(`font-size:12.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.nodes}</div></div>
-<div><div style={css(`font-size:10px; color:#5A5E66;`)}>Volume</div><div style={css(`font-size:12.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{c.volume}</div></div>
-<div style={css(`flex-basis:100%;`)}><div style={css(`font-size:10px; color:#5A5E66;`)}>Vehicle type · count</div><div style={css(`font-size:11.5px; font-weight:600; color:#14171F;`)}>{c.vehInput}</div></div>
+{/* MIDDLE: compact inputs line + output metrics grid */}
+<div style={css(`display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:10px; padding-top:10px; border-top:1px solid #F4F5F8; font-size:11px; color:#5A5E66;`)}>
+<span><span style={css(`color:#8E96A3;`)}>Nodes</span> <strong style={css(`color:#14171F; font-weight:600;`)}>{c.nodes}</strong></span>
+<span><span style={css(`color:#8E96A3;`)}>Volume</span> <strong style={css(`color:#14171F; font-weight:600;`)}>{c.volume}</strong></span>
+<span><span style={css(`color:#8E96A3;`)}>Vehicle type · count</span> <strong style={css(`color:#14171F; font-weight:600;`)}>{c.vehInput}</strong></span>
 </div>
-</div>
-<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
-{/* OUTPUTS */}
-<div style={css(`flex:1; min-width:420px;`)}>
-<div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:7px;`)}>OUTPUT METRICS</div>
-<div style={css(`display:grid; grid-template-columns:repeat(6, 1fr); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden;`)}>
+<div style={css(`display:grid; grid-template-columns:repeat(6, 1fr); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-top:8px;`)}>
 <div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:${c.coverageColor}; line-height:1;`)}>{c.coverage}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Coverage</div>{(c.coverageGap) ? (<><div style={css(`font-size:8.5px; font-weight:700; color:#D14B4B; margin-top:3px; line-height:1.3;`)}>{c.coverageGapText}</div></>) : null}</div>
 <div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:${c.utilColor}; line-height:1;`)}>{c.util}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Utilisation</div></div>
 <div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:#14171F; line-height:1;`)}>{c.cps}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>CPS</div>{(c.cpsRefOn) ? (<><div style={css(`font-size:8.5px; font-weight:600; color:${c.cpsDeltaColor}; margin-top:3px;`)} title={c.cpsDeltaTooltip}>{c.cpsDeltaLabel}</div></>) : null}</div>
@@ -1728,13 +1723,14 @@ function View(B, self) {
 <div style={css(`background:#fff; padding:8px 10px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:500; color:#14171F; line-height:1; font-variant-numeric:tabular-nums;`)}>{c.distance}</div><div style={css(`font-size:9.5px; color:#5A5E66; margin-top:4px;`)}>Distance</div></div>
 </div>
 {(c.hasUtilChip) ? (<><div style={css(`display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:6px; background:#FBF1DF; border:1px solid #F5DEB8; font-size:10.5px; font-weight:600; color:#C77B00; margin-top:8px;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M12 9v4m0 4h.01M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{c.utilChipLabel}</div></>) : null}
-</div>
-<div style={css(`width:1px; align-self:stretch; background:#EEF1F6; flex-shrink:0;`)} />
-{/* flags + push + finalise */}
-<div style={css(`display:flex; flex-direction:column; align-items:stretch; gap:8px; width:210px; flex-shrink:0;`)}>
-<span style={css(`align-self:flex-start; display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:10.5px; font-weight:600; background:${c.flagBg}; color:${c.flagFg};`)}><span style={css(`width:7px; height:7px; border-radius:50%; background:${c.flagDot};`)} />{c.flagLabel}</span>
+{/* BOTTOM ROW: validation flag (left) + primary actions (bottom-right) */}
+<div style={css(`display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:12px; padding-top:10px; border-top:1px solid #F4F5F8;`)}>
+<span style={css(`display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px; font-size:10.5px; font-weight:600; background:${c.flagBg}; color:${c.flagFg};`)}><span style={css(`width:7px; height:7px; border-radius:50%; background:${c.flagDot};`)} />{c.flagLabel}</span>
+<div style={css(`display:flex; gap:8px;`)}>
 <button onClick={c.onPush} aria-label={"Push this run to Ops Alignment"} style={css(`display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; justify-content:center; gap:7px; height:34px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `background:#00337D;`)}>Push to alignment<svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M5 12h14M13 6l6 6-6 6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 <button onClick={c.onFinaliseDirect} aria-label={"Finalise this run directly without Ops alignment"} style={css(`display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C77B00; color:#C77B00;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; justify-content:center; height:34px; padding:0 13px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`, `border-color:#C77B00; color:#C77B00;`)}>Finalise directly</button>
+</div>
+</div>
 </div>
 </div>
 </React.Fragment>))}
@@ -1982,8 +1978,84 @@ function View(B, self) {
 {(alignIsL2) ? (<>
 <main style={css(`flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden;`)}>
 <div style={css(`flex:1; overflow-y:auto; min-height:0;`)}>
-{(aSel.exists) ? (<>
+{/* ===== L3: PLAN CARD (compact summary; "view detail" opens L4 below) ===== */}
+{/* Exactly one card today since each SC has one active plan — written as a stack so a future
+    multi-plan-per-SC change just becomes a longer array here, no restructuring needed. */}
+{(aSel.exists && aSel.showCard) ? (<>
 <div style={css(`padding:20px 26px;`)}>
+<div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{aSel.statusLabel}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#003F98;`)}>{aSel.code}</span>
+</div>
+<div style={css(`width:100%; box-sizing:border-box; border:1px solid #E6EBF2; background:#fff; border-radius:13px; padding:14px 18px;`)}>
+<div style={css(`display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;`)}>
+<div style={css(`display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0;`)}>
+<span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>{aSel.code}</span>
+<span style={css(`font-size:13px; color:#5A5E66;`)}>{aSel.name}</span>
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:600; background:#F2F5FA; color:#5A5E66;`)}>{aSel.zone} Zone</span>
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:600; background:#EAEEFB; color:#2F4FC6;`)}>RLH</span>
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:${aSel.statusBg}; color:${aSel.statusFg};`)}>{aSel.statusLabel}</span>
+</div>
+{/* top-right: view / map / (download once finalised) icons */}
+<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
+<button onClick={aSel.openDetail} aria-label={"View plan details"} title={"View plan details"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"} strokeLinecap={"round"} strokeLinejoin={"round"} /><circle cx={"12"} cy={"12"} r={"3"} /></svg></button>
+<button onClick={aSel.onMapView} aria-label={"Map view"} title={"Map view"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+{(aSel.isFinal) ? (<><button onClick={aSel.onDownloadCsv} aria-label={"Download CSV"} title={"Download CSV"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}
+</div>
+</div>
+{/* ---- PENDING: metrics + reviewer chips ---- */}
+{(aSel.isPushed) ? (<>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-top:12px;`)}>
+{(aSel.metrics || []).map((m, __i920) => (<React.Fragment key={__i920}><div style={css(`background:#fff; padding:10px 12px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:4px;`)}>{m.label}</div></div></React.Fragment>))}
+</div>
+<div style={css(`display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:12px;`)}>
+<span style={css(`font-size:10.5px; font-weight:700; color:#8E96A3; letter-spacing:0.03em;`)}>REVIEWERS:</span>
+{(aSel.opsLeads || []).map((ol, __i921) => (<React.Fragment key={__i921}><span style={css(`display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; background:${ol.chipBg}; color:${ol.chipFg};`)}>{ol.mark} {ol.name}</span></React.Fragment>))}
+</div>
+</>) : null}
+{/* ---- RECEIVED: reviewer submission status ---- */}
+{(aSel.showFeedback && !aSel.isFinal) ? (<>
+<div style={css(`font-size:11.5px; color:#5A5E66; margin-top:12px; margin-bottom:6px;`)}>{aSel.reviewProgress}</div>
+<div style={css(`display:flex; align-items:center; gap:6px; flex-wrap:wrap;`)}>
+{(aSel.opsLeads || []).map((ol, __i922) => (<React.Fragment key={__i922}><span style={css(`display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; background:${ol.chipBg}; color:${ol.chipFg};`)}>{ol.mark} {ol.name} {"\u2014"} {ol.statusText}</span></React.Fragment>))}
+</div>
+</>) : null}
+{/* ---- FINALISED: Design-Review-style inputs + output metrics + warnings ---- */}
+{(aSel.isFinal) ? (<>
+<div style={css(`display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:12px; padding-top:12px; border-top:1px solid #F2F5FA;`)}>
+<div><div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em;`)}>NODES</div><div style={css(`font-size:13px; font-weight:600; color:#14171F;`)}>{aSel.cardNodes}</div></div>
+<div><div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em;`)}>VOLUME</div><div style={css(`font-size:13px; font-weight:600; color:#14171F;`)}>{aSel.cardVolume}</div></div>
+<div><div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em;`)}>HISTORICAL WEIGHT</div><div style={css(`font-size:13px; font-weight:600; color:#14171F;`)}>{aSel.cardHwLabel}</div></div>
+<div><div style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em;`)}>VEHICLE TYPE {"\u00b7"} COUNT</div><div style={css(`font-size:13px; font-weight:600; color:#14171F;`)}>{aSel.cardVehSummary}</div></div>
+</div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-top:10px;`)}>
+{(aSel.metrics || []).map((m, __i923) => (<React.Fragment key={__i923}><div style={css(`background:#fff; padding:10px 12px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:4px;`)}>{m.label}</div></div></React.Fragment>))}
+</div>
+{(aSel.cardWarnings || []).map((w, __i924) => (<React.Fragment key={__i924}><div style={css(`display:flex; align-items:center; gap:7px; margin-top:8px; padding:8px 12px; background:#FBF1DF; border:1px solid #F0DBA8; border-radius:8px;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C77B00"} strokeWidth={"2.2"}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:11.5px; color:#C77B00; font-weight:500;`)}>{w.label}</span></div></React.Fragment>))}
+</>) : null}
+{/* ---- bottom-right actions (not shown once Finalised — read-only from here) ---- */}
+{(aSel.isPushed) ? (<>
+<div style={css(`display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:12px;`)}>
+{(aSel.reminded) ? (<><span style={css(`font-size:11px; font-weight:600; color:#128A3E;`)}>Reminder sent</span></>) : null}
+<button onClick={aSel.onNudge} style={css(`display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `background:#003F98;`, `background:#00337D;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Nudge reviewers</button>
+</div>
+</>) : null}
+{(aSel.showFeedback && !aSel.isFinal) ? (<>
+<div style={css(`display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:12px;`)}>
+{(aSel.canPlanSim) ? (<><button onClick={aSel.onPlanSim} style={css(`display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 13px; border:1px solid #2F4FC6; background:${aSel.planSimBtnBg}; color:${aSel.planSimBtnFg}; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M13 2L3 14h9l-1 8 10-12h-9l1-8z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{aSel.planSimBtnLabel}</button></>) : null}
+{(aSel.canAck) ? (<><button onClick={aSel.onAck} style={css(`display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 13px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `background:#003F98;`, `background:#00337D;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M7 11V8a5 5 0 0110 0v3M5.5 11h13v9.5h-13z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Acknowledge & freeze</button></>) : null}
+{(aSel.isAck) ? (<><button onClick={aSel.onFin} title={aSel.finBlocked ? 'Decide all flagged rows first' : 'Finalise this plan'} style={css(`display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 13px; border:none; background:${aSel.finBtnBg}; color:${aSel.finBtnFg}; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:${aSel.finCursor};`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Finalise plan</button></>) : null}
+</div>
+</>) : null}
+</div>
+</div>
+</>) : null}
+{(aSel.exists && aSel.detailOpen) ? (<>
+<div style={css(`padding:20px 26px;`)}>
+<button onClick={aSel.backToCards} style={css(`display:inline-flex; align-items:center; gap:7px; height:32px; padding:0 12px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; margin-bottom:12px;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C3C9D4;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:7px; height:32px; padding:0 12px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; margin-bottom:12px;`, `border-color:#C3C9D4;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M15 18l-6-6 6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Back to plans</button>
 {/* L1→L2→L3 breadcrumb: cycle › status › SC — same pattern as Design Review's cycle › SC › plan */}
 <div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
 <span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
@@ -2191,7 +2263,7 @@ function View(B, self) {
 </>) : null}
 </div>
 {/* PLANNER STICKY BOTTOM ACTION BAR (L2) — In-Alignment: Accept/Reject rows + Accept-all + Acknowledge; Acknowledged: decisions + Finalise */}
-{(aSel.showActionBar) ? (<>
+{(aSel.showActionBar && aSel.detailOpen) ? (<>
 <div style={css(`flex-shrink:0; border-top:1px solid #E6EBF2; background:#fff; padding:13px 26px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; box-shadow:0 -3px 10px rgba(20,23,31,0.05);`)}>
 {/* left summary (carries the reason Finalise is blocked, next to the decided count it refers to) */}
 <span style={css(`font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{aSel.progressLabel} · {aSel.acceptedCount} accepted · {aSel.rejectedCount} rejected</span>
@@ -2214,7 +2286,7 @@ function View(B, self) {
 </div>
 </>) : null}
 {/* PENDING sticky action bar: Nudge reviewers CTA (bottom), shown while awaiting Ops feedback */}
-{(aSel.isPushed) ? (<>
+{(aSel.isPushed && aSel.detailOpen) ? (<>
 <div style={css(`flex-shrink:0; border-top:1px solid #E6EBF2; background:#fff; padding:13px 26px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; box-shadow:0 -3px 10px rgba(20,23,31,0.05);`)}>
 <span style={css(`font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{aSel.reviewProgress} · notified: {aSel.reviewers}</span>
 <div style={css(`flex:1; min-width:10px;`)} />
@@ -2488,8 +2560,46 @@ function View(B, self) {
 {(opsIsL2) ? (<>
 <main style={css(`flex:1; display:flex; flex-direction:column; min-width:0; overflow:hidden;`)}>
 <div style={css(`flex:1; overflow-y:auto; min-height:0; min-width:0;`)}>
-{(oSel.exists) ? (<>
+{/* ===== L3: PLAN CARD (compact summary; "view detail" opens L4 below) ===== */}
+{/* Same card shape across all 4 Ops-Lead states (To Review / Submitted / Acknowledged / Finalised) --
+    only which plans are listed (via the rail filter) and L4's edit-lock differ between them. */}
+{(oSel.exists && oSel.showCard) ? (<>
 <div style={css(`padding:20px 26px;`)}>
+<div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{opsFilterLabel}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#003F98;`)}>{oSel.code}</span>
+</div>
+<div style={css(`width:100%; box-sizing:border-box; border:1px solid #E6EBF2; background:#fff; border-radius:13px; padding:14px 18px;`)}>
+<div style={css(`display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;`)}>
+<div style={css(`display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0;`)}>
+<span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>{oSel.code}</span>
+<span style={css(`font-size:13px; color:#5A5E66;`)}>{oSel.name}</span>
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:600; background:#F2F5FA; color:#5A5E66;`)}>{oSel.zone} · RLH</span>
+<span style={css(`padding:2px 9px; border-radius:999px; font-size:10.5px; font-weight:700; background:${oSel.statusBg || '#F2F5FA'}; color:${oSel.statusFg || '#5A5E66'};`)}>{opsFilterLabel}</span>
+</div>
+{/* top-right: view / map / download icons (same 3 for every Ops-Lead state) */}
+<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
+<button onClick={oSel.openDetail} aria-label={"View plan details"} title={"View plan details"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"} strokeLinecap={"round"} strokeLinejoin={"round"} /><circle cx={"12"} cy={"12"} r={"3"} /></svg></button>
+<button onClick={oSel.onMapView} aria-label={"Map view"} title={"Map view"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={oSel.onDownloadCsv} aria-label={"Download CSV"} title={"Download CSV"} style={css(`width:30px; height:30px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `border-color:#E6EBF2; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+</div>
+</div>
+{/* metrics summary — same 6-up grid used everywhere else in the app */}
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-top:12px;`)}>
+{(oSel.metrics || []).map((m, __i930) => (<React.Fragment key={__i930}><div style={css(`background:#fff; padding:10px 12px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:10.5px; color:#5A5E66; margin-top:4px;`)}>{m.label}</div></div></React.Fragment>))}
+</div>
+{(oSel.opsAck || oSel.opsFinal) ? (<>
+<div style={css(`display:flex; align-items:center; gap:7px; margin-top:10px; padding:8px 12px; background:#E7F0F8; border:1px solid #C9DCEF; border-radius:8px;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"2"}><path d={"M7 11V8a5 5 0 0110 0v3M5.5 11h13v9.5h-13z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:11.5px; color:#1E6FB8; font-weight:600;`)}>{oSel.opsFinal ? 'Finalised — this plan is locked and read-only.' : 'Acknowledged by the planner — feedback is locked and read-only.'}</span></div>
+</>) : null}
+</div>
+</div>
+</>) : null}
+{(oSel.exists && oSel.detailOpen) ? (<>
+<div style={css(`padding:20px 26px;`)}>
+<button onClick={oSel.backToCards} style={css(`display:inline-flex; align-items:center; gap:7px; height:32px; padding:0 12px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; margin-bottom:12px;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C3C9D4;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:7px; height:32px; padding:0 12px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12px; font-weight:600; border-radius:8px; cursor:pointer; margin-bottom:12px;`, `border-color:#C3C9D4;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M15 18l-6-6 6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Back to plans</button>
 {/* L1→L2→L3 breadcrumb: cycle › status › SC — same pattern as Design Review's cycle › SC › plan */}
 <div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
 <span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
@@ -2614,6 +2724,7 @@ function View(B, self) {
 </>) : null}
 </div>
 {/* STICKY ACTION BAR (L2) — review summary left, action cluster right */}
+{(oSel.detailOpen) ? (<>
 <div style={css(`flex-shrink:0; border-top:1px solid #E6EBF2; background:#fff; padding:13px 26px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; box-shadow:0 -3px 10px rgba(20,23,31,0.05);`)}>
 <div style={css(`display:flex; align-items:center; gap:13px; flex-wrap:wrap;`)}>
 <span style={css(`font-size:12.5px; font-weight:700; color:#14171F;`)}>{oSel.reviewLabel}</span>
@@ -2633,6 +2744,7 @@ function View(B, self) {
 </div>
 </>) : null}
 </div>
+</>) : null}
 </main>
 </>) : null}
 {/* DETAIL PANE — active filter matched 0 plans (the rail on the left stays visible) */}
@@ -5228,15 +5340,15 @@ class NDCApp extends React.Component {
     // F2 \u2014 strip wording matches KRD \u00a710-11 exactly: All plans \u00b7 Plans Sent \u00b7 Awaiting Feedback \u00b7 Feedback Received \u00b7 Acknowledged \u00b7 Finalised.
     // pipeline funnel removed — its counts now live in the Tier-2 filter tabs.
 
-    // F2 \u2014 filter-chip labels now match the pipeline wording EXACTLY (no "Awaiting" vs "Awaiting feedback" drift).
-    // F2 \u2014 "Acknowledged" tab merged into "Finalised": one tab, count = ack + finalised, list shows both statuses.
-    const FILTERS = ['All', 'Pending Feedback', 'Feedback Received', 'Finalised'];
-    const fmap = { 'Pending Feedback': 'Pushed', 'Feedback Received': 'In Alignment', 'Finalised': 'Finalised' };
+    // F2 — filter-chip labels now match the pipeline wording EXACTLY (no "Awaiting" vs "Awaiting feedback" drift).
+    // Received = any plan with feedback activity not yet finalised (In Alignment or Acknowledged);
+    // Finalised = terminal state only. This gives every plan exactly one home across the 3 tabs.
+    const FILTERS = ['Pending Feedback', 'Feedback Received', 'Finalised'];
+    const fmap = { 'Pending Feedback': 'Pushed', 'Finalised': 'Finalised' };
     const af = st.alignFilter || 'Pending Feedback';
     const STPILL = { 'Pushed': { l: 'Pending Feedback', bg: '#F2F5FA', fg: '#5A5E66' }, 'In Alignment': { l: 'Feedback Received', bg: '#FBF1DF', fg: '#C77B00' }, 'Acknowledged': { l: 'Acknowledged \u00b7 locked', bg: '#E7F0F8', fg: '#1E6FB8' }, 'Finalised': { l: 'Finalised', bg: '#E7F4EC', fg: '#128A3E' } };
     const order = { 'In Alignment': 0, 'Acknowledged': 1, 'Pushed': 2, 'Finalised': 3 };
-    // 'Finalised' filter tab matches both Acknowledged and Finalised statuses so no plan is orphaned.
-    let listPlans = plans.filter(p => { if (af === 'All') return true; if (af === 'Finalised') return eff(p) === 'Acknowledged' || eff(p) === 'Finalised'; return eff(p) === fmap[af]; }).slice().sort((a, b) => order[eff(a)] - order[eff(b)]);
+    let listPlans = plans.filter(p => { const s = eff(p); if (af === 'Feedback Received') return s === 'In Alignment' || s === 'Acknowledged'; return s === fmap[af]; }).slice().sort((a, b) => order[eff(a)] - order[eff(b)]);
     // Master-detail: keep the explicit selection if it is in the current filtered list,
     // otherwise auto-select the first plan so the detail pane is never blank (like Design Review).
     const curId = (st.alignPlanId && listPlans.some(p => p.id === st.alignPlanId)) ? st.alignPlanId : (listPlans.length > 0 ? listPlans[0].id : null);
@@ -5256,7 +5368,7 @@ class NDCApp extends React.Component {
       const pending = s === 'Pushed';
       return { id: p.id, code: p.scCode, name: p.scName, zone: p.zone, designType: 'RLH', submittedLabel: sub + '/' + tot + ' submitted', pushedLabel: 'Pushed ' + p.sentDate, pushedBy: p.pushedBy || '—', statusLabel: pl.l, statusBg: pl.bg, statusFg: pl.fg, isLatest, active: p.id === curId, bg: p.id === curId ? '#EAEEFB' : '#fff', bd: p.id === curId ? '#003F98' : '#E6EBF2', showAwaitingAck, showReviewInProgress, showFinalisedDate, finalisedDate,
         pending, canOpen: !pending, rowCursor: 'pointer',
-        onClick: () => this.setState({ alignPlanId: p.id, pgRoutes: 1 }),
+        onClick: () => this.setState({ alignPlanId: p.id, pgRoutes: 1, alignDetailOpen: false }),
         onNudgeRow: () => { const rp = Object.assign({}, this.state.remindedPlans || {}); rp[p.id] = true; this.setState({ remindedPlans: rp }); this.showToast('Reminder sent to ' + ((p.reviewerNames || []).join(', ') || 'the reviewers'), '#1E6FB8'); } }; });
 
     const plan = plans.find(p => p.id === curId);
@@ -5266,10 +5378,10 @@ class NDCApp extends React.Component {
     let aSel = { exists: false, empty: !hasPlansInList, unselected: hasPlansInList && !curId, routesPager: { showPager: false, pageButtons: [] } };
     // Rail filter segment (replaces the old top Tier-2 filter tab-strip for Ops Alignment).
     const PSEG = [['Pending Feedback', 'Pending'], ['Feedback Received', 'Received'], ['Finalised', 'Finalised']];
-    const segCount = (label) => plans.filter(p => { const s = eff(p); if (label === 'Finalised') return s === 'Acknowledged' || s === 'Finalised'; return s === fmap[label]; }).length;
+    const segCount = (label) => plans.filter(p => { const s = eff(p); if (label === 'Feedback Received') return s === 'In Alignment' || s === 'Acknowledged'; return s === fmap[label]; }).length;
     const alignFilterSeg = PSEG.map(t => ({ label: t[0], short: t[1], count: segCount(t[0]), active: af === t[0],
       bg: af === t[0] ? '#003F98' : 'transparent', fg: af === t[0] ? '#fff' : '#5A5E66', weight: af === t[0] ? '700' : '600',
-      onClick: () => this.setState({ alignFilter: t[0], alignPage: 0, pgRoutes: 1, alignPlanId: null }) }));
+      onClick: () => this.setState({ alignFilter: t[0], alignPage: 0, pgRoutes: 1, alignPlanId: null, alignDetailOpen: false }) }));
     if (plan) {
       const locked = ps === 'Acknowledged' || ps === 'Finalised';
       const FIELD = { vehicleType: 'Vehicle Type', routeCode: 'Route Code', roundTripDistance: 'Round-Trip Dist', touchpoint: 'Touch Point' };
@@ -5440,6 +5552,27 @@ class NDCApp extends React.Component {
         reviewProgress: opsLeads.filter(o => o.done).length + ' of ' + opsLeads.length + ' submitted', reminded: !!((st.remindedPlans || {})[plan.id]),
         onNudge: () => { const rp = Object.assign({}, this.state.remindedPlans || {}); rp[plan.id] = true; this.setState({ remindedPlans: rp }); this.showToast('Reminder sent to ' + (plan.reviewerNames.join(', ') || 'the reviewers'), '#1E6FB8'); },
         isPushed: ps === 'Pushed', showFeedback: ps !== 'Pushed', isAck: ps === 'Acknowledged', isFinal: ps === 'Finalised', locked, notLocked: !locked,
+        // L3 (plan card) <-> L4 (full plan details) toggle. Selecting a different SC in the rail
+        // always drops back to L3 (see planList's onClick); the card's "view detail" icon is the
+        // only way into L4, with a "Back to plans" link to return -- same pattern as Design Review's
+        // run-cards -> full-detail flow.
+        detailOpen: !!st.alignDetailOpen, showCard: !st.alignDetailOpen,
+        openDetail: () => this.setState({ alignDetailOpen: true }), backToCards: () => this.setState({ alignDetailOpen: false }),
+        onMapView: () => this.setState({ mapSC: plan.scCode, view: 'map' }),
+        onDownloadCsv: () => { const head = 'Route,Vehicle,Touch Points,Round-Trip Dist (km),Breakdown TAT (h),Out Cutoff,Volume,Utilisation,CPS\n'; const body = plan.rows.map(r => [r.routeCode, r.veh, r.tp, r.rtDist, r.breakdownTat, r.outCutoff, r.volume, Math.round(r.util * 100) + '%', r.cps.toFixed(2)].join(',')).join('\n'); this.downloadText(plan.scCode + '-plan.csv', head + body); this.showToast('CSV downloaded \u00b7 ' + plan.rows.length + ' routes', '#128A3E'); },
+        // Finalised-card warnings -- same thresholds/wording as Design Review's validation flags, since
+        // this is the same underlying plan just further along the lifecycle (no separate flag data model here).
+        cardWarnings: (() => {
+          const w = [];
+          if (plan.metrics.coverage < 1) w.push({ sev: 'warning', label: 'Coverage gap \u2014 ' + Math.round((1 - plan.metrics.coverage) * plan.rows.reduce((a, r) => a + r.tp, 0)) + ' nodes skipped' });
+          const underN = plan.rows.filter(r => r.util < 0.4).length;
+          if (underN > 0) w.push({ sev: 'warning', label: underN + ' route' + (underN === 1 ? '' : 's') + ' under-utilised (<40%)' });
+          return w;
+        })(),
+        // Finalised-card inputs strip -- mirrors Design Review's INPUTS row (nodes / volume / HW / vehicle mix).
+        cardHwLabel: plan.hw === 0 ? 'HW 0 \u00b7 Re-optimise' : plan.hw === 0.5 ? 'HW 0.5 \u00b7 Balanced' : 'HW 1 \u00b7 Preserve routes',
+        cardNodes: fmtInt(plan.rows.reduce((a, r) => a + r.tp, 0)), cardVolume: fmtInt(plan.rows.reduce((a, r) => a + r.volume, 0)),
+        cardVehSummary: Object.entries(plan.rows.reduce((m, r) => { m[r.veh] = (m[r.veh] || 0) + 1; return m; }, {})).map(([k, v]) => k + ' \u00d7' + v).join(' \u00b7 '),
         sections: [['details', 'Plan Details'], ['route', 'Route View']].map(sx => ({ label: sx[1], active: (st.alignSection || 'details') === sx[0], color: (st.alignSection || 'details') === sx[0] ? '#003F98' : '#5A5E66', weight: (st.alignSection || 'details') === sx[0] ? '700' : '600', onClick: () => this.setState({ alignSection: sx[0] }) })),
         secDetails: (st.alignSection || 'details') === 'details', secRoute: (st.alignSection || 'details') === 'route',
         // D (2026-07-05) — Accept/Reject unlocks the moment feedback is received (In Alignment), per row, BEFORE Acknowledge.
@@ -5758,44 +5891,42 @@ class NDCApp extends React.Component {
     const assigned = d.plans.filter(p => { const s = st.alignStatus[p.id] || p.status; return s === 'Pushed' || !!st.opsSubmitted[p.id] || s === 'Acknowledged' || s === 'Finalised'; });
     const selfName = 'Rahul Sharma'; // current Ops-Lead persona (see ~line 3538); co-reviewers = everyone else on the plan
     // Ops-Lead status of a plan (drives the rail filter segment + the card pill).
+    // Four states tied directly to plan lifecycle + this reviewer's own submission --
+    // replaces the old row-progress-based "In progress" bucket for a cleaner mental model.
     const opsStatusOf = (p) => {
-      const subInfo = st.opsSubmitted[p.id]; const sub = !!subInfo; const dec = st.opsRowDec[p.id] || {};
-      const done = p.rows.filter((r, i) => dec[i] && dec[i] !== 'Pending').length;
-      const liveFb = st.opsRowFb[p.id] || {}; let propN = 0;
-      p.rows.forEach((r, i) => { const by = (liveFb[i] && liveFb[i].by) || r.proposedBy || null; if (by && by !== selfName) propN++; });
+      const subInfo = st.opsSubmitted[p.id]; const sub = !!subInfo;
       const eS = (st.alignStatus && st.alignStatus[p.id]) || p.status;
-      const locked = eS === 'Acknowledged' || eS === 'Finalised';
-      return locked ? 'Locked' : (sub ? 'Submitted' : ((done > 0 || propN > 0) ? 'In progress' : 'To review'));
+      if (eS === 'Finalised') return 'Finalised';
+      if (eS === 'Acknowledged') return 'Acknowledged';
+      return sub ? 'Submitted' : 'To Review';
     };
-    const opsFilter = st.opsFilter || 'All';
-    const filteredAssigned = assigned.filter(p => opsFilter === 'All' || opsStatusOf(p) === opsFilter);
+    const opsFilter = st.opsFilter || 'To Review';
+    const filteredAssigned = assigned.filter(p => opsStatusOf(p) === opsFilter);
     // Master-detail: keep the explicit selection if it's in the filtered list, else auto-select the first
     // so the detail pane is never blank (mirrors Design Review + the planner side).
     const curId = (st.opsPlanId && filteredAssigned.some(p => p.id === st.opsPlanId)) ? st.opsPlanId : (filteredAssigned.length > 0 ? filteredAssigned[0].id : null);
     // B — latest plan = first assigned plan (To review sorts to front via status ordering).
     const latestOpsId = assigned.length > 0 ? assigned[0].id : null;
+    const SP = { 'Finalised': { bg: '#E7F4EC', fg: '#128A3E' }, 'Acknowledged': { bg: '#E7F0F8', fg: '#1E6FB8' }, 'Submitted': { bg: '#E7F4EC', fg: '#128A3E' }, 'To Review': { bg: '#F2F5FA', fg: '#5A5E66' } };
     const allOpsPlans = assigned.map(p => {
-      const subInfo = st.opsSubmitted[p.id]; const sub = !!subInfo; const dec = st.opsRowDec[p.id] || {};
+      const subInfo = st.opsSubmitted[p.id]; const sub = !!subInfo;
       const subBy = (subInfo && subInfo.by) || selfName; const subAt = (subInfo && subInfo.at) || '';
+      const dec = st.opsRowDec[p.id] || {};
       const done = p.rows.filter((r, i) => dec[i] && dec[i] !== 'Pending').length;
       // §10 O2 — co-reviewer awareness: count rows already carrying a change proposed by SOMEONE ELSE, so the
       // list tells this reviewer "a co-reviewer has flagged this plan" the same way the planner sees feedback.
       const liveFb = st.opsRowFb[p.id] || {}; const propBy = {};
       p.rows.forEach((r, i) => { const by = (liveFb[i] && liveFb[i].by) || r.proposedBy || null; if (by && by !== selfName) propBy[by] = (propBy[by] || 0) + 1; });
       const propN = Object.keys(propBy).reduce((a, k) => a + propBy[k], 0); const coRev = Object.keys(propBy)[0] || '';
-      // D4 — post-freeze terminal state takes precedence: an acknowledged/finalised plan is Locked (read-only) for the Ops Lead.
-      const effOpsStatus = (st.alignStatus && st.alignStatus[p.id]) || p.status;
-      const opsLocked = effOpsStatus === 'Acknowledged' || effOpsStatus === 'Finalised';
-      const status = opsLocked ? 'Locked' : (sub ? 'Submitted' : ((done > 0 || propN > 0) ? 'In progress' : 'To review'));
-      const SP = { 'Locked': { bg: '#E7F0F8', fg: '#1E6FB8' }, 'Submitted': { bg: '#E7F4EC', fg: '#128A3E' }, 'In progress': { bg: '#FBF1DF', fg: '#C77B00' }, 'To review': { bg: '#F2F5FA', fg: '#5A5E66' } };
+      const status = opsStatusOf(p);
       const isLatest = p.id === latestOpsId && !curId;
       const reminded = !!((st.remindedPlans || {})[p.id]) && !sub;
-      return { id: p.id, code: p.scCode, name: p.scName, zone: p.zone, status, isLatest, active: p.id === curId, bg: p.id === curId ? '#EAEEFB' : '#fff', bd: p.id === curId ? '#003F98' : '#E6EBF2', progress: Math.round(done / p.rows.length * 100) + '%', statusLabel: status, statusBg: SP[status].bg, statusFg: SP[status].fg, hasProp: propN > 0 && !sub, propLabel: propN + ' change' + (propN === 1 ? '' : 's') + ' proposed' + (coRev ? ' by ' + coRev.split(' ')[0] : ''), submitted: sub, submittedRecord: sub ? ('Submitted by ' + subBy + (subAt ? ' · ' + subAt : '')) : '', reminded, onClick: () => this.setState({ opsPlanId: p.id }) };
+      return { id: p.id, code: p.scCode, name: p.scName, zone: p.zone, status, isLatest, active: p.id === curId, bg: p.id === curId ? '#EAEEFB' : '#fff', bd: p.id === curId ? '#003F98' : '#E6EBF2', progress: Math.round(done / p.rows.length * 100) + '%', statusLabel: status, statusBg: SP[status].bg, statusFg: SP[status].fg, hasProp: propN > 0 && !sub, propLabel: propN + ' change' + (propN === 1 ? '' : 's') + ' proposed' + (coRev ? ' by ' + coRev.split(' ')[0] : ''), submitted: sub, submittedRecord: sub ? ('Submitted by ' + subBy + (subAt ? ' · ' + subAt : '')) : '', reminded, onClick: () => this.setState({ opsPlanId: p.id, opsDetailOpen: false }) };
     });
-    // Status separation — reviewer states (All / To review / In progress / Submitted).
+    // Reviewer states — To Review / Submitted / Acknowledged / Finalised (plan-lifecycle-tied, see opsStatusOf).
     const opsCnt = (s) => allOpsPlans.filter(p => p.status === s).length;
-    const OPSFILTERS = ['All', 'To review', 'In progress', 'Submitted', 'Locked'];
-    const opsPlans = allOpsPlans.filter(p => opsFilter === 'All' || p.status === opsFilter);
+    const OPSFILTERS = ['To Review', 'Submitted', 'Acknowledged', 'Finalised'];
+    const opsPlans = allOpsPlans.filter(p => p.status === opsFilter);
 
     const plan = d.plans.find(p => p.id === curId);
     const sec = st.opsSection || 'summary';
@@ -5857,6 +5988,10 @@ class NDCApp extends React.Component {
       const SECS = [['summary', 'Plan Details'], ['vehicle', 'Route View']];
       oSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone, sentDate: plan.sentDate, submitted, notSubmitted: !submitted,
         planLocked, opsAck: planStatus === 'Acknowledged', opsFinal: planStatus === 'Finalised',
+        detailOpen: !!st.opsDetailOpen, showCard: !st.opsDetailOpen,
+        openDetail: () => this.setState({ opsDetailOpen: true }), backToCards: () => this.setState({ opsDetailOpen: false }),
+        onDownloadCsv: () => { const head = 'Route,Vehicle,Touch Points,Round-Trip Dist (km),Breakdown TAT (h),Out Cutoff,Volume,Utilisation,CPS\n'; const body = plan.rows.map(r => [r.routeCode, r.veh, r.tp, r.rtDist, r.breakdownTat, r.outCutoff, r.volume, Math.round(r.util * 100) + '%', r.cps.toFixed(2)].join(',')).join('\n'); this.downloadText(plan.scCode + '-plan.csv', head + body); this.showToast('CSV downloaded \u00b7 ' + plan.rows.length + ' routes', '#128A3E'); },
+        onDownloadCsv: () => { const head = 'Route,Vehicle,Touch Points,Round-Trip Dist (km),Breakdown TAT (h),Out Cutoff,Volume,Utilisation,CPS\n'; const body = plan.rows.map(r => [r.routeCode, r.veh, r.tp, r.rtDist, r.breakdownTat, r.outCutoff, r.volume, Math.round(r.util * 100) + '%', r.cps.toFixed(2)].join(',')).join('\n'); this.downloadText(plan.scCode + '-plan.csv', head + body); this.showToast('CSV downloaded \u00b7 ' + plan.rows.length + ' routes', '#128A3E'); },
         rows, alignedN, ncN, pendN, rowCount: rows.length, allReviewed: pendN === 0, reviewLabel: (rows.length - pendN) + ' / ' + rows.length + ' reviewed',
         hasProp: oProp > 0 && !submitted, propN: oProp, propSummary: (propByNames.join(' & ') || 'A co-reviewer') + ' proposed ' + oProp + ' change' + (oProp === 1 ? '' : 's') + ' on this plan', coReviewerLabel, hasCoReviewers: coReviewerLabel.length > 0,
         submittedRecord: submitted ? ('Submitted by ' + subBySel + (subAtSel ? ' · ' + subAtSel : '')) : '',
@@ -5949,15 +6084,15 @@ class NDCApp extends React.Component {
       ontrack:  { label: 'On track', bg: 'rgba(18,138,62,0.12)', fg: '#0E6B30', dot: '#128A3E' },
     };
     const opsHealth = OPSHEALTH[opsHealthBand];
-    const toReviewN = allOpsPlans.filter(p => p.statusLabel === 'To review').length;
-    const inProgN = allOpsPlans.filter(p => p.statusLabel === 'In progress').length;
+    const toReviewN = allOpsPlans.filter(p => p.statusLabel === 'To Review').length;
+    const ackN = allOpsPlans.filter(p => p.statusLabel === 'Acknowledged').length;
     const submittedN = allOpsPlans.filter(p => p.statusLabel === 'Submitted').length;
-    const firstUnreviewed = allOpsPlans.find(p => p.statusLabel !== 'Submitted');
+    const firstUnreviewed = allOpsPlans.find(p => p.statusLabel === 'To Review');
     const opsBand = {
       hasPlans: opsPlans.length > 0,
       countdownLabel: 'Feedback closes in ' + daysToClose + ' day' + (daysToClose === 1 ? '' : 's'),
       healthLabel: opsHealth.label, healthBg: opsHealth.bg, healthFg: opsHealth.fg, healthDot: opsHealth.dot,
-      queueLine: toReviewN + ' to review · ' + inProgN + ' in progress · ' + submittedN + ' submitted',
+      queueLine: toReviewN + ' to review · ' + submittedN + ' submitted · ' + ackN + ' acknowledged',
       hasNext: !!firstUnreviewed, noNext: !firstUnreviewed,
       nextLabel: firstUnreviewed ? ('Start with ' + firstUnreviewed.code + ' · ' + firstUnreviewed.name) : 'All plans reviewed — nice work',
       onNext: firstUnreviewed ? (() => this.setState({ opsPlanId: firstUnreviewed.id })) : (() => this.showToast('All plans already reviewed', '#128A3E')),
@@ -6029,9 +6164,9 @@ class NDCApp extends React.Component {
     // selected (curId null on an empty filter → no detail main → no orphaned sticky action bar).
     const opsIsL1 = !noneAssigned;
     const opsIsL2 = !!curId;
-    const opsFilterSeg = OPSFILTERS.map(f => ({ label: f, count: f === 'All' ? assigned.length : allOpsPlans.filter(p => p.status === f).length, active: opsFilter === f,
+    const opsFilterSeg = OPSFILTERS.map(f => ({ label: f, count: allOpsPlans.filter(p => p.status === f).length, active: opsFilter === f,
       bg: opsFilter === f ? '#003F98' : '#F2F5FA', fg: opsFilter === f ? '#fff' : '#5A5E66', weight: opsFilter === f ? '700' : '600',
-      onClick: () => this.setState({ opsFilter: f, opsPage: 0, opsPlanId: null }) }));
+      onClick: () => this.setState({ opsFilter: f, opsPage: 0, opsPlanId: null, opsDetailOpen: false }) }));
     // Pagination for L1 ops plan list (~12 per page).
     const OPS_PER_PAGE = 12;
     const opsPage = typeof st.opsPage === 'number' ? st.opsPage : 0;
@@ -6051,7 +6186,7 @@ class NDCApp extends React.Component {
     const opsHasNext = opsPageSafeFiltered < opsTotalPagesFiltered - 1;
 
     return { opsPlans: opsPlans, opsFilterSeg, opsPlanCount: assigned.length, opsIsL1, opsIsL2,
-      opsFilterLabel: opsFilter, opsClearFilter: () => this.setState({ opsFilter: 'All', opsPage: 0, opsPlanId: null }),
+      opsFilterLabel: opsFilter, opsClearFilter: () => this.setState({ opsFilter: 'To Review', opsPage: 0, opsPlanId: null }),
       opsPage: opsPageSafeFiltered, opsTotalPages: opsTotalPagesFiltered, opsShowPager,
       opsShowingLabel, opsHasPrev, opsHasNext,
       opsPrevPage: () => this.setState({ opsPage: Math.max(0, opsPageSafeFiltered - 1) }),
