@@ -142,6 +142,7 @@ function View(B, self) {
 <svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M12 7v5l3 2M12 21a9 9 0 100-18 9 9 0 000 18z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
         {freezeMiniText}
       </div>
+{(showPersonaToggle) ? (<>
 <div style={css(`display:flex; align-items:center; gap:8px; padding:4px 7px 4px 9px; border:1px dashed #C3C9D4; border-radius:999px;`)} title={"Switch your view — Planner or Ops Lead"}>
 <span style={css(`font-size:9.5px; font-weight:700; letter-spacing:0.07em; color:#5A5E66;`)}>View as</span>
 <div style={css(`display:flex; background:#F2F5FA; border-radius:999px; padding:2px; gap:2px;`)}>
@@ -149,6 +150,7 @@ function View(B, self) {
 <button onClick={setOps} style={css(`border:none; cursor:pointer; font-family:inherit; font-size:12px; font-weight:600; padding:5px 11px; border-radius:999px; background:${opsSegBg}; color:${opsSegFg}; transition:all 140ms;`)}>Ops Lead</button>
 </div>
 </div>
+</>) : null}
 <div style={css(`display:flex; align-items:center; gap:9px; padding-left:4px;`)}>
 <div style={css(`width:33px; height:33px; border-radius:50%; background:linear-gradient(135deg,#003F98,#2F4FC6); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:700; flex-shrink:0;`)}>{personaInitials}</div>
 <div style={css(`line-height:1.2;`)}>
@@ -1923,7 +1925,7 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
 </div>
 {(reviewDetail.dcRows || []).map((d, __i68) => (<React.Fragment key={__i68}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${d.isFirstInGroup ? '2px solid #8E96A3' : '1px solid #F4F5F8'}; border-bottom:${d.isLastInGroup ? '2px solid #8E96A3' : 'none'}; margin-top:${d.isFirstInGroup ? '6px' : '0'};`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `background:transparent;`, `background:#FAFBFD;`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{d.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.designVol}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{d.routeCode}</div>
@@ -1982,6 +1984,14 @@ function View(B, self) {
 <div style={css(`flex:1; overflow-y:auto; min-height:0;`)}>
 {(aSel.exists) ? (<>
 <div style={css(`padding:20px 26px;`)}>
+{/* L1→L2→L3 breadcrumb: cycle › status › SC — same pattern as Design Review's cycle › SC › plan */}
+<div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{aSel.statusLabel}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#003F98;`)}>{aSel.code}</span>
+</div>
 {/* header on its own white surface (sticky so the SC + Simulate-impact CTA stay visible on scroll) */}
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 20px; display:flex; align-items:flex-start; gap:14px; margin-bottom:16px; flex-wrap:wrap; position:sticky; top:0; z-index:5; box-shadow:0 2px 8px rgba(20,23,31,0.04);`)}>
 <div style={css(`flex:1; min-width:0;`)}>
@@ -2480,6 +2490,14 @@ function View(B, self) {
 <div style={css(`flex:1; overflow-y:auto; min-height:0; min-width:0;`)}>
 {(oSel.exists) ? (<>
 <div style={css(`padding:20px 26px;`)}>
+{/* L1→L2→L3 breadcrumb: cycle › status › SC — same pattern as Design Review's cycle › SC › plan */}
+<div style={css(`display:flex; align-items:center; gap:5px; margin-bottom:12px; font-size:11.5px; color:#8E96A3; flex-wrap:wrap;`)}>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{cycleName}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#5A5E66;`)}>{opsFilterLabel}</span>
+<svg width={"10"} height={"10"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C3C9D4"} strokeWidth={"2.2"}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-weight:600; color:#003F98;`)}>{oSel.code}</span>
+</div>
 {/* header on its own white surface (sticky so the SC + Map/Simulate actions stay visible on scroll) */}
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 20px; display:flex; align-items:flex-start; gap:12px; margin-bottom:16px; flex-wrap:wrap; position:sticky; top:0; z-index:5; box-shadow:0 2px 8px rgba(20,23,31,0.04);`)}>
 <div style={css(`flex:1; min-width:0;`)}>
@@ -6601,9 +6619,14 @@ class NDCApp extends React.Component {
             inCutoff: DCIN_V[Math.floor(RR() * DCIN_V.length)],
             vehType: _drt.veh,
             rtDist: _drt.dist,
+            // Groups this route's rows into one visually-boxed block (outside border around
+            // the whole route, like the source plan sheet does) rather than a plain flat list.
+            isFirstInGroup: _dj === 0,
+            isLastInGroup: _dj === _ndc - 1,
           });
         }
       }
+      if (dcRows.length) dcRows[dcRows.length - 1].isLastInGroup = true;
       reviewDetail = { open: true, runId: detailRun.runId, hwLabel: hwLabelOf(detailRun.hw), hwTag: HWTAG[detailRun.hw], triggeredAt: detailRun.triggeredAt, triggeredBy: detailRun.triggeredBy || '',
         code: detailRun.scCode, name: detailRun.scName, zone: dSC ? dSC.zone : detailRun.zone, dcCount: detailRun.dcCount,
         nodes: fmtInt(detailRun.dcCount), volume: fmtInt(detailRun.volume), vehInput: (detailRun.vehInput && detailRun.vehInput.length ? detailRun.vehInput.join(' · ') : '—'),
@@ -7056,6 +7079,7 @@ class NDCApp extends React.Component {
       freezeMiniText: daysToFreeze + 'd to freeze · ' + health.label, freezeMiniBg: health.miniBg, freezeMiniFg: health.miniFg,
       plannerSegBg: planner ? '#fff' : 'transparent', plannerSegFg: planner ? '#003F98' : '#5A5E66',
       opsSegBg: !planner ? '#fff' : 'transparent', opsSegFg: !planner ? '#003F98' : '#5A5E66',
+      showPersonaToggle: st.view === 'align',
       setPlanner: () => this.setPersona('planner'), setOps: () => this.setPersona('ops'),
       comingSoonSearch: () => this.showToast('Search is coming — use the filters and zone chips to narrow your view for now.', '#1E6FB8'), openCycle: () => this.comingSoon('Cycle switcher'),
       goCommand: () => this.go('inputs'), dismissCoach: () => this.setState({ showCoach: false }),
