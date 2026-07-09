@@ -2643,18 +2643,66 @@ function View(B, self) {
 {(oSel.submitted) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:14px; background:#E7F4EC; border:1px solid #B6E0C6; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#128A3E"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}><strong style={css(`font-weight:700;`)}>{oSel.submittedRecord}</strong> — the planner can now review your row decisions.</span></div></>) : null}
 {/* §10 O2 — plan-level co-reviewer awareness: surface "someone has proposed a change" up front (the same way the planner sees feedback received), not only row-by-row. */}
 {(oSel.hasProp) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:11px 14px; margin-bottom:14px; background:#EAF3FB; border:1px solid #C4DDF2; border-radius:8px; flex-wrap:wrap;`)}><svg aria-hidden={"true"} width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"2"} style={css(`flex-shrink:0;`)}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; font-weight:700; color:#14171F;`)}>{oSel.propSummary}</span><span style={css(`font-size:12px; color:#5A5E66;`)}>Review the flagged rows before you submit your feedback.</span></div></>) : null}
+{/* metrics summary — always visible above the tabs, not tab-gated */}
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:16px;`)}>
+{(oSel.metrics || []).map((m, __i93) => (<React.Fragment key={__i93}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
+</div>
 {/* section tabs */}
 <div style={css(`display:flex; gap:22px; border-bottom:1px solid #E6EBF2; margin-bottom:16px;`)}>
 {(oSel.sections || []).map((t, __i92) => (<React.Fragment key={__i92}><button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button></React.Fragment>))}
 </div>
-{/* PLAN DETAIL */}
+{/* DETAILS — flat DC × Route list, same column layout as Design Review's Detail View. Editable
+    (route-group Aligned / Needs-Change actions) whenever the plan isn't locked yet. */}
 {(oSel.secDetails) ? (<>
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:16px;`)}>
-{(oSel.metrics || []).map((m, __i93) => (<React.Fragment key={__i93}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
+<div style={css(`overflow-x:auto;`)}>
+<div style={css(`min-width:1180px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.3fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>OUT CUTOFF</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TAT</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>IN CUTOFF</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>REVIEW</div>
 </div>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:20px;`)}>
-<div style={css(`font-size:13px; font-weight:700; color:#14171F; margin-bottom:14px;`)}>Vehicle mix across routes</div>
-<div style={css(`display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;`)}>
+{(oSel.dcViewRows || []).map((dv, __i100) => (<React.Fragment key={__i100}>
+{(dv.isFirstInGroup) ? (<>
+<div style={css(`display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; padding:8px 12px; margin-top:6px; background:#F7F8FB; border:2px solid #8E96A3; border-bottom:none;`)}>
+<span style={css(`font-size:11.5px; font-weight:700; color:#003F98;`)}>{(oSel.dcGroupHeaders[dv.routeIdx] || {}).routeCode}</span>
+{((oSel.dcGroupHeaders[dv.routeIdx] || {}).editable) ? (<>
+<div style={css(`display:flex; gap:6px;`)}>
+<button onClick={(oSel.dcGroupHeaders[dv.routeIdx] || {}).onAlign} style={css(`height:26px; padding:0 11px; border:1px solid #128A3E; background:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).alignBg}; color:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).alignFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Aligned</button>
+<button onClick={(oSel.dcGroupHeaders[dv.routeIdx] || {}).onNeeds} style={css(`height:26px; padding:0 11px; border:1px solid #C77B00; background:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).ncBg}; color:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).ncFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Needs change</button>
+</div>
+</>) : (<><span style={css(`font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:999px; background:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).opsBg}; color:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).opsFg};`)}>{(oSel.dcGroupHeaders[dv.routeIdx] || {}).decChip}</span></>)}
+</div>
+</>) : null}
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.3fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasChange ? '#FFFCF6' : '#fff'};`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{dv.lmdc}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{dv.routeCode}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{dv.tp}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{dv.vehType}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.rtDist}</div>
+<div style={css(`padding:11px 12px; font-size:11px; color:#8E96A3; text-align:right;`)}>{(dv.hasChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>Feedback pending</span></>) : null}</div>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+</>) : null}
+{/* ROUTE VIEW — read-only pivot, one row per route, same layout as Design Review's Route View. */}
+{(oSel.secRoute) ? (<>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:14px 16px; margin-bottom:14px;`)}>
+<div style={css(`font-size:11px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:10px;`)}>VEHICLE MIX ACROSS ROUTES</div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px;`)}>
 {(oSel.mixArr || []).map((v, __i96) => (<React.Fragment key={__i96}>
 <div style={css(`display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 13px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}>
 <span style={css(`font-size:12.5px; color:#14171F; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{v.veh}</span>
@@ -2663,78 +2711,39 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 </div>
-</>) : null}
-{/* ROUTE VIEW — per-route Aligned/Needs-Change decision table */}
-{(oSel.secRoute) ? (<>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:11px;`)}>
-<span style={css(`font-size:14px; font-weight:700; color:#14171F;`)}>Route rows</span>
-<span style={css(`display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:#128A3E;`)}><span style={css(`width:8px; height:8px; border-radius:50%; background:#128A3E;`)} />{oSel.alignedN} aligned</span>
-<span style={css(`display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:#C77B00;`)}><span style={css(`width:8px; height:8px; border-radius:50%; background:#C77B00;`)} />{oSel.ncN} needs change</span>
-{(oSel.pendN) ? (<><span style={css(`display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:#5A5E66;`)}><span style={css(`width:8px; height:8px; border-radius:50%; background:#C3C9D4;`)} />{oSel.pendN} not yet reviewed</span></>) : null}
+<div style={css(`overflow-x:auto;`)}>
+<div style={css(`min-width:1200px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FREQ</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DIST (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CPS</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TPs</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTIL</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAP</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT / LONG</div>
 </div>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; overflow:hidden;`)}>
-{/* column header (route-level review list) */}
-<div style={css(`display:grid; grid-template-columns:96px 188px 128px 44px 78px 84px minmax(184px,1fr); gap:13px; padding:9px 18px; background:#F4F5F8; border-bottom:1px solid #E6EBF2; align-items:center;`)}>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>ROUTE</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>VOL · UTIL · CAP</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>VEHICLE</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; text-align:center;`)}>TP</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; text-align:right;`)}>RT DIST</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; text-align:right;`)}>CPS</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; text-align:right;`)}>REVIEW</div>
-</div>
-{(oSel.rows || []).map((r, __i95) => (<React.Fragment key={__i95}>
-<div style={css(`display:grid; grid-template-columns:96px 188px 128px 44px 78px 84px minmax(184px,1fr); gap:13px; padding:12px 18px; border-top:1px solid #EEF1F6; align-items:center;`)}>
-<div style={css(`min-width:0;`)}>
-<div style={css(`font-size:12.5px; font-weight:700; color:#003F98; margin-bottom:2px;`)}>{r.routeCode}</div>
-<button onClick={r.onToggleExpand} style={css(`display:inline-flex; align-items:center; gap:3px; border:none; background:none; padding:0; cursor:pointer; font-family:inherit; font-size:10.5px; color:#5A5E66;`)} aria-label={"Expand DC breakdown"}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.5"} style={css(`transition:transform 0.15s; transform:rotate(${r.expanded ? 90 : 0}deg);`)}><path d={"M9 18l6-6-6-6"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{r.dcs} DCs</button>
-</div>
-<div style={css(`font-size:11px; color:#5A5E66; font-variant-numeric:tabular-nums; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{r.routeMeta}</div>
-<div style={css(`font-size:12px; color:#14171F; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{r.veh}</div>
-<div style={css(`font-size:11.5px; color:#5A5E66; text-align:center; font-variant-numeric:tabular-nums;`)}>{r.tp}</div>
-<div style={css(`font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.rtDist}</div>
-<div style={css(`font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
-<div style={css(`display:flex; gap:6px; justify-content:flex-end;`)}>
-{(r.editable) ? (<>
-<button onClick={r.onAlign} style={css(`height:30px; padding:0 13px; border:1px solid #128A3E; background:${r.alignBg}; color:${r.alignFg}; font-family:inherit; font-size:11.5px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)}>Aligned</button>
-<button onClick={r.onNeeds} style={css(`height:30px; padding:0 13px; border:1px solid #C77B00; background:${r.ncBg}; color:${r.ncFg}; font-family:inherit; font-size:11.5px; font-weight:600; border-radius:7px; cursor:pointer; white-space:nowrap;`)}>Needs change</button>
-</>) : null}
-</div>
-{/* §10 O2 — a co-reviewer already proposed a change on this row: show it to this (second) reviewer so they don't see a blank slate */}
-{(r.hasProposed) ? (<>
-<div style={css(`grid-column:1 / -1; display:flex; align-items:center; gap:8px; margin-top:2px; padding:8px 12px; background:#FFF6E6; border:1px solid #F0DBA8; border-radius:8px;`)}>
-<svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C77B00"} strokeWidth={"1.9"} style={css(`flex-shrink:0;`)}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
-<span style={css(`font-size:11.5px; font-weight:600; color:#C77B00;`)}>{r.proposedLabel}</span>
-{(r.proposedRemark) ? (<><span style={css(`font-size:11.5px; color:#5A5E66; font-style:italic; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)} title={r.proposedRemark}>— {r.proposedRemark}</span></>) : null}
-</div>
-</>) : null}
-</div>
-{(r.expanded) ? (<>
-<div style={css(`border-top:1px solid #E6EBF2; margin:0 18px; border-left:3px solid #E6EBF2; border-radius:0 0 0 4px; background:#FAFBFD;`)}>
-<div style={css(`display:grid; grid-template-columns:1.2fr 1.6fr 0.8fr 0.6fr 1.4fr 0.8fr; padding:6px 12px 4px; background:#F4F5F8; border-bottom:1px solid #E6EBF2;`)}>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>DC CODE</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>NAME</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>DESIGN VOL</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>TP ORDER</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>LAT / LONG</div>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.05em;`)}>DIST</div>
-</div>
-{(r.dcRows || []).map((dc, __i94) => (<React.Fragment key={__i94}>
-<div style={css(`display:grid; grid-template-columns:1.2fr 1.6fr 0.8fr 0.6fr 1.4fr 0.8fr; padding:5px 12px; border-top:1px solid #EEF1F6; align-items:center;`)}>
-<div style={css(`font-size:11px; font-weight:600; color:#2F4FC6;`)}>{dc.code}</div>
-<div style={css(`font-size:11px; color:#5A5E66; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{dc.name}</div>
-<div style={css(`font-size:11px; color:#5A5E66; font-variant-numeric:tabular-nums;`)}>{dc.vol}</div>
-<div style={css(`font-size:11px; color:#5A5E66;`)}>{(r.editable) ? (<><input type={"number"} min={"1"} value={dc.tpOrderVal} onInput={dc.onOrder} aria-label={"Touch-point order"} aria-invalid={dc.tpErr} title={dc.tpErr ? 'Duplicate or out-of-range touch-point number' : ''} style={css(`width:46px; height:24px; border:1px solid ${dc.tpBd}; border-radius:6px; font-family:inherit; font-size:11px; text-align:center; color:#14171F; padding:0 4px; box-sizing:border-box; outline:none; background:${dc.tpBg};`)} /></>) : null}{(r.notEditable) ? (<>{dc.tpOrderVal}</>) : null}</div>
-<div style={css(`font-size:10.5px; color:#8E96A3; font-variant-numeric:tabular-nums; white-space:nowrap;`)}>{dc.lat}, {dc.lng}</div>
-<div style={css(`font-size:11px; color:#5A5E66; font-variant-numeric:tabular-nums;`)}>{dc.dist}</div>
+{(oSel.routeViewRows || []).map((r, __i101) => (<React.Fragment key={__i101}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.lmdc}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.segment}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.count}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{r.freq}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
+<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;`)}>{r.latLng}</div>
 </div>
 </React.Fragment>))}
-{(r.tpReorderTouched) ? (<>
-<div style={css(`padding:6px 12px 8px; font-size:10.5px; font-weight:600; color:${r.tpReorderValid ? '#128A3E' : '#D14B4B'};`)}>{r.tpReorderMsg}</div>
-</>) : null}
 </div>
-</>) : null}
-</React.Fragment>))}
 </div>
 </>) : null}
 {/* Node Details tab removed per product decision -- was route-scoped node info,
@@ -3000,7 +3009,7 @@ function View(B, self) {
 </div>
 <div style={css(`display:grid; grid-template-columns:${dc.isSplitTarget ? '1fr 1fr' : '1fr'}; gap:8px; margin-top:8px;`)}>
 <div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Route Code</div><select value={dc.isSplitTarget ? '__SPLIT__' : dc.routeCodeVal} onChange={dc.onRouteCode} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C3C9D4; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none; background:#fff; cursor:pointer;`)}>{(dc.routeCodeOptions || []).map((o, __i113) => (<React.Fragment key={__i113}><option value={o.value}>{o.label}</option></React.Fragment>))}</select></div>
-{(dc.isSplitTarget) ? (<><div><div style={css(`font-size:10px; color:#C77B00; margin-bottom:3px; font-weight:700;`)}>New route's vehicle <span style={css(`color:#D14B4B;`)}>*</span></div><select value={dc.splitVehicleVal} onChange={dc.onSplitVehicle} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none; background:#fff; cursor:pointer;`)}><option value={""}>Pick a vehicle…</option>{(vehPool || []).map((o, __i114) => (<React.Fragment key={__i114}><option value={o.value}>{o.label}</option></React.Fragment>))}</select></div></>) : null}
+{(dc.isSplitTarget) ? (<><div><div style={css(`font-size:10px; color:#C77B00; margin-bottom:3px; font-weight:700;`)}>New route's vehicle <span style={css(`color:#D14B4B;`)}>*</span></div><select value={dc.splitVehicleVal} onChange={dc.onSplitVehicle} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none; background:#fff; cursor:pointer;`)}><option value={""}>Pick a vehicle…</option>{(dc.splitVehicleOptions || []).map((o, __i114) => (<React.Fragment key={__i114}><option value={o.value}>{o.label}</option></React.Fragment>))}</select></div></>) : null}
 </div>
 </>) : null}
 </div>
@@ -6299,13 +6308,52 @@ class NDCApp extends React.Component {
           dcRows: _dcRows, notEditable: planLocked, tpReorderTouched: _tpTouched, tpReorderValid: _tpValid, tpReorderMsg: _tpMsg }; });
       const alignedN = rows.filter(r => r.decision === 'Aligned').length, ncN = rows.filter(r => r.decision === 'Needs Change').length, pendN = rows.filter(r => r.decision === 'Pending').length;
       const mix = {}; plan.rows.forEach(r => { mix[r.veh] = (mix[r.veh] || 0) + 1; }); const mixArr = Object.keys(mix).map(k => ({ veh: k, n: mix[k], pctW: Math.round(mix[k] / plan.rows.length * 100) + '%' }));
+      // 2026-07-10 — Route View pivot (one row per route) and Details (flat DC × Route) tables,
+      // matching Design Review's exact column layout, but built from this plan's REAL rows/DCs
+      // rather than Design Review's synthetic RNG fill (there's no live plan data to synthesize —
+      // Ops Alignment already has the real thing).
+      const addHours = (hhmm, hrs) => { const [h, m] = hhmm.split(':').map(Number); const total = (h * 60 + m + Math.round(hrs * 60)) % 1440; const hh = Math.floor(total / 60), mm = total % 60; return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); };
+      const oRouteViewRows = plan.rows.map((r, ri) => {
+        const util = r.util; const over = util > 0.9, under = util < 0.4;
+        const vehRecord = (d.VEH || []).find(v => v.name === r.veh) || {};
+        return {
+          lmdc: (r.dcs && r.dcs.length) ? r.dcs[r.dcs.length - 1] : '—', segment: r.routeCode, veh: r.veh.split(/[/·]/)[0].trim(),
+          count: 1, freq: 'Daily', dist: fmtInt(r.rtDist), tat: r.breakdownTat + 'h', cps: '₹' + Number(r.cps).toFixed(2), tps: r.tp,
+          util: Math.round(util * 100) + '%', utilColor: over ? '#D14B4B' : under ? '#C77B00' : '#14171F',
+          hasUtilFlag: over || under, utilFlagLabel: over ? 'Over-util' : under ? 'Under-util' : '',
+          vol: fmtInt(r.volume), cap: vehRecord.cap ? fmtInt(vehRecord.cap) : '—',
+          latLng: Number(r.oLat).toFixed(4) + ', ' + Number(r.oLng).toFixed(4),
+        };
+      });
+      const oDcViewRows = [];
+      plan.rows.forEach((r, ri) => {
+        const baseDcs = this.genDcRows(r);
+        const liveFbR = (st.opsRowFb[plan.id] || {})[ri] || r.fb;
+        const dcCellsR = (liveFbR && liveFbR.dcCells) || {};
+        baseDcs.forEach((dc, di) => {
+          const ov = dcCellsR[dc.code] || {};
+          const editable = !planLocked;
+          oDcViewRows.push({
+            lmdc: dc.code, designVol: fmtInt(dc.vol), routeCode: ov.routeCode || r.routeCode,
+            tp: (ov.tp != null && ov.tp !== '') ? ov.tp : dc.tpOrder, zone: plan.zone,
+            outCutoff: r.outCutoff, tat: r.breakdownTat + 'h', inCutoff: addHours(r.outCutoff, r.breakdownTat),
+            vehType: r.veh, rtDist: (ov.distance != null && ov.distance !== '') ? (ov.distance + ' km') : dc.dist,
+            isFirstInGroup: di === 0, isLastInGroup: di === baseDcs.length - 1,
+            editable, hasChange: !!ov.routeCode || ov.tp != null || ov.distance != null,
+            routeIdx: ri, dcCode: dc.code,
+          });
+        });
+      });
+      // route-group header actions (Aligned / Needs-Change) surfaced inline in the Details table —
+      // reuses the SAME per-route decision handlers as the Route View pivot's row data (`rows` above).
+      const oDcGroupHeaders = plan.rows.map((r, ri) => rows[ri]);
       // (per-route "Node Details" list removed with the Node Details tab)
       // §10 O2 — plan-level co-reviewer summary + roster (awareness "the same way" the planner sees feedback received).
       const propRows = rows.filter(r => r.hasProposed && r.proposedBy !== 'Rahul Sharma');
       const propByNames = [...new Set(propRows.map(r => r.proposedBy))].filter(Boolean);
       const oProp = propRows.length;
       const coReviewerLabel = (plan.reviewerNames || []).filter(n => n !== 'Rahul Sharma').join(', ');
-      const SECS = [['details', 'Plan Detail'], ['route', 'Route View']];
+      const SECS = [['details', 'Details'], ['route', 'Route View']];
       oSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone, sentDate: plan.sentDate, submitted, notSubmitted: !submitted,
         planLocked, opsAck: planStatus === 'Acknowledged', opsFinal: planStatus === 'Finalised',
         detailOpen: !!st.opsDetailOpen, showCard: !st.opsDetailOpen,
@@ -6316,7 +6364,7 @@ class NDCApp extends React.Component {
         hasProp: oProp > 0 && !submitted, propN: oProp, propSummary: (propByNames.join(' & ') || 'A co-reviewer') + ' proposed ' + oProp + ' change' + (oProp === 1 ? '' : 's') + ' on this plan', coReviewerLabel, hasCoReviewers: coReviewerLabel.length > 0,
         submittedRecord: submitted ? ('Submitted by ' + subBySel + (subAtSel ? ' · ' + subAtSel : '')) : '',
         metrics: [{ label: 'Routes', value: plan.metrics.routes }, { label: 'Vehicles', value: plan.metrics.vehicles }, { label: 'CPS', value: '\u20b9' + plan.metrics.cps.toFixed(2) }, { label: 'Coverage', value: pct(plan.metrics.coverage) }, { label: 'Distance', value: plan.metrics.distance.toLocaleString('en-IN') + ' km' }, { label: 'Avg TAT', value: plan.metrics.avgTat + 'h' }],
-        mixArr, secDetails: sec === 'details', secRoute: sec === 'route',
+        mixArr, routeViewRows: oRouteViewRows, dcViewRows: oDcViewRows, dcGroupHeaders: oDcGroupHeaders, secDetails: sec === 'details', secRoute: sec === 'route',
         sections: SECS.map(s => ({ label: s[1], active: sec === s[0], color: sec === s[0] ? '#003F98' : '#5A5E66', weight: sec === s[0] ? '700' : '600', onClick: () => this.setState({ opsSection: s[0] }) })),
         onAcceptAll: () => { if (pendN > 0) this.setState({ alignAllOpen: true, alignAllPlanId: plan.id }); }, acceptAllDisabled: pendN === 0, onReset: () => this.resetOps(plan.id), onMapView: () => this.setState({ mapSC: plan.scCode, view: 'map' }),
         onOpsValidate: () => {
@@ -6366,7 +6414,7 @@ class NDCApp extends React.Component {
       code: dc.code, name: dc.name, curLat: (dc.lat != null ? String(dc.lat) : '—'), curLng: (dc.lng != null ? String(dc.lng) : '—'), curTp: String(dc.tpOrder != null ? dc.tpOrder : ''), curDist: String(dc.dist || '—').replace(' km', ''),
       flagged: on, notFlagged: !on,
       latVal: v.lat || '', lngVal: v.lng || '', tpVal: v.tp || '', distVal: v.distance || '', routeCodeVal: v.routeCode || '',
-      isSplitTarget, splitVehicleVal: st.ncSplitVehicle || '',
+      isSplitTarget, splitVehicleVal: st.ncSplitVehicle || '', splitVehicleOptions: vehPool,
       routeCodeOptions: ncRouteCodeOptions.map(o => ({ value: o.value, label: o.label, selected: o.value === (v.routeCode === st.ncSplitCode ? '__SPLIT__' : (v.routeCode || '')) })),
       toggleBg: on ? '#C77B00' : '#fff', toggleFg: on ? '#fff' : '#5A5E66', toggleBd: on ? '#C77B00' : '#E6EBF2', toggleLabel: on ? 'Flagged' : 'Flag DC',
       onToggle: () => this.toggleNcDc(dc.code, {}), // start empty — current values shown as placeholders; only edited fields become changes
