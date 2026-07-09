@@ -541,3 +541,65 @@ RNG-based approximation. Read the method's own comment block first; the short ve
       app's model. Zone repeats the SC's own zone for every row (not
       fabricated per-DC); In Cutoff is derived as Out Cutoff + Breakdown
       TAT (a real calculation, not a random fill) rather than left blank.
+- **2026-07-10, second pass** — four more changes, same session:
+  1. **Planner's L4 mirrors the Ops Lead/Design Review pattern too.**
+     Metrics moved above the tabs (always visible). **Details** is now
+     the same flat DC × Route table, but with Ops's proposed changes
+     overlaid inline (original struck through, proposed in amber) and
+     Accept/Reject controls right in the row/route-group header — reusing
+     the *existing* `changeList` entries (and the per-DC `enrichedDcRows`
+     they're built from) rather than a re-derivation, so decision state
+     stays single-sourced with everywhere else that reads it. **Route
+     View** is the same real read-only pivot as Ops Lead's. The old
+     routeCards-based "Changes to review" list is gone.
+     - Fixed a real gap found while doing this: `enrichedDcRows` (and the
+       `changeList` it feeds) never tracked `routeCode`/`distance`
+       DC-level changes at all — only lat/lng/TP — meaning a DC-only
+       route-split or distance proposal was silently invisible to the
+       planner's decision UI and never counted toward "all decided."
+       Both now include these fields properly.
+  2. **Finalise gating reworked into the full state machine** (product
+     spec): Acknowledge & Freeze unlocks on feedback received; Simulate
+     is available immediately after Acknowledge (previewing everything
+     proposed, `effectiveFbFor`) but turns OFF the moment any Accept/
+     Reject decision is made; it turns back on once Validate on the
+     *current* decisions comes back with zero errors (now previewing only
+     the accepted subset, `effectiveFbForFinalise` — the exact same
+     accepted-only view Finalise itself will commit); Finalise itself now
+     also requires that zero-errors state, not just "everything decided."
+     `validatedClean` is derived on every render (not a stateful "did
+     they click Validate" flag), so it can never go stale if decisions
+     change after a prior Validate pass. A `simStateLabel` next to the
+     progress counter tells the planner which of these states they're in.
+  3. **Finalised view shows no remarks — automatically**, since
+     `confirmFin()` already nulls every row's `fb` on commit; the new
+     Details table's diff-overlay and remark line are conditioned on
+     `fb`/`changeList` existing, so a Finalised plan just renders clean by
+     construction. Added one thing beyond that: `finalWarnings` re-runs
+     the recompute engine against the committed structure (no feedback)
+     purely to surface any residual advisory warning (util, distance vs
+     vehicle limit) — errors shouldn't exist post-Finalise, but this
+     catches anything still worth a heads-up.
+  4. **"Map view" opens an independent tab instead of navigating away**,
+     for the Planner's and Ops Lead's Ops Alignment map buttons. New
+     mechanism: `openStandaloneMap(scCode, mode)` opens THIS SAME page in
+     a new tab with `?standaloneMap=<code>&mapMode=<label>`; the
+     constructor detects that param and `render()` branches to
+     `renderStandaloneMap()` instead of the normal app shell. Because
+     `buildSeed()` is fully deterministic, the new tab reconstructs the
+     identical plan/route data independently — **no cross-tab state
+     channel exists or is needed**, but that cuts both ways: the map tab
+     shows the seeded/committed structure, not the original tab's
+     in-progress unsaved edits (pending Ops feedback, undecided Accept/
+     Reject calls). It's an independent read-only view, not a live
+     mirror. Reuses `buildMiniMap()`'s existing arc geometry scaled up via
+     SVG viewBox rather than re-deriving Network Map's own filter/search
+     UI from scratch.
+     - **Scoped deliberately to the two Ops Alignment map buttons only.**
+       Design Review's `openRunMap` (the per-run map modal) was left
+       unchanged: it's keyed to a specific HW-variant *run*, and this
+       app's standalone-map reconstruction only has access to the
+       committed *plan* (`plan.rows`), not historical run-level geometry —
+       converting it would have shown the wrong routes for any run other
+       than the latest. Flagging this rather than silently shipping an
+       inaccurate map.
