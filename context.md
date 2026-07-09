@@ -336,6 +336,54 @@ nothing about the product behavior was meant to change in the conversion.
 
 ---
 
+### Ops Feedback recompute engine (2026-07-09)
+Ops Alignment's Needs-Change feedback, Validate, Simulate, and Finalise are now backed by one
+real engine — `NDCApp.computeHypotheticalPlan(plan, effectiveFbByIdx)` — instead of the previous
+RNG-based approximation. Read the method's own comment block first; the short version:
+
+- **Field model.** Route-level feedback is Vehicle Type only. Everything else — Lat, Lng, Touch
+  Point, Route Code, Distance — is DC-level. A DC's Route Code can point at an existing route
+  (move) or at **Split this route**, which auto-names a new code (`<original>-A/B/C…`) and
+  requires its own manually-picked vehicle (never carried over from the source route).
+- **Distance.** Each DC's "Distance" is the breakdown leg *into* it from whichever node precedes
+  it (another DC, or the SC itself for the first DC). The return leg (last DC → SC) is **always**
+  system-calculated via `NDC_haversineKm()` — never user-editable, no matter what. If a user-given
+  leg differs from the calculated one by more than 25%, that's a warning surfaced to both the Ops
+  user (at Validate) and the Planner — but only while it's still unresolved by the time feedback is
+  submitted (fixed-before-submit issues don't carry forward).
+- **Cost.** `NDC_COST_PER_KM` is a hardcoded Rs/km table (ACE 12, Bolero 14, 407 18 — product-
+  provided). Any other RLH-feasible vehicle type without a listed rate falls back to a capacity-
+  scaled placeholder in `NDC_costPerKmFor()` — flagged in a comment, swap in real rates whenever
+  product has them. `routeCost = distance × costPerKm; routeCPS = cost / volume; SC CPS = Σcosts /
+  Σvolumes`.
+- **Merge across reviewers.** `effectiveFbFor(plan)` merges every reviewer's already-*submitted*
+  feedback (`plan.rows[i].fb`) with the current browser session's in-progress edits
+  (`st.opsRowFb`), current session taking priority per row. Validate and Simulate always run
+  against this merged view — "expected metrics post all changes proposed until this point," per
+  product — regardless of how many reviewers or rounds are involved.
+- **No live reordering during review.** Validate and Simulate compute real numbers from the
+  hypothetical reordered structure, but **never render it** — the route list, DC breakdown, and
+  map stay in the existing diff-overlay presentation (original structure + proposed changes
+  annotated inline, same pattern as the changeList). Simulate is preview-only; it does not mutate
+  `plan.rows`.
+- **Finalise is the only commit point.** `confirmFin()` calls `effectiveFbForFinalise(plan)` —
+  the accepted-only counterpart of `effectiveFbFor` (a rejected change, including a rejected
+  split, reverts to its original value) — recomputes via the same engine, and this time actually
+  rewrites `plan.rows`/`plan.metrics` to the reordered structure. This is the one place Details/
+  Route View show the new order.
+- **Known scope boundary:** post-Finalise, the aggregate numbers per route (distance, CPS,
+  vehicle, DC membership, TP order) are exactly what the engine computed. The *fine-grained*
+  per-DC lat/lng/leg-distance table you see in Design Review / Route View still comes from
+  `genDcRows()`'s existing deterministic-jitter distribution of the route's total distance across
+  its DCs — it was not rebuilt to carry the engine's exact per-leg figures. If per-DC precision in
+  that table matters later, `genDcRows()` needs a real rework to accept engine output directly
+  instead of re-deriving it.
+- **Route-level CPS comparison tables** (Simulate, both personas) were simplified to a reference
+  table — original vehicle/distance/CPS plus a "N DCs moving" badge — rather than a fabricated
+  per-route "proposed CPS," since a route can split or gain DCs from elsewhere under merged
+  feedback, so "this original route's new CPS" isn't always a well-defined 1:1 number. The SC-level
+  CPS card is the real, product-confirmed number to look at.
+
 ## Changelog
 - **2026-07-07** — Converted from the original Claude-Design DSL prototype
   (`ndc.dc.html`) to plain React/JSX; removed dead code flagged in the
@@ -395,3 +443,56 @@ nothing about the product behavior was meant to change in the conversion.
     change can no longer be decided while a plan is `In Alignment`; the
     Planner must Acknowledge & Freeze first. See "Accept/Reject now gated
     on Acknowledge & Freeze" above.
+- **2026-07-09** — Ops Feedback rebuilt around a real recompute engine
+  (see "Ops Feedback recompute engine" above). Concretely:
+  - Needs-Change modal restructured: route-level is Vehicle Type only;
+    Route Code and Distance moved to DC-level. Route Code is now a
+    dropdown (existing routes + **Split this route**, which auto-names
+    `-A/B/C…` and requires a manual vehicle pick for the new route — never
+    inherited from the source route).
+  - Added `NDC_COST_PER_KM` (hardcoded ACE/Bolero/407 rates + a flagged
+    capacity-scaled fallback for other types), `NDC_haversineKm()`, and
+    `NDCApp.computeHypotheticalPlan()` — the one function Validate,
+    Simulate, and Finalise all read from now.
+  - `effectiveFbFor()` merges every reviewer's submitted + in-progress
+    feedback for a plan; `effectiveFbForFinalise()` is the accepted-only
+    variant used solely by Finalise.
+  - Validate (both personas) now runs the real engine and shows actual
+    errors/warnings instead of a canned checklist; Simulate is gated on
+    zero errors and shows real SC-level CPS/distance before-after instead
+    of an RNG nudge. The per-route "CPS comparison" tables were simplified
+    to a reference table (no fabricated per-route proposed CPS — see the
+    engine section above for why).
+  - The >25% distance-variance warning surfaces to the Ops user at
+    Validate and, if still unresolved at submission, to the Planner too
+    (new banner above "Changes to review" in Ops Alignment · Planner).
+  - Finalise (`confirmFin()`) now actually reorders: it commits the
+    accepted-changes-only hypothetical structure into `plan.rows`/
+    `plan.metrics` for real — the only point in the whole flow where the
+    reordered structure is committed or shown.
+  - No live reordering during review, by design — Validate/Simulate
+    compute against the hypothetical structure but keep rendering the
+    original diff-overlay view; only Finalise's output actually changes.
+  - **Post-build QA pass (same day)** caught and fixed four real gaps
+    before this went out for deployment sign-off — noted here since none
+    of them showed up as a compile error, only as incorrect behavior:
+    - `confirmFin()` was recomputing route/vehicle/distance/cps but
+      leaving the plan-level `util` and `avgTat` metrics stale (carried
+      over from before the reorder). Now recomputed as the average across
+      the new `plan.rows`.
+    - `buildSeed()`'s demo "Needs Change" rows (both the general seeding
+      loop and the two hand-scripted Ravi Kumar demo rows) were still
+      writing feedback in the **old** shape (`fb.cells.touchpoint`,
+      `fb.cells.roundTripDistance` — route-level). The new engine only
+      reads `fb.cells.vehicleType` at route level and everything else
+      from `fb.dcCells`, so this demo data was silently a no-op under the
+      new model. Rewritten to seed touchpoint/distance under `dcCells`.
+    - The planner's route-card summary line (`mlTpChg`/`mlDistChg`, the
+      amber "this changed" highlight) was still checking for the old
+      route-level `cells.touchpoint`/`cells.roundTripDistance` keys, which
+      can never be set anymore — so a real DC-level touch-point or
+      distance change would show with no highlight. Now checks
+      `dcCells` for any DC with a `tp`/`distance` override.
+    - Left-over dead entries in the planner's `FIELD` label lookup
+      (`routeCode`, `roundTripDistance`, `touchpoint`) removed — they
+      referenced keys that can no longer appear in `cells`.
