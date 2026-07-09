@@ -603,3 +603,48 @@ RNG-based approximation. Read the method's own comment block first; the short ve
        converting it would have shown the wrong routes for any run other
        than the latest. Flagging this rather than silently shipping an
        inaccurate map.
+- **2026-07-10, third pass** — reference sheet provided (`_Sample__Plan_
+  Output.xlsx`, DS Output / Ops Feedback Route View + Details + Metrics
+  sheets); four fixes against it and against reported bugs:
+  1. **Route View columns corrected everywhere** (Design Review, Ops
+     Lead, Planner) to exactly match the reference sheet: Route Code,
+     Count of Nodes, Total Volume, Total Distance (km), Vehicle Type,
+     Utilisation, Capacity. Dropped **LMDC, Frequency, CPS, and
+     Lat/Long** — the last one was flagged directly: a route spans
+     multiple nodes, so a single lat/long at route grain never made
+     sense; only nodes (DCs) have coordinates, which is exactly why
+     Details view carries lat/long per-DC and Route View never should.
+     The Design Review CSV export was updated to match.
+  2. **Planner no longer sees flagged changes on a Pushed (pending-
+     feedback) plan.** Root cause: `buildSeed()`'s `demoPushed` block
+     seeds `r.ops = 'Needs Change'` + `r.fb` on one row of a Pushed-status
+     plan on purpose — but only to demo Ops-Lead-side "co-reviewer
+     visibility" (a second reviewer seeing what a first one already
+     proposed, before the whole plan is submitted). The Planner's own row
+     computation read `r.ops`/`r.fb` unconditionally, with no gate on
+     plan status, so that demo data leaked into the Planner's Details
+     view as a real flagged change. Fixed by gating every read of
+     `r.fb`/`r.ops`/`r.proposedBy` in the Planner's row construction
+     (`needsAttn`, `cells`, `dcCellsObj`, the `op` colour lookup, and the
+     final `ops`/`opsChip`/`hasFb`/`fbText` fields) behind `ps !==
+     'Pushed'`. Ops Lead's own view is untouched — the co-reviewer demo
+     still works there, which is its actual intended audience.
+  3. **Standalone map tab rebuilt** to actually have filters and to stop
+     using a second, disconnected synthetic geometry. It previously
+     called `buildMiniMap()` (a small preview-card generator with its own
+     separate scatter, no filters, tiny 280×174 canvas — the wrong tool
+     for this). Now: node positions come from `genDcRows()`, the *exact*
+     same source every Details table reads, so a DC on this map is the
+     same DC in the same place as in whichever Details view you opened it
+     from. Rendering borrows Network Map's visual language (muted canvas,
+     white-cased colored arcs, SC-origin marker, legend) and its filter
+     set (Route dropdown, Vehicle dropdown, LMDC search, Clear all,
+     "Showing X of Y routes") as real, wired controls — not static
+     decoration. Built with `React.createElement` rather than JSX/`with
+     (B)` since it renders outside `View()` entirely (see
+     `renderStandaloneMap()`).
+  4. **Sort Centre Master's Bulk Upload restored.** It was simply never
+     added to that tab's toolbar (SC Vehicle Availability has one; SC
+     Master didn't) — added the same Template/Upload CSV bar, with a
+     dedicated `scMasterTemplate` handler covering the SC Master's own
+     15 columns.
