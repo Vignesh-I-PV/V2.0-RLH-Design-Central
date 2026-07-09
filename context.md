@@ -496,3 +496,48 @@ RNG-based approximation. Read the method's own comment block first; the short ve
     - Left-over dead entries in the planner's `FIELD` label lookup
       (`routeCode`, `roundTripDistance`, `touchpoint`) removed — they
       referenced keys that can no longer appear in `cells`.
+- **2026-07-10** — two fixes/changes reported after the above went out:
+  - **Blank-screen bug on "Split this route" (fixed).** Root cause: the
+    split-vehicle `<select>` I added to the Needs-Change modal referenced
+    a bare `vehPool` identifier directly in JSX. `vehPool` is a local
+    `const` inside `opsVals()`, never included in that function's return
+    object — so it's not a property of the `with(B)` bindings object
+    `View()` renders against, and referencing it there throws a
+    `ReferenceError` the instant that dropdown tries to render, which
+    blanks the whole screen. This class of bug (a *Vals() local used
+    directly in JSX without being returned) is invisible to a Babel/
+    syntax check — it only surfaces at runtime. Fixed by passing
+    `splitVehicleOptions: vehPool` through each `ncDcList` item instead
+    of referencing the bare variable. Worth grep-checking for this pattern
+    (`grep` for a bare identifier used in JSX that isn't `st.`/`d.`/a
+    `.map()` callback var/an object property) after any future edit that
+    introduces a brand-new bare variable into a *Vals() function.
+  - **Ops Lead L4 (the "eye" expand icon) restructured** to match Design
+    Review's own Detail View / Route View pattern instead of the earlier
+    ad-hoc per-route decision table:
+    - Metrics moved out of any tab — now always visible above the tabs.
+    - **Details** (first tab): a flat DC × Route list, same 10-column
+      layout as Design Review's Detail View (LMDC, Design Vol, Route Code,
+      TP, Zone, Out Cutoff, TAT, In Cutoff, Vehicle Type, RT Dist), built
+      from this plan's real rows/DCs rather than synthesized. Each route's
+      DCs are visually boxed together (same outside-border grouping as
+      Design Review), with the route's Aligned/Needs-Change actions in
+      that group's header row, live whenever the plan isn't locked yet
+      (`editable: !planLocked` — same gate as before, which in practice
+      covers "To Review" and "Submitted" alike, since Ops can keep
+      editing/resubmitting right up until the Planner Acknowledges &
+      Freezes, per the earlier partial-submission decision).
+    - **Route View** (second tab): a real read-only pivot, one row per
+      route, same 12-column layout as Design Review's Route View (LMDC,
+      Route, Vehicle, Count, Freq, Dist, CPS, TPs, Util, Volume, Cap,
+      Lat/Long). The vehicle-mix strip that used to be a standalone block
+      now sits as a small summary above this table.
+    - The old per-route table with inline DC-expand (TP-order editing)
+      was removed — decisions now happen from the Details tab's route
+      group headers, and actual field edits (lat/lng/TP/route code/
+      distance) still go through the Needs-Change modal, unchanged.
+    - Known gap carried over from Design Review's own version: several
+      columns (Zone, In Cutoff) aren't tracked as real per-DC data in this
+      app's model. Zone repeats the SC's own zone for every row (not
+      fabricated per-DC); In Cutoff is derived as Out Cutoff + Breakdown
+      TAT (a real calculation, not a random fill) rather than left blank.
