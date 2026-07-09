@@ -2165,6 +2165,12 @@ function View(B, self) {
 <span style={css(`font-size:14px; font-weight:700; color:#14171F;`)}>Changes to review</span>
 {(aSel.showFeedback) ? (<><span style={css(`font-size:12px; color:#5A5E66;`)}>{aSel.progressLabel} · {aSel.acceptedCount} accepted · {aSel.rejectedCount} rejected</span></>) : null}
 </div>
+{(aSel.hasDistanceVariance) ? (<>
+<div style={css(`display:flex; align-items:flex-start; gap:9px; padding:10px 14px; margin-bottom:10px; background:#FBF1DF; border:1px solid #F0DBA8; border-radius:8px;`)}>
+<svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C77B00"} strokeWidth={"2"} style={css(`flex-shrink:0; margin-top:1px;`)}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<div style={css(`flex:1;`)}><span style={css(`font-size:12px; font-weight:700; color:#9A5E00;`)}>{aSel.distanceVarianceCount} entered distance{aSel.distanceVarianceCount === 1 ? '' : 's'} still don\u2019t match the calculated leg by more than 25%</span>{(aSel.distanceVarianceMsgs || []).map((m, __iDV) => (<React.Fragment key={__iDV}><div style={css(`font-size:11.5px; color:#5A5E66; margin-top:3px;`)}>{m}</div></React.Fragment>))}</div>
+</div>
+</>) : null}
 <div style={css(`display:flex; flex-direction:column; gap:14px;`)}>
 {/* One card per flagged route (Design-Review style): full route info + SC-level & DC-level changes decided separately. */}
 {(aSel.routeCards || []).map((rc, __i78) => (<React.Fragment key={__i78}>
@@ -2352,9 +2358,9 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 </div>
-{/* SECTION 2: ROUTE-LEVEL CPS COMPARISON */}
+{/* SECTION 2: ROUTE-LEVEL REFERENCE (real per-route CPS isn't shown — routes can split/merge under feedback; the SC CPS card above is the real number) */}
 <div>
-<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Route-level CPS comparison</div>
+<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Route-level reference — what's touched</div>
 <div style={css(`overflow-x:auto; border:1px solid #E6EBF2; border-radius:8px; background:#fff;`)}>
 <table style={css(`width:100%; border-collapse:collapse; font-size:12px; font-variant-numeric:tabular-nums; min-width:820px;`)}>
 <thead>
@@ -2363,7 +2369,7 @@ function View(B, self) {
 <th style={css(`text-align:left; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>VEHICLE</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>COUNT</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>DIST</th>
-<th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>CPS (₹)</th>
+<th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>ORIGINAL CPS (₹)</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>UTIL</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>VOLUME</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>CAP</th>
@@ -2382,8 +2388,8 @@ function View(B, self) {
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66;`)}>{rr.countDisp}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{rr.distDisp}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; white-space:nowrap;`)}>
-{(rr.cpsChanged) ? (<><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{rr.origCps}</span><span style={css(`color:#C77B00; font-weight:700; margin-left:5px;`)}>{rr.propCps}</span></>) : null}
-{(rr.cpsUnchanged) ? (<><span style={css(`color:#14171F; font-weight:600;`)}>{rr.origCps}</span></>) : null}
+<span style={css(`color:#14171F; font-weight:600;`)}>{rr.origCps}</span>
+{(rr.hasDcMoves) ? (<><span style={css(`display:inline-block; margin-left:6px; padding:1px 6px; border-radius:999px; font-size:9.5px; font-weight:700; background:#FBF1DF; color:#C77B00; vertical-align:middle;`)}>{rr.dcMoveCount} DC{rr.dcMoveCount === 1 ? '' : 's'} moving</span></>) : null}
 </td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{rr.util}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#14171F; white-space:nowrap;`)}>{rr.vol}</td>
@@ -2813,9 +2819,9 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 </div>
-{/* SECTION 2: ROUTE-LEVEL CPS COMPARISON */}
+{/* SECTION 2: ROUTE-LEVEL REFERENCE (real per-route CPS isn't shown here — routes can split/merge under feedback, so there's no single well-defined "this route's new CPS"; the SC CPS card above is the real number) */}
 <div>
-<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Route-level CPS comparison</div>
+<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Route-level reference — what's touched</div>
 <div style={css(`overflow-x:auto; border:1px solid #E6EBF2; border-radius:8px; background:#fff;`)}>
 <table style={css(`width:100%; border-collapse:collapse; font-size:12px; font-variant-numeric:tabular-nums; min-width:820px;`)}>
 <thead>
@@ -2824,7 +2830,7 @@ function View(B, self) {
 <th style={css(`text-align:left; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>VEHICLE</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>COUNT</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>DIST</th>
-<th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>CPS (₹)</th>
+<th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>ORIGINAL CPS (₹)</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>UTIL</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>VOLUME</th>
 <th style={css(`text-align:right; padding:8px 12px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; white-space:nowrap;`)}>CAP</th>
@@ -2843,8 +2849,8 @@ function View(B, self) {
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66;`)}>{rr.countDisp}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{rr.distDisp}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; white-space:nowrap;`)}>
-{(rr.cpsChanged) ? (<><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{rr.origCps}</span><span style={css(`color:#C77B00; font-weight:700; margin-left:5px;`)}>{rr.propCps}</span></>) : null}
-{(rr.cpsUnchanged) ? (<><span style={css(`color:#14171F; font-weight:600;`)}>{rr.origCps}</span></>) : null}
+<span style={css(`color:#14171F; font-weight:600;`)}>{rr.origCps}</span>
+{(rr.hasDcMoves) ? (<><span style={css(`display:inline-block; margin-left:6px; padding:1px 6px; border-radius:999px; font-size:9.5px; font-weight:700; background:#FBF1DF; color:#C77B00; vertical-align:middle;`)}>{rr.dcMoveCount} DC{rr.dcMoveCount === 1 ? '' : 's'} moving</span></>) : null}
 </td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{rr.util}</td>
 <td style={css(`padding:9px 12px; text-align:right; font-size:12px; color:#14171F; white-space:nowrap;`)}>{rr.vol}</td>
@@ -2958,8 +2964,8 @@ function View(B, self) {
 <button onClick={ncClose} aria-label={"Close dialog"} style={css(`border:none; background:transparent; cursor:pointer; padding:6px; color:#5A5E66; display:flex;`)}><svg aria-hidden={"true"} width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
 </div>
 <div style={css(`padding:20px 22px;`)}>
-<div style={css(`font-size:11px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; margin-bottom:8px;`)}>ROUTE-LEVEL CHANGES <span style={css(`font-weight:400; color:#8E96A3; letter-spacing:0;`)}>— apply to the whole route</span></div>
-<div style={css(`display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-bottom:16px;`)}>
+<div style={css(`font-size:11px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; margin-bottom:8px;`)}>ROUTE-LEVEL CHANGE <span style={css(`font-weight:400; color:#8E96A3; letter-spacing:0;`)}>— applies to the whole route</span></div>
+<div style={css(`display:grid; grid-template-columns:1fr; gap:13px; margin-bottom:16px;`)}>
 {(ncFields || []).map((f, __i110) => (<React.Fragment key={__i110}>
 <div style={css(`border:1px solid #EEF1F6; border-radius:8px; padding:10px 12px; background:#FAFBFD;`)}>
 <div style={css(`display:flex; align-items:center; justify-content:space-between; gap:8px;`)}>
@@ -2977,19 +2983,24 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 {(ncDcHasList) ? (<>
-<div style={css(`font-size:11px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; margin-bottom:8px;`)}>PER-DC CHANGES <span style={css(`font-weight:400; color:#8E96A3; letter-spacing:0;`)}>— flag lat/long or touch-point order on a specific DC</span></div>
+<div style={css(`font-size:11px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; margin-bottom:8px;`)}>PER-DC CHANGES <span style={css(`font-weight:400; color:#8E96A3; letter-spacing:0;`)}>— flag lat/lng, touch-point order, route, or distance on a specific DC</span></div>
 <div style={css(`border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:16px;`)}>
 {(ncDcList || []).map((dc, __i111) => (<React.Fragment key={__i111}>
 <div style={css(`border-top:1px solid #EEF1F6; padding:9px 12px; background:${dc.flagged ? '#FFFCF6' : '#fff'};`)}>
 <div style={css(`display:flex; align-items:center; gap:10px;`)}>
-<div style={css(`flex:1; min-width:0;`)}><div style={css(`font-size:12px; font-weight:600; color:#14171F;`)}>{dc.name}</div><div style={css(`font-size:10.5px; color:#8E96A3;`)}>{dc.code} · lat {dc.curLat} · lng {dc.curLng} · TP {dc.curTp}</div></div>
+<div style={css(`flex:1; min-width:0;`)}><div style={css(`font-size:12px; font-weight:600; color:#14171F;`)}>{dc.name}</div><div style={css(`font-size:10.5px; color:#8E96A3;`)}>{dc.code} · lat {dc.curLat} · lng {dc.curLng} · TP {dc.curTp} · leg {dc.curDist} km</div></div>
 <button onClick={dc.onToggle} style={css(`display:inline-flex; align-items:center; gap:5px; height:24px; padding:0 9px; border:1px solid ${dc.toggleBd}; background:${dc.toggleBg}; color:${dc.toggleFg}; font-family:inherit; font-size:10.5px; font-weight:700; border-radius:6px; cursor:pointer; flex-shrink:0;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>{dc.toggleLabel}</button>
 </div>
 {(dc.flagged) ? (<>
-<div style={css(`display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:8px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:8px; margin-top:8px;`)}>
 <div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Latitude</div><input value={dc.latVal} onInput={dc.onLat} placeholder={dc.curLat} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none;`)} /></div>
 <div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Longitude</div><input value={dc.lngVal} onInput={dc.onLng} placeholder={dc.curLng} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none;`)} /></div>
 <div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Touch-point #</div><input value={dc.tpVal} onInput={dc.onTp} placeholder={dc.curTp} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none;`)} /></div>
+<div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Distance (km) <span title={"Leg into this DC, from whichever node precedes it. The return leg back to the SC is always calculated automatically — never editable."} style={css(`cursor:help;`)}>ⓘ</span></div><input value={dc.distVal} onInput={dc.onDist} placeholder={dc.curDist} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none;`)} /></div>
+</div>
+<div style={css(`display:grid; grid-template-columns:${dc.isSplitTarget ? '1fr 1fr' : '1fr'}; gap:8px; margin-top:8px;`)}>
+<div><div style={css(`font-size:10px; color:#8E96A3; margin-bottom:3px;`)}>Route Code</div><select value={dc.isSplitTarget ? '__SPLIT__' : dc.routeCodeVal} onChange={dc.onRouteCode} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C3C9D4; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none; background:#fff; cursor:pointer;`)}>{(dc.routeCodeOptions || []).map((o, __i113) => (<React.Fragment key={__i113}><option value={o.value}>{o.label}</option></React.Fragment>))}</select></div>
+{(dc.isSplitTarget) ? (<><div><div style={css(`font-size:10px; color:#C77B00; margin-bottom:3px; font-weight:700;`)}>New route's vehicle <span style={css(`color:#D14B4B;`)}>*</span></div><select value={dc.splitVehicleVal} onChange={dc.onSplitVehicle} style={css(`width:100%; height:30px; padding:0 8px; border:1px solid #C77B00; border-radius:6px; font-family:inherit; font-size:12px; color:#14171F; outline:none; background:#fff; cursor:pointer;`)}><option value={""}>Pick a vehicle…</option>{(vehPool || []).map((o, __i114) => (<React.Fragment key={__i114}><option value={o.value}>{o.label}</option></React.Fragment>))}</select></div></>) : null}
 </div>
 </>) : null}
 </div>
@@ -3477,6 +3488,41 @@ function View(B, self) {
 // truth shared by triggerRuns (slot assignment) and the Step-4 ETA math so they can never disagree.
 const NDC_CONCURRENCY = 6;
 const NDC_RUN_MINUTES = 30; // ~30 min per solve (used for the batch ETA estimate)
+// NDC_COST_PER_KM — hardcoded RLH vehicle running cost, Rs/km (2026-07-09, provided by product).
+// Only ACE / Bolero / 407 were given explicit rates. Any other RLH-feasible vehicle type (e.g. the
+// seeded plans' occasional 17ft/MCV row) falls back to a capacity-scaled estimate off the nearest
+// known rate in NDC_costPerKmFor() below — a clearly-flagged placeholder, not a real number. Swap
+// in real rates here the moment product has them; nothing else needs to change.
+const NDC_COST_PER_KM = {
+  'TATA ACE / 7ft': 12,
+  'Bolero / 8ft': 14,
+  'TATA 407 / 10ft': 18,
+};
+function NDC_costPerKmFor(vehName, vehCapacity) {
+  if (NDC_COST_PER_KM[vehName] != null) return NDC_COST_PER_KM[vehName];
+  // Placeholder fallback for any vehicle type without a real rate: scale the 407's Rs18/km by
+  // capacity relative to the 407's ~3500-shipment capacity. Flagged, not a real figure.
+  const baseCap = 3500, baseRate = NDC_COST_PER_KM['TATA 407 / 10ft'];
+  const cap = vehCapacity || baseCap;
+  return +(baseRate * (cap / baseCap)).toFixed(2);
+}
+// NDC_haversineKm — straight-line distance between two lat/lng points, in km. Used only as the
+// SYSTEM-CALCULATED reference for: (a) the always-computed return leg (last DC -> SC), and
+// (b) validating a user-given leg distance against reality (the >25% variance warning). It is
+// NOT used to compute the "official" route distance when the user has supplied a leg value --
+// user-given legs always win for the official number.
+function NDC_haversineKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const toRad = (d) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1), dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return +(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 55).toFixed(1);
+  // ×55 -- the seeded lat/lng deltas across this app's fake SC/DC network are sub-degree (city-
+  // scale clusters), so raw haversine on them returns single-digit km; a flat road-distance
+  // multiplier keeps recomputed legs in the same 60-360km range the rest of the seed data uses,
+  // without needing a real road-network router. Replace this with a real distance service call
+  // when one exists -- this is a stand-in, not a claim about real-world road distance.
+}
 class NDCApp extends React.Component {
   constructor(props) {
     super(props);
@@ -3715,10 +3761,13 @@ class NDCApp extends React.Component {
           const r = R();
           ops = r < 0.7 ? 'Aligned' : 'Needs Change';
           if (ops !== 'Aligned') {
-            fb = { cells: {}, remark: pick(['DC location looks off vs ground truth','Vehicle infeasible at this DC cluster','Route splits the city — please re-cluster','Out-cutoff too tight for NLH landing','TAT not achievable during monsoon']) };
-            if (R() < 0.6) fb.cells.touchpoint = { from: tp, to: Math.max(2, tp - 1) };
+            fb = { cells: {}, dcCells: {}, remark: pick(['DC location looks off vs ground truth','Vehicle infeasible at this DC cluster','Route splits the city — please re-cluster','Out-cutoff too tight for NLH landing','TAT not achievable during monsoon']) };
+            // 2026-07-09 model — Touch Point and Distance are DC-level (a specific DC's breakdown
+            // leg / order), not route-level; only Vehicle Type stays route-level.
+            if (R() < 0.6 && dcs.length) fb.dcCells[dcs[0]] = Object.assign({}, fb.dcCells[dcs[0]], { tp: String(Math.max(1, tp - 1)) });
             if (R() < 0.5) fb.cells.vehicleType = { from: veh.name, to: pick(VEH).name };
-            if (R() < 0.4) fb.cells.roundTripDistance = { from: ri(60, 360), to: ri(60, 360) };
+            if (R() < 0.4 && dcs.length) fb.dcCells[dcs[dcs.length > 1 ? 1 : 0]] = Object.assign({}, fb.dcCells[dcs[dcs.length > 1 ? 1 : 0]], { distance: String(ri(20, 90)) });
+            fb.dcCount = Object.keys(fb.dcCells).length;
             // §10 O2 — multi-reviewer visibility: attribute each proposed change to the reviewer who
             // raised it, so a second reviewer (and the planner) sees "Change proposed by <name>".
             proposedBy = REV[Math.floor(R() * REV.length)];
@@ -3744,7 +3793,9 @@ class NDCApp extends React.Component {
       const dr = demoPushed.rows[0];
       dr.ops = 'Needs Change';
       dr.proposedBy = 'Ravi Kumar';
-      dr.fb = { cells: { touchpoint: { from: dr.tp, to: Math.max(2, dr.tp - 1) }, vehicleType: { from: dr.veh, to: VEH[1].name } }, remark: 'Route splits the city — please re-cluster the southern DCs', by: 'Ravi Kumar' };
+      const drDcCells = {};
+      if (dr.dcs && dr.dcs.length) drDcCells[dr.dcs[0]] = { tp: String(Math.max(1, dr.tp - 1)) };
+      dr.fb = { cells: { vehicleType: { from: dr.veh, to: VEH[1].name } }, dcCells: drDcCells, dcCount: Object.keys(drDcCells).length, remark: 'Route splits the city — please re-cluster the southern DCs', by: 'Ravi Kumar' };
     }
     // Mirror the Ravi Kumar attribution on the FIRST In-Alignment plan so the planner's feedback view
     // also shows "Proposed by Ravi Kumar" on a real flagged row (O2 visible from both sides).
@@ -5314,7 +5365,47 @@ class NDCApp extends React.Component {
   // Master–detail: which flagged route is open in the detail pane (per plan).
   setAlignRoute(planId, idx) { const a = Object.assign({}, this.state.alignRouteSel || {}); a[planId] = idx; this.setState({ alignRouteSel: a }); }
   confirmAck() { const id = this.state.ackPlanId; const s = Object.assign({}, this.state.alignStatus); s[id] = 'Acknowledged'; this.setState({ alignStatus: s, ackOpen: false }); this.showToast(id + ' acknowledged \u2014 plan frozen & reviewers locked', '#1E6FB8'); }
-  confirmFin() { const id = this.state.finPlanId; const s = Object.assign({}, this.state.alignStatus); s[id] = 'Finalised'; const fb = Object.assign({}, this.state.alignFinalisedBy); fb[id] = 'Pranita Sapkal'; this.setState({ alignStatus: s, alignFinalisedBy: fb, finOpen: false }); this.showToast(id + ' finalised \u2014 ready for RFQ handoff', '#128A3E'); }
+  confirmFin() {
+    const id = this.state.finPlanId;
+    const d = this.state.data;
+    const plan = d.plans.find(p => p.id === id);
+    if (plan) {
+      // The ONE place the hypothetical reorder actually gets committed — every other caller
+      // (Validate, Simulate) only reads its numbers and keeps showing the original diff-overlay
+      // structure. Only ACCEPTED changes apply here (effectiveFbForFinalise) — a rejected change,
+      // including a rejected route split, reverts to the original value.
+      const acceptedFb = this.effectiveFbForFinalise(plan);
+      const hyp = this.computeHypotheticalPlan(plan, acceptedFb);
+      const scLat = plan.rows[0] ? plan.rows[0].oLat : 0;
+      const scLng = plan.rows[0] ? plan.rows[0].oLng : 0;
+      const priorByCode = {}; plan.rows.forEach(r => { priorByCode[r.routeCode] = r; });
+      plan.rows = hyp.routes.map((rt) => {
+        const prior = priorByCode[rt.routeCode]; // same code as before -> carry forward fields the engine doesn't model (TAT/cutoff)
+        const vehRecord = (d.VEH || []).find(v => v.name === rt.vehName) || {};
+        const util = vehRecord.cap ? Math.min(0.98, +(rt.volume / vehRecord.cap).toFixed(2)) : (prior ? prior.util : 0.7);
+        return {
+          routeCode: rt.routeCode, veh: rt.vehName, vehTp: vehRecord.tp || (prior ? prior.vehTp : 7),
+          tp: rt.dcCodes.length, dcs: rt.dcCodes, rtDist: Math.round(rt.distance),
+          breakdownTat: prior ? prior.breakdownTat : +(rt.distance / 42).toFixed(1),
+          outCutoff: prior ? prior.outCutoff : '23:00',
+          oLat: scLat, oLng: scLng, volume: rt.volume, util, cps: rt.cps,
+          ops: 'Aligned', planner: 'Accept', fb: null, proposedBy: null,
+        };
+      });
+      const avgUtil = plan.rows.length ? +(plan.rows.reduce((a, r) => a + r.util, 0) / plan.rows.length).toFixed(2) : 0;
+      const avgTat = plan.rows.length ? +(plan.rows.reduce((a, r) => a + r.breakdownTat, 0) / plan.rows.length).toFixed(1) : 0;
+      plan.metrics = Object.assign({}, plan.metrics, {
+        routes: hyp.routes.length, vehicles: hyp.routes.length,
+        distance: Math.round(hyp.routes.reduce((a, r) => a + r.distance, 0)),
+        cps: hyp.scCPS, cost: Math.round(hyp.scCost), util: avgUtil, avgTat: avgTat,
+        // coverage is left as-is: reordering regroups the same DCs, it doesn't change which/how many are served.
+      });
+      // clear this plan's in-progress/decision scratch state -- it's now committed into rows themselves
+      const clr = (obj) => { const c = Object.assign({}, obj); delete c[id]; return c; };
+      this.setState({ opsRowFb: clr(this.state.opsRowFb), opsRowDec: clr(this.state.opsRowDec), alignDecisions: clr(this.state.alignDecisions), alignDcDecisions: clr(this.state.alignDcDecisions) });
+    }
+    const s = Object.assign({}, this.state.alignStatus); s[id] = 'Finalised'; const fb = Object.assign({}, this.state.alignFinalisedBy); fb[id] = 'Pranita Sapkal'; this.setState({ alignStatus: s, alignFinalisedBy: fb, finOpen: false }); this.showToast(id + ' finalised — reordered per accepted feedback, ready for RFQ handoff', '#128A3E');
+  }
 
   // LMDC cluster view — generate deterministic DC breakdown rows for a route.
   // No Math.random / Date.now: all values derived from indices and char codes.
@@ -5338,6 +5429,195 @@ class NDCApp extends React.Component {
       const nameIdx = (charSum + i * 13) % DC_NAMES.length;
       return { code, name: DC_NAMES[nameIdx], vol, tpOrder: i + 1, lat, lng, dist: dist + ' km' };
     });
+  }
+
+  // ===== Ops Feedback recompute engine (2026-07-09) =====================================
+  // computeHypotheticalPlan() is the single source of truth behind Validate, Simulate, and
+  // Finalise for a plan under Ops feedback. It NEVER mutates plan.rows itself -- it takes the
+  // plan's current rows plus a map of "effective feedback per row" (already-submitted r.fb,
+  // merged with whichever reviewer's in-progress edits are live right now -- see effectiveFbFor()
+  // below) and returns the hypothetical reordered/regrouped/recomputed structure that WOULD result
+  // if every currently-proposed change were accepted. Callers decide what to do with the result:
+  //   - Validate/Simulate read its metrics + errors/warnings but keep rendering the ORIGINAL
+  //     structure with changes overlaid (the existing changeList/diff pattern) -- see reviewVals-
+  //     style diff rendering already used elsewhere. The reordered structure itself is not shown.
+  //   - Finalise is the one caller that actually commits this structure into plan.rows.
+  //
+  // effectiveFbByIdx: { [rowIndex]: fbObject }, where fbObject is the SAME shape submitOpsPlan()
+  // already writes onto a row (`{ cells: { vehicleType }, dcCells: { [dcCode]: {...} }, remark, by }`),
+  // just restructured per the 2026-07-09 spec: `cells` now only ever carries `vehicleType` (route-
+  // level); `routeCode`, `distance`, `lat`, `lng`, `tp` all live under `dcCells[dcCode]` (DC-level).
+  // A DC-level `routeCode` can be: an existing route code in this plan (move), or a brand-new code
+  // ending in "-A"/"-B"/... (a split), in which case that same dcCells entry must also carry
+  // `splitVehicle` for the new route's vehicle type (required at the UI level, defensively defaulted
+  // here if missing).
+  computeHypotheticalPlan(plan, effectiveFbByIdx) {
+    const d = this.state.data;
+    const scLat = plan.rows[0] ? plan.rows[0].oLat : 0;
+    const scLng = plan.rows[0] ? plan.rows[0].oLng : 0;
+    const errors = [];
+    const warnings = [];
+
+    // 1) Flatten every DC across every row, tagging each with its ORIGINAL route context and
+    //    whatever DC-level override this row's effective feedback carries.
+    const flatDcs = [];
+    // originalVehByCode / originalRowByCode -- lookups for "existing route, no override" and for
+    // detecting brand-new (split) route codes that don't belong to any original route.
+    const originalVehByCode = {};
+    const routeLevelVehOverride = {}; // routeCode -> new vehicle name (from a route-level cells.vehicleType change)
+    const newRouteVehicle = {};       // brand-new/split route code -> chosen vehicle name
+    const newRouteVehicleConflicts = {}; // brand-new route code -> Set-like map of distinct vehicle choices seen (merge conflict detector)
+
+    plan.rows.forEach((row, idx) => {
+      originalVehByCode[row.routeCode] = row.veh;
+      const fb = effectiveFbByIdx[idx];
+      if (fb && fb.cells && fb.cells.vehicleType && fb.cells.vehicleType.to) {
+        routeLevelVehOverride[row.routeCode] = fb.cells.vehicleType.to;
+      }
+      const baseDcs = this.genDcRows(row);
+      baseDcs.forEach((dc) => {
+        const ov = (fb && fb.dcCells && fb.dcCells[dc.code]) || null;
+        const targetRouteCode = (ov && ov.routeCode) ? ov.routeCode : row.routeCode;
+        if (ov && ov.routeCode && ov.routeCode !== row.routeCode && !originalVehByCode.hasOwnProperty(ov.routeCode) && !plan.rows.some(r2 => r2.routeCode === ov.routeCode)) {
+          // targeting a code that doesn't exist yet anywhere in the plan -> this is a split/new route
+          const chosenVeh = ov.splitVehicle || row.veh; // defensive default if the UI ever fails to collect one
+          if (newRouteVehicle[ov.routeCode] == null) newRouteVehicle[ov.routeCode] = chosenVeh;
+          if (!newRouteVehicleConflicts[ov.routeCode]) newRouteVehicleConflicts[ov.routeCode] = {};
+          newRouteVehicleConflicts[ov.routeCode][chosenVeh] = true;
+        }
+        flatDcs.push({
+          code: dc.code, name: dc.name,
+          originalRouteCode: row.routeCode,
+          vol: dc.vol,
+          tp: (ov && ov.tp != null && ov.tp !== '') ? Number(ov.tp) : dc.tpOrder,
+          lat: (ov && ov.lat != null && ov.lat !== '') ? Number(ov.lat) : Number(dc.lat),
+          lng: (ov && ov.lng != null && ov.lng !== '') ? Number(ov.lng) : Number(dc.lng),
+          userDistance: (ov && ov.distance != null && ov.distance !== '') ? Number(ov.distance) : null,
+          effectiveRouteCode: targetRouteCode,
+          hasOverride: !!ov,
+        });
+      });
+    });
+
+    // Merge-conflict detector: two different DCs proposing the SAME brand-new route code but with
+    // DIFFERENT vehicle choices -- this is the real-world shape of "a DC ends up mapped to more
+    // than one route" once feedback comes from multiple reviewers: the new route itself is
+    // ambiguous until someone resolves which vehicle it actually runs.
+    Object.keys(newRouteVehicleConflicts).forEach((code) => {
+      const vehSet = Object.keys(newRouteVehicleConflicts[code]);
+      if (vehSet.length > 1) {
+        errors.push({ t: 'New route ' + code + ' has conflicting vehicle choices from different feedback (' + vehSet.join(' vs ') + ') — resolve before finalising.', sev: 'danger' });
+      }
+    });
+
+    // 2) Group by effective route code, sort each group ascending by effective TP.
+    const groupsMap = {};
+    flatDcs.forEach((dc) => {
+      (groupsMap[dc.effectiveRouteCode] = groupsMap[dc.effectiveRouteCode] || []).push(dc);
+    });
+    const routeCodes = Object.keys(groupsMap).sort((a, b) => a.localeCompare(b)); // "sorted route wise"
+
+    const routes = routeCodes.map((code) => {
+      const dcs = groupsMap[code].slice().sort((a, b) => a.tp - b.tp);
+      // TP sequence failure: within this route, effective TPs must be a clean 1..N set, no dup/gap.
+      const tps = dcs.map(x => x.tp);
+      const seen = {}; let dup = false;
+      tps.forEach(t => { if (seen[t]) dup = true; seen[t] = true; });
+      const n = dcs.length;
+      const inRange = tps.every(t => Number.isInteger(t) && t >= 1 && t <= n);
+      if (dup || !inRange) {
+        errors.push({ t: 'Route ' + code + ' — touch-point sequence is invalid (needs a unique 1–' + n + ' order); currently ' + tps.join(', ') + '.', sev: 'danger' });
+      }
+      // TP > 7 warning
+      if (n > 7) warnings.push({ t: 'Route ' + code + ' has ' + n + ' touch points (over the usual 7) — confirm this is intended.', sev: 'warning' });
+
+      // Vehicle for this route
+      const isNewRoute = !originalVehByCode.hasOwnProperty(code);
+      const vehName = isNewRoute ? (newRouteVehicle[code] || 'TATA ACE / 7ft') : (routeLevelVehOverride[code] || originalVehByCode[code]);
+      const vehRecord = (d.VEH || []).find(v => v.name === vehName) || {};
+
+      // Legs: SC -> dcs[0] -> dcs[1] -> ... -> dcs[n-1] -> SC (return leg always calculated)
+      let prevLat = scLat, prevLng = scLng, distance = 0;
+      dcs.forEach((dc) => {
+        const calcLeg = NDC_haversineKm(prevLat, prevLng, dc.lat, dc.lng);
+        const leg = dc.userDistance != null ? dc.userDistance : calcLeg;
+        if (dc.userDistance != null && calcLeg > 0) {
+          const variancePct = Math.abs(dc.userDistance - calcLeg) / calcLeg;
+          if (variancePct > 0.25) {
+            warnings.push({ t: dc.code + ' (route ' + code + '): entered distance ' + dc.userDistance + ' km differs from the calculated ' + calcLeg + ' km by ' + Math.round(variancePct * 100) + '% (>25%).', sev: 'warning', dcCode: dc.code, routeCode: code, unresolved: true });
+          }
+        }
+        distance += leg;
+        prevLat = dc.lat; prevLng = dc.lng;
+      });
+      const returnLeg = NDC_haversineKm(prevLat, prevLng, scLat, scLng);
+      distance += returnLeg;
+
+      // Distance vs vehicle limit warning
+      if (vehRecord.dist && distance > vehRecord.dist) {
+        warnings.push({ t: 'Route ' + code + ' — round-trip distance (' + Math.round(distance) + ' km) exceeds ' + vehName + '\u2019s limit (' + vehRecord.dist + ' km).', sev: 'warning' });
+      }
+
+      const volume = dcs.reduce((a, x) => a + x.vol, 0);
+      const costPerKm = NDC_costPerKmFor(vehName, vehRecord.cap);
+      const cost = distance * costPerKm;
+      const cps = volume > 0 ? cost / volume : 0;
+      return { routeCode: code, isNewRoute, vehName, dcCodes: dcs.map(x => x.code), tpOrder: dcs.map(x => x.tp), distance: +distance.toFixed(1), returnLeg: +returnLeg.toFixed(1), volume, costPerKm, cost: +cost.toFixed(2), cps: +cps.toFixed(2) };
+    });
+
+    const scVolume = routes.reduce((a, r) => a + r.volume, 0);
+    const scCost = routes.reduce((a, r) => a + r.cost, 0);
+    const scCPS = scVolume > 0 ? +(scCost / scVolume).toFixed(2) : 0;
+
+    // Recompute the ORIGINAL structure through the exact same formula (no feedback applied) so the
+    // before/after comparison is apples-to-apples, rather than mixing this formula with the old
+    // seeded-RNG cps figure stored on plan.metrics.
+    const originalHyp = (effectiveFbByIdx && Object.keys(effectiveFbByIdx).length)
+      ? this.computeHypotheticalPlan(plan, {})
+      : null;
+    const originalScCPS = originalHyp ? originalHyp.scCPS : scCPS;
+
+    return { routes, scVolume, scCost, scCPS, originalScCPS, errors, warnings, hasErrors: errors.length > 0, warningsOnly: errors.length === 0 && warnings.length > 0, clean: errors.length === 0 && warnings.length === 0 };
+  }
+
+  // effectiveFbFor(plan) -- merges every reviewer's ALREADY-SUBMITTED feedback (living on
+  // plan.rows[i].fb once submitOpsPlan() has run) with the CURRENT browser session's in-progress,
+  // not-yet-submitted edits (st.opsRowFb), which take priority per row when both exist. This is
+  // what "aware of the expected metrics post all changes proposed until that point" means when
+  // more than one reviewer is in the loop -- see effectiveFbByIdx usage in computeHypotheticalPlan.
+  effectiveFbFor(plan) {
+    const st = this.state;
+    const live = st.opsRowFb[plan.id] || {};
+    const out = {};
+    plan.rows.forEach((row, idx) => {
+      const fb = live[idx] || row.fb;
+      if (fb) out[idx] = fb;
+    });
+    return out;
+  }
+
+  // effectiveFbForFinalise(plan) -- the accepted-only counterpart of effectiveFbFor(), used ONLY at
+  // Finalise. Validate/Simulate run against every currently-PROPOSED change (nothing decided yet);
+  // Finalise must only commit changes the planner actually ACCEPTED — a rejected change (including
+  // a rejected split) reverts that DC/route field to its original value, per product decision.
+  effectiveFbForFinalise(plan) {
+    const st = this.state;
+    const proposed = this.effectiveFbFor(plan);
+    const out = {};
+    Object.keys(proposed).forEach((idxStr) => {
+      const idx = Number(idxStr);
+      const fb = proposed[idx];
+      const fieldKey = plan.id + ':' + idx;
+      const fieldDec = (st.alignFieldDec && st.alignFieldDec[fieldKey]) || {};
+      const rowDec = (st.alignDecisions[plan.id] && st.alignDecisions[plan.id][idx]) || null;
+      const dcDec = (st.alignDcDecisions[plan.id] && st.alignDcDecisions[plan.id][idx]) || {};
+      const cells = {};
+      if (fb.cells) Object.keys(fb.cells).forEach((k) => { const dec = fieldDec[k] || rowDec; if (dec === 'Accept') cells[k] = fb.cells[k]; });
+      const dcCells = {};
+      if (fb.dcCells) Object.keys(fb.dcCells).forEach((code) => { if (dcDec[code] === 'Accept') dcCells[code] = fb.dcCells[code]; });
+      if (Object.keys(cells).length || Object.keys(dcCells).length) out[idx] = { cells, dcCells, remark: fb.remark, by: fb.by };
+    });
+    return out;
   }
 
   alignVals() {
@@ -5398,7 +5678,7 @@ class NDCApp extends React.Component {
       onClick: () => this.setState({ alignFilter: t[0], alignPage: 0, pgRoutes: 1, alignPlanId: null, alignDetailOpen: false }) }));
     if (plan) {
       const locked = ps === 'Acknowledged' || ps === 'Finalised';
-      const FIELD = { vehicleType: 'Vehicle Type', routeCode: 'Route Code', roundTripDistance: 'Round-Trip Dist', touchpoint: 'Touch Point' };
+      const FIELD = { vehicleType: 'Vehicle Type' }; // route-level cells only ever carry vehicleType now (2026-07-09) — routeCode/distance/touchpoint moved to dcCells
       const rows = plan.rows.map((r, idx) => {
         const needsAttn = r.ops === 'Needs Change';
         const manualDec = (st.alignDecisions[plan.id] && st.alignDecisions[plan.id][idx]) || null;
@@ -5407,13 +5687,13 @@ class NDCApp extends React.Component {
         const autoApprovable = false; // auto-accept flow removed (2026-07-06) — every flagged change needs an explicit Accept/Reject
         const dec = manualDec || (autoApprovable ? 'Accept' : r.planner);
         const cells = r.fb ? Object.keys(r.fb.cells || {}).map(k => ({ key: k, field: FIELD[k] || k, from: String(r.fb.cells[k].from), to: String(r.fb.cells[k].to) })).filter(c => c.from !== c.to) : [];
-        // which route-context attributes carry a flagged change (to highlight them inline in the meta line)
-        const mlVehChg = cells.some(c => c.key === 'vehicleType');
-        const mlTpChg = cells.some(c => c.key === 'touchpoint');
-        const mlDistChg = cells.some(c => c.key === 'roundTripDistance');
         // Per-DC (node-level) changes flagged by the Ops Lead — summarised as one chip per DC (which fields changed).
         const dcCellsObj = (r.fb && r.fb.dcCells) ? r.fb.dcCells : {};
-        const dcChips = Object.keys(dcCellsObj).map(code => { const e = dcCellsObj[code] || {}; const parts = []; if (e.lat != null) parts.push('lat'); if (e.lng != null) parts.push('lng'); if (e.tp != null) parts.push('TP'); return { code: code, fields: parts.join(' · ') }; });
+        // which route-context attributes carry a flagged change (to highlight them inline in the meta line)
+        const mlVehChg = cells.some(c => c.key === 'vehicleType');
+        const mlTpChg = Object.keys(dcCellsObj).some(code => dcCellsObj[code].tp != null);
+        const mlDistChg = Object.keys(dcCellsObj).some(code => dcCellsObj[code].distance != null);
+        const dcChips = Object.keys(dcCellsObj).map(code => { const e = dcCellsObj[code] || {}; const parts = []; if (e.lat != null) parts.push('lat'); if (e.lng != null) parts.push('lng'); if (e.tp != null) parts.push('TP'); if (e.distance != null) parts.push('dist'); if (e.routeCode) parts.push('route→' + e.routeCode); return { code: code, fields: parts.join(' · ') }; });
         const km = needsAttn ? -(Math.round(r.rtDist * 0.11) + 2) : 0;
         const cost = needsAttn ? -(Math.round(r.volume * 0.05)) : 0;
         const op = { 'Aligned': { bg: '#E7F4EC', fg: '#128A3E' }, 'Needs Change': { bg: '#FBF1DF', fg: '#C77B00' } }[r.ops] || { bg: 'transparent', fg: '#C3C9D4' };
@@ -5561,7 +5841,12 @@ class NDCApp extends React.Component {
         return { name: nm, done, pending: !done, mark: done ? '✓' : '⏳', statusText: done ? 'Submitted' : 'Awaiting', initials,
           chipBg: done ? '#E7F4EC' : '#F2F5FA', chipFg: done ? '#128A3E' : '#5A5E66' };
       });
+      // Distance-mismatch warnings (>25% vs calculated) still unresolved at the latest submitted/
+      // in-progress feedback — surfaced to the planner alongside the same warning Ops saw at Validate.
+      const planVarianceHyp = ps !== 'Pushed' ? this.computeHypotheticalPlan(plan, this.effectiveFbFor(plan)) : { warnings: [] };
+      const planVarianceMsgs = planVarianceHyp.warnings.filter(w => w.unresolved).map(w => w.t);
       aSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone, statusLabel: STPILL[ps].l, statusBg: STPILL[ps].bg, statusFg: STPILL[ps].fg,
+        hasDistanceVariance: planVarianceMsgs.length > 0, distanceVarianceCount: planVarianceMsgs.length, distanceVarianceMsgs: planVarianceMsgs,
         sentDate: plan.sentDate, reviewers: plan.reviewerNames.join(', '), opsLeads,
         reviewProgress: opsLeads.filter(o => o.done).length + ' of ' + opsLeads.length + ' submitted', reminded: !!((st.remindedPlans || {})[plan.id]),
         onNudge: () => { const rp = Object.assign({}, this.state.remindedPlans || {}); rp[plan.id] = true; this.setState({ remindedPlans: rp }); this.showToast('Reminder sent to ' + (plan.reviewerNames.join(', ') || 'the reviewers'), '#1E6FB8'); },
@@ -5604,67 +5889,57 @@ class NDCApp extends React.Component {
         onAcceptAllFlagged: () => { const undecN = flaggedRows.filter(r => !r.rowFullyDecided).length; if (undecN === 0) { this.showToast('No undecided flagged changes remaining', '#5A5E66'); return; } this.setState({ acceptAllPlanOpen: true, acceptAllPlanId: plan.id }); },
         acceptAllBg: flaggedRows.some(r => !r.rowFullyDecided) ? '#fff' : '#E6EBF2', acceptAllFg: flaggedRows.some(r => !r.rowFullyDecided) ? '#128A3E' : '#8E96A3', acceptAllBd: flaggedRows.some(r => !r.rowFullyDecided) ? '#128A3E' : '#E6EBF2', acceptAllCursor: flaggedRows.some(r => !r.rowFullyDecided) ? 'pointer' : 'not-allowed', acceptAllTitle: flaggedRows.some(r => !r.rowFullyDecided) ? ('Accept all ' + flaggedRows.filter(r => !r.rowFullyDecided).length + ' undecided changes') : 'All changes decided',
         onPlanValidate: () => {
-          // E (2026-07-03) — partial accept/reject can break a route: accepting some DC TP-order changes but not
-          // others can leave two DCs at the same touch-point number. Check the effective TP sequence per route.
-          const dcDec = (st.alignDcDecisions[plan.id]) || {};
-          const tpIssues = [];
-          plan.rows.forEach((r, i) => {
-            if (r.ops !== 'Needs Change' || !r.fb || !r.fb.dcCells) return;
-            const rowDec = dcDec[i] || {}; const dcs = this.genDcRows(r);
-            const seq = dcs.map(dc => { const chg = r.fb.dcCells[dc.code]; return (chg && chg.tp != null && rowDec[dc.code] === 'Accept') ? (parseInt(chg.tp) || dc.tpOrder) : dc.tpOrder; });
-            const seen = {}; let bad = false; seq.forEach(t => { if (seen[t]) bad = true; seen[t] = true; });
-            if (bad) tpIssues.push(r.routeCode);
-          });
-          const tpOk = plan.rows.every(r => r.tp <= 7); const vehOk = plan.rows.every(r => r.veh); const ncN = plan.rows.filter(r => r.ops === 'Needs Change').length; const seqOk = tpIssues.length === 0;
-          const checks = [ (tpOk ? '✓' : '✗') + ' Touch points within guard (' + (tpOk ? 'all ≤7' : 'some exceed 7') + ')', (vehOk ? '✓' : '✗') + ' All vehicles feasible (' + (vehOk ? 'pass' : 'missing vehicle on some rows') + ')', '✓ No duplicate route codes', (seqOk ? '✓ Touch-point order intact' : '✗ Broken TP order after partial accept on ' + tpIssues.join(', ') + ' — reject or fix before finalise'), ncN > 0 ? '⚠ ' + ncN + ' row' + (ncN === 1 ? '' : 's') + ' flagged for change' : '✓ No rows flagged' ];
-          this.showToast('Validate · ' + plan.scCode + ' — ' + checks.join(' · '), (tpOk && vehOk && seqOk) ? '#128A3E' : '#C77B00');
+          const hyp = this.computeHypotheticalPlan(plan, this.effectiveFbFor(plan));
+          const ncN = plan.rows.filter(r => r.ops === 'Needs Change').length;
+          const parts = [];
+          if (hyp.errors.length) parts.push('✗ ' + hyp.errors.length + ' error' + (hyp.errors.length === 1 ? '' : 's') + ': ' + hyp.errors.map(e => e.t).join(' · '));
+          else parts.push('✓ No blocking errors');
+          if (hyp.warnings.length) parts.push('⚠ ' + hyp.warnings.length + ' warning' + (hyp.warnings.length === 1 ? '' : 's') + ': ' + hyp.warnings.map(w => w.t).join(' · '));
+          parts.push(ncN > 0 ? ncN + ' row' + (ncN === 1 ? '' : 's') + ' flagged for change' : 'No rows flagged');
+          this.showToast('Validate · ' + plan.scCode + ' — ' + parts.join(' · '), hyp.hasErrors ? '#D14B4B' : (hyp.warnings.length ? '#C77B00' : '#128A3E'));
         },
-        // Plan-level Simulate impact (planner) — aggregated over all Needs Change rows.
-        // Gated on ≥1 NC row and plan not yet Finalised.
+        // Plan-level Simulate impact (planner) — real recompute (2026-07-09), gated on Validate
+        // returning zero errors (warnings are fine). Merges every reviewer's feedback, same engine
+        // Ops Lead's Simulate uses — see computeHypotheticalPlan()/effectiveFbFor() in NDCApp.
         ...(() => {
           const ncFlaggedPlan = plan.rows.filter(r => r.ops === 'Needs Change');
-          const canPlanSim = ncFlaggedPlan.length > 0 && ps !== 'Finalised';
+          const planMergedFb = this.effectiveFbFor(plan);
+          const planHyp = this.computeHypotheticalPlan(plan, planMergedFb);
+          const canPlanSim = ncFlaggedPlan.length > 0 && ps !== 'Finalised' && !planHyp.hasErrors;
           if (!canPlanSim) return { canPlanSim: false, planSimBtnBg: '#EAEEFB', planSimBtnFg: '#2F4FC6', planSimBtnLabel: 'Simulate impact', planSimOpen: false, planSimRows: [], planSimSubtitle: '', onPlanSim: () => {}, onPlanSimMap: () => {}, planSimMapBg: '#fff', planSimMapFg: '#2F4FC6', planSimMapLabel: 'Compare on map', planSimMapOpen: false, planSimMapRouteLabel: '', planSmMW: 280, planSmMH: 174, planSmScX: 140, planSmScY: 87, planSmOrigArcs: [], planSmPropArcs: [], planSmOrigDcM: [], planSmPropDcM: [], planSmCapText: '' };
           const m = plan.metrics;
           const nFlagged = ncFlaggedPlan.length;
-          const rowFraction = Math.min(1, nFlagged / Math.max(1, plan.rows.length));
-          const vehNudge = rowFraction * 0.055, distNudge = rowFraction * 0.038, tpNudge = rowFraction * 0.022;
-          const pFmt = (v) => v.toFixed(1) + '%', dFmt = (v) => v.toLocaleString('en-IN') + ' km';
+          const dFmt = (v) => v.toLocaleString('en-IN') + ' km';
           const dColor = (dd) => dd < 0 ? '#128A3E' : dd > 0 ? '#D14B4B' : '#5A5E66';
           const dSign = (dd, dec) => (dd === 0 ? '—' : (dd > 0 ? '+' : '') + (dec !== undefined ? dd.toFixed(dec) : dd));
-          const pR = Math.max(1, Math.round(m.routes   * (1 - tpNudge * 0.5 + vehNudge * 0.3)));
-          const pV = Math.max(1, Math.round(m.vehicles * (1 - vehNudge)));
-          const pU = Math.min(99, +(m.util + vehNudge * 58 + distNudge * 29).toFixed(1));
-          const pD = Math.max(1, Math.round(m.distance * (1 - distNudge * 0.5 + vehNudge * 0.04)));
-          const pT = +(m.avgTat + vehNudge * 5.5 - tpNudge * 9).toFixed(1);
-          const pC = +(m.cps * (1 - distNudge * 0.4 + vehNudge * 0.15)).toFixed(2);
+          const newDistance = planHyp.routes.reduce((a, r) => a + r.distance, 0);
+          const newRoutes = planHyp.routes.length;
+          const pC = planHyp.scCPS;
           const planSimRows = [
-            { metric: 'Routes',         original: String(m.routes),        proposed: String(pR),          delta: dSign(pR - m.routes),                    deltaColor: dColor(pR - m.routes) },
-            { metric: 'Vehicles',       original: String(m.vehicles),      proposed: String(pV),          delta: dSign(pV - m.vehicles),                  deltaColor: dColor(pV - m.vehicles) },
-            { metric: 'Utilisation %',  original: pFmt(m.util),            proposed: pFmt(pU),            delta: dSign(+(pU - m.util).toFixed(1), 1) + '%', deltaColor: dColor(-(pU - m.util)) },
-            { metric: 'Total Distance', original: dFmt(m.distance),        proposed: dFmt(pD),            delta: dSign(pD - m.distance, 0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + ' km', deltaColor: dColor(pD - m.distance) },
-            { metric: 'CPS (est.)',     original: '₹' + m.cps.toFixed(2), proposed: '₹' + pC.toFixed(2), delta: dSign(+(pC - m.cps).toFixed(2), 2),       deltaColor: dColor(pC - m.cps) },
+            { metric: 'Routes',         original: String(m.routes),        proposed: String(newRoutes),   delta: dSign(newRoutes - m.routes),             deltaColor: dColor(newRoutes - m.routes) },
+            { metric: 'Vehicles',       original: String(m.vehicles),      proposed: String(newRoutes),   delta: dSign(newRoutes - m.vehicles),           deltaColor: dColor(newRoutes - m.vehicles) },
+            { metric: 'Total Distance', original: dFmt(m.distance),        proposed: dFmt(+newDistance.toFixed(0)), delta: dSign(+(newDistance - m.distance).toFixed(0), 0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + ' km', deltaColor: dColor(newDistance - m.distance) },
+            { metric: 'SC CPS',         original: '₹' + planHyp.originalScCPS.toFixed(2), proposed: '₹' + pC.toFixed(2), delta: dSign(+(pC - planHyp.originalScCPS).toFixed(2), 2), deltaColor: dColor(pC - planHyp.originalScCPS) },
           ];
           const planSimMapOpen = !!st.planSimMapOpen;
           const planSC = d.scs.find(s => s.code === plan.scCode);
           const planSRows = plan.rows.map(rr => ({ id: rr.routeCode, veh: rr.veh, tpN: rr.dcs.length, rtDist: rr.rtDist }));
           const firstNcIdx = plan.rows.findIndex(r => r.ops === 'Needs Change');
           const planMm = planSimMapOpen ? (this.buildMiniMap(planSC, planSRows, firstNcIdx >= 0 ? firstNcIdx : 0, 'Aggregate change across flagged routes') || {}) : {};
-          // C — headwind callout: CPS delta as signed % for negotiation framing.
-          const planCpsOriginal = m.cps;
-          const planCpsDelta = +(pC - planCpsOriginal).toFixed(2);
-          const planCpsPct = planCpsOriginal > 0 ? +(planCpsDelta / planCpsOriginal * 100).toFixed(1) : 0;
+          // Headwind callout — real SC CPS delta, signed % for negotiation framing.
+          const planCpsOriginal = planHyp.originalScCPS;
+          const planCpsPct = planCpsOriginal > 0 ? +((planHyp.scCPS - planCpsOriginal) / planCpsOriginal * 100).toFixed(1) : 0;
           const planSimCpsHeadwind = planCpsPct;
           const planSimHeadwindPositive = planCpsPct > 0;
           const planSimHeadwindLabel = planCpsPct > 0
-            ? 'These changes raise CPS by +' + planCpsPct + '% vs the published design — negotiate before accepting.'
+            ? 'These changes raise SC CPS by +' + planCpsPct + '% vs the published design — negotiate before accepting.'
             : planCpsPct < 0
-              ? 'These changes improve CPS by ' + planCpsPct + '% vs the published design.'
-              : 'No CPS impact from these changes vs the published design.';
+              ? 'These changes improve SC CPS by ' + planCpsPct + '% vs the published design.'
+              : 'No SC CPS impact from these changes vs the published design.';
           const planSimHeadwindColor = planCpsPct > 0 ? '#C77B00' : '#128A3E';
           const planSimHeadwindBg = planCpsPct > 0 ? '#FBF1DF' : '#E7F4EC';
           const planSimHeadwindBd = planCpsPct > 0 ? '#F0DBA8' : '#B6E0C6';
-          // Section 1: 3 plan-level comparison cards (Vehicles, Distance, CPS).
+          // Section 1: 3 plan-level comparison cards (Routes, Distance, SC CPS) — real numbers.
           const planSimCards = (() => {
             const mkCard = (label, origRaw, propRaw, fmt) => {
               const changed = origRaw !== propRaw;
@@ -5679,22 +5954,22 @@ class NDCApp extends React.Component {
               };
             };
             return [
-              mkCard('Total Vehicles', m.vehicles, pV, v => String(v)),
-              mkCard('Total Distance (km)', m.distance, pD, v => v.toLocaleString('en-IN')),
-              mkCard('Avg CPS (₹)', +m.cps.toFixed(2), pC, v => '₹' + v.toFixed(2)),
+              mkCard('Total Routes', m.routes, newRoutes, v => String(v)),
+              mkCard('Total Distance (km)', m.distance, +newDistance.toFixed(0), v => v.toLocaleString('en-IN')),
+              mkCard('SC CPS (₹)', +planCpsOriginal.toFixed(2), +pC.toFixed(2), v => '₹' + v.toFixed(2)),
             ];
           })();
-          // Section 2: route-level CPS rows from plan.rows.
+          // Section 2: route-level reference — kept as the ORIGINAL structure with a "touched" flag;
+          // see the identical note on the Ops Lead side for why a per-route proposed CPS isn't shown.
           const planSimRouteRows = plan.rows.map((r, ri) => {
-            const isChanged = r.ops === 'Needs Change';
-            const fbCells = r.fb ? r.fb.cells : {};
+            const fbEff = planMergedFb[ri];
+            const isChanged = !!fbEff;
+            const fbCells = fbEff ? fbEff.cells : {};
             const origVeh = r.veh;
-            const propVeh = (fbCells.vehicleType && fbCells.vehicleType.to) ? String(fbCells.vehicleType.to) : origVeh;
+            const propVeh = (fbCells && fbCells.vehicleType && fbCells.vehicleType.to) ? String(fbCells.vehicleType.to) : origVeh;
             const vehChanged = propVeh !== origVeh;
-            const origCpsVal = +Number(r.cps).toFixed(2);
-            const propCpsVal = isChanged ? +(origCpsVal * (1 - distNudge * 0.4 + vehNudge * 0.15)).toFixed(2) : origCpsVal;
-            const cpsChanged = isChanged && Math.abs(propCpsVal - origCpsVal) >= 0.01;
-            const note = r.fb ? (r.fb.remark || '—') : '—';
+            const dcMoveCount = fbEff && fbEff.dcCells ? Object.keys(fbEff.dcCells).filter(c => fbEff.dcCells[c].routeCode).length : 0;
+            const note = fbEff ? (fbEff.remark || '—') : '—';
             const psVehRecord = (d.VEH || []).find(v => v.name === origVeh) || {};
             const psCapVal = psVehRecord.cap ? fmtInt(psVehRecord.cap) : '—';
             const psVolVal = r.volume != null ? fmtInt(r.volume) : '—';
@@ -5705,9 +5980,8 @@ class NDCApp extends React.Component {
               vehChanged, vehUnchanged: !vehChanged,
               countDisp: String(r.dcs ? r.dcs.length : r.tp || 1),
               distDisp: r.rtDist + ' km',
-              origCps: '₹' + origCpsVal.toFixed(2),
-              propCps: '₹' + propCpsVal.toFixed(2),
-              cpsChanged, cpsUnchanged: !cpsChanged,
+              origCps: '₹' + Number(r.cps).toFixed(2),
+              dcMoveCount, hasDcMoves: dcMoveCount > 0,
               note,
               isChanged, isNoChange: !isChanged,
               rowBg: isChanged ? '#FFFBF2' : '#fff',
@@ -5838,28 +6112,57 @@ class NDCApp extends React.Component {
     this.setState({ acceptAllPlanOpen: false, acceptAllPlanId: null });
   }
   // E2 — opens the "Flag changes" modal. Only flagged cells become feedback.
-  openNc(planId, idx) { const r = this.state.data.plans.find(p => p.id === planId).rows[idx]; this.setState({ ncOpen: true, ncDecision: 'Needs Change', ncRow: { planId: planId, idx: idx }, ncCells: { vehicleType: r.veh, routeCode: r.routeCode, rtDist: String(r.rtDist) }, ncFlags: {}, ncDcCells: {}, ncRemark: '' }); }
+  openNc(planId, idx) { const r = this.state.data.plans.find(p => p.id === planId).rows[idx]; this.setState({ ncOpen: true, ncDecision: 'Needs Change', ncRow: { planId: planId, idx: idx }, ncCells: { vehicleType: r.veh }, ncFlags: {}, ncDcCells: {}, ncSplitCode: null, ncSplitVehicle: '', ncRemark: '' }); }
   closeNc() { this.setState({ ncOpen: false }); }
   setNc(field, val) { const c = Object.assign({}, this.state.ncCells); c[field] = val; this.setState({ ncCells: c }); }
   // E2 \u2014 toggle whether a cell is flagged. Only flagged cells reveal their input + become feedback.
   toggleNcFlag(field) { const f = Object.assign({}, this.state.ncFlags || {}); if (f[field]) delete f[field]; else f[field] = true; this.setState({ ncFlags: f }); }
-  // Per-DC (node-scoped) feedback: lat/long + touch-point sequence are flagged PER DC within the route (walkthrough 70:32).
-  toggleNcDc(dcCode, seed) { const m = Object.assign({}, this.state.ncDcCells || {}); if (m[dcCode]) { delete m[dcCode]; } else { m[dcCode] = Object.assign({ lat: '', lng: '', tp: '' }, seed || {}); } this.setState({ ncDcCells: m }); }
-  setNcDc(dcCode, field, val) { const m = Object.assign({}, this.state.ncDcCells || {}); m[dcCode] = Object.assign({ lat: '', lng: '', tp: '' }, m[dcCode] || {}); m[dcCode][field] = val; this.setState({ ncDcCells: m }); }
+  // Per-DC (node-scoped) feedback: lat/lng, touch-point, Route Code (existing route, or Split this
+  // route -> a new code + a required vehicle pick for it), and Distance (breakdown leg into this DC).
+  toggleNcDc(dcCode, seed) { const m = Object.assign({}, this.state.ncDcCells || {}); if (m[dcCode]) { delete m[dcCode]; } else { m[dcCode] = Object.assign({ lat: '', lng: '', tp: '', distance: '', routeCode: '' }, seed || {}); } this.setState({ ncDcCells: m }); }
+  setNcDc(dcCode, field, val) { const m = Object.assign({}, this.state.ncDcCells || {}); m[dcCode] = Object.assign({ lat: '', lng: '', tp: '', distance: '', routeCode: '' }, m[dcCode] || {}); m[dcCode][field] = val; this.setState({ ncDcCells: m }); }
+  // 2026-07-09 — Route Code dropdown: pick an existing route in the plan (move this DC there), or
+  // pick "Split this route" (__SPLIT__ sentinel) to peel this DC off into a brand-new route. The
+  // split target code is computed ONCE per open feedback session (all DCs that choose split within
+  // this same session land on the same new route) and always needs its own manually-picked vehicle
+  // — never carried over from the route being split, per product decision.
+  setNcDcRouteCode(dcCode, value) {
+    const st = this.state, r = st.ncRow;
+    if (value === '__SPLIT__') {
+      let splitCode = st.ncSplitCode;
+      if (!splitCode) {
+        const row = st.data.plans.find(p => p.id === r.planId).rows[r.idx];
+        const usedCodes = {}; st.data.plans.find(p => p.id === r.planId).rows.forEach(rr => { usedCodes[rr.routeCode] = true; });
+        let letter = 65; // 'A'
+        do { splitCode = row.routeCode + '-' + String.fromCharCode(letter); letter++; } while (usedCodes[splitCode] && letter < 91);
+      }
+      this.setNcDc(dcCode, 'routeCode', splitCode);
+      this.setState({ ncSplitCode: splitCode });
+    } else {
+      this.setNcDc(dcCode, 'routeCode', value);
+    }
+  }
   submitNc() {
     const st = this.state, r = st.ncRow;
     const row = st.data.plans.find(p => p.id === r.planId).rows[r.idx];
     const c = st.ncCells || {}, flags = st.ncFlags || {};
     const decision = st.ncDecision || 'Needs Change';
-    // E2 \u2014 only FLAGGED route-scoped cells become feedback; map them to the planner-side cell keys.
-    const FMAP = { vehicleType: ['vehicleType', row.veh], routeCode: ['routeCode', row.routeCode], rtDist: ['roundTripDistance', String(row.rtDist)] };
+    // Route-level: Vehicle Type only, per the 2026-07-09 model (Route Code + Distance moved to DC level below).
     const cells = {};
-    Object.keys(FMAP).forEach(field => { if (!flags[field]) return; const [key, orig] = FMAP[field]; const now = c[field]; cells[key] = { from: orig, to: (now !== undefined && String(now) !== '') ? now : orig }; });
-    // Per-DC (node-scoped) feedback: lat/long + touch-point order flagged per DC within this route.
+    if (flags.vehicleType) { const now = c.vehicleType; cells.vehicleType = { from: row.veh, to: (now && String(now) !== '') ? now : row.veh }; }
+    // DC-level feedback: lat/lng/tp/distance/routeCode(+splitVehicle for a brand-new route).
     const dcMap = st.ncDcCells || {}; const dcCells = {};
-    Object.keys(dcMap).forEach(code => { const v = dcMap[code] || {}; const e = {}; if (v.lat !== '' && v.lat != null) e.lat = v.lat; if (v.lng !== '' && v.lng != null) e.lng = v.lng; if (v.tp !== '' && v.tp != null) e.tp = v.tp; if (Object.keys(e).length) dcCells[code] = e; });
+    Object.keys(dcMap).forEach(code => {
+      const v = dcMap[code] || {}; const e = {};
+      if (v.lat !== '' && v.lat != null) e.lat = v.lat;
+      if (v.lng !== '' && v.lng != null) e.lng = v.lng;
+      if (v.tp !== '' && v.tp != null) e.tp = v.tp;
+      if (v.distance !== '' && v.distance != null) e.distance = v.distance;
+      if (v.routeCode) { e.routeCode = v.routeCode; if (v.routeCode === st.ncSplitCode) e.splitVehicle = st.ncSplitVehicle || row.veh; }
+      if (Object.keys(e).length) dcCells[code] = e;
+    });
     const dcCount = Object.keys(dcCells).length;
-    // \u00a710 O2 \u2014 attribute this proposed change to the current reviewer so co-reviewers + the planner
+    // §10 O2 — attribute this proposed change to the current reviewer so co-reviewers + the planner
     // see "Change proposed by <name>". Ops Lead persona = Rahul Sharma in this prototype.
     const reviewerName = st.persona === 'planner' ? 'Pranita Sapkal' : 'Rahul Sharma';
     const fb = { cells, dcCells, dcCount, remark: (st.ncRemark || '').trim() || 'Needs change', by: reviewerName };
@@ -6016,7 +6319,16 @@ class NDCApp extends React.Component {
         mixArr, secDetails: sec === 'details', secRoute: sec === 'route',
         sections: SECS.map(s => ({ label: s[1], active: sec === s[0], color: sec === s[0] ? '#003F98' : '#5A5E66', weight: sec === s[0] ? '700' : '600', onClick: () => this.setState({ opsSection: s[0] }) })),
         onAcceptAll: () => { if (pendN > 0) this.setState({ alignAllOpen: true, alignAllPlanId: plan.id }); }, acceptAllDisabled: pendN === 0, onReset: () => this.resetOps(plan.id), onMapView: () => this.setState({ mapSC: plan.scCode, view: 'map' }),
-        onOpsValidate: () => { const dec = st.opsRowDec[plan.id] || {}; const ncRows = Object.values(dec).filter(v => v === 'Needs Change').length; const tpOk = plan.rows.every(r => r.tp <= 7); const checks = [ (tpOk ? '✓' : '✗') + ' Touch points within guard', ncRows > 0 ? ncRows + ' row' + (ncRows === 1 ? '' : 's') + ' need change — add remarks before submitting' : '✓ No changes flagged', '✓ All vehicles feasible' ]; this.showToast('Validate · ' + plan.scCode + ' — ' + checks.join(' · '), tpOk ? '#128A3E' : '#C77B00'); },
+        onOpsValidate: () => {
+          const hyp = this.computeHypotheticalPlan(plan, this.effectiveFbFor(plan));
+          const ncRows = plan.rows.filter((r, i) => (st.opsRowDec[plan.id] || {})[i] === 'Needs Change' || r.ops === 'Needs Change').length;
+          const parts = [];
+          if (hyp.errors.length) parts.push('✗ ' + hyp.errors.length + ' error' + (hyp.errors.length === 1 ? '' : 's') + ': ' + hyp.errors.map(e => e.t).join(' · '));
+          else parts.push('✓ No blocking errors');
+          if (hyp.warnings.length) parts.push('⚠ ' + hyp.warnings.length + ' warning' + (hyp.warnings.length === 1 ? '' : 's') + ': ' + hyp.warnings.map(w => w.t).join(' · '));
+          parts.push(ncRows > 0 ? ncRows + ' row' + (ncRows === 1 ? '' : 's') + ' need change' : 'No changes flagged');
+          this.showToast('Validate · ' + plan.scCode + ' — ' + parts.join(' · '), hyp.hasErrors ? '#D14B4B' : (hyp.warnings.length ? '#C77B00' : '#128A3E'));
+        },
         // Submit remains available until the planner acknowledges; re-submit overwrites the previous stamp (idempotent).
         canSubmit: !planLocked,
         onSubmit: () => { if (pendN > 0) { this.setState({ opsPartialOpen: true, opsPartialPlanId: plan.id }); } else { this.submitOpsPlan(plan.id); } },
@@ -6028,14 +6340,10 @@ class NDCApp extends React.Component {
     // E2 — per-cell flag toggle: only flagged cells reveal an input + become feedback (fewer always-editable fields).
     // Vehicle Type → dropdown of the canonical VEH pool (B1). Out Cutoff → time input.
     const vehPool = (d.VEH || []).map(v => ({ value: v.name, label: v.name }));
-    // Route-scoped fields — flagged once for the whole route. Node-scoped fields (lat/long, touch-point) are
-    // flagged PER DC in the per-node section below (walkthrough 70:32: route button → open node list → per-DC lat-long/TP).
-    // Out-Cutoff + Breakdown-TAT removed from the flaggable set (2026-07-03): Ops doesn't align on
-    // cutoffs — cutoff planning happens later in analytics/scheduling. Route cells = vehicle, route code, RT distance.
-    const NCDEF = [
-      ['vehicleType', 'Vehicle Type', 'select'], ['routeCode', 'Route Code', 'text'],
-      ['rtDist', 'Round-Trip Distance (km)', 'text'],
-    ];
+    // 2026-07-09 — Route-scoped: Vehicle Type only. Route Code and Distance moved to DC-level
+    // (a route-code change on a DC means that DC is moving to a different route, existing or new;
+    // distance is the DC's own breakdown leg) — see computeHypotheticalPlan() in NDCApp.
+    const NCDEF = [['vehicleType', 'Vehicle Type', 'select']];
     const ncFields = NCDEF.map(f => { const flagged = !!ncFlags[f[0]]; return {
       field: f[0], label: f[1], value: c[f[0]] || '',
       isSelect: f[2] === 'select', isTime: f[2] === 'time', isText: f[2] === 'text',
@@ -6047,45 +6355,45 @@ class NDCApp extends React.Component {
     }; });
     const ncFlaggedCount = NCDEF.filter(f => ncFlags[f[0]]).length;
     const ncIsBlocker = false; // Blocker removed; always Needs Change
-    const tpN = Number(c.touchpoint), distN = Number(c.rtDist);
-    const vt = c.vehicleType || '';
-    // B1 — read the canonical Vehicle Master, don't hardcode against a deleted availability scale.
-    const vehMatch = (d.VEH || []).find(v => v.name === vt) || (d.VEH || []).find(v => vt && v.name.indexOf(vt) >= 0);
-    const vehDistMaster = (name) => { const v = (d.VEH || []).find(x => x.name === name); return v ? v.dist : 600; };
-    const tpLimit = vehMatch ? vehMatch.tp : (vt.indexOf('ACE') >= 0 ? 4 : 7);
-    const distLimit = vehMatch ? vehDistMaster(vehMatch.name) : 600;
-    // Validate only cells the Ops Lead actually flagged (E2) — don't warn on prefilled, untouched originals.
-    const ncWarn = [];
-    if (ncFlags.touchpoint && Number.isInteger(tpN) && tpN > 7) ncWarn.push({ lead: 'Warning', text: 'High touch-point count (' + tpN + ') — routes above 7 touch points are harder to run on time; confirm this is intended.', fail: false, bg: '#FBF1DF', accentBd: '0', fg: '#C77B00', textFg: '#C77B00' });
-    if (ncFlags.rtDist && distN > distLimit) ncWarn.push({ lead: 'Warning', text: 'Round-trip distance (' + distN + ' km) exceeds vehicle limit (' + distLimit + ' km)', fail: false, bg: '#FBF1DF', accentBd: '0', fg: '#C77B00', textFg: '#C77B00' });
-    // B3 — validate the flagged vehicle type: TP cap + RLH feasibility (was silently un-checked, e.g. the 10ft case).
-    if (ncFlags.vehicleType && vehMatch && Number.isInteger(tpN) && tpN > tpLimit) ncWarn.push({ lead: 'Error', text: vehMatch.name + ' allows max ' + tpLimit + ' touch points — this route has ' + tpN + '. Pick a larger vehicle or reduce touch points.', fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' });
-    if (ncFlags.vehicleType && vehMatch && (vehMatch.feas || ['RLH']).indexOf('RLH') < 0) ncWarn.push({ lead: 'Error', text: vehMatch.name + ' is not RLH-feasible — choose a vehicle enabled for RLH.', fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' });
-    // #6 — DC-in->1-route (failure): the flagged route code must not collide with another route in this plan.
     const ncPlan = st.ncRow ? d.plans.find(p => p.id === st.ncRow.planId) : null;
     const ncRowObj = (ncPlan && st.ncRow) ? ncPlan.rows[st.ncRow.idx] : null;
     const ncOtherCodes = (ncPlan && st.ncRow) ? ncPlan.rows.filter((r, i) => i !== st.ncRow.idx).map(r => r.routeCode) : [];
-    // Per-DC (node) feedback list for the open route — each DC can be flagged for lat/long + touch-point-order changes.
     const ncDcMap = st.ncDcCells || {};
-    const ncDcList = ncRowObj ? this.genDcRows(ncRowObj).map(dc => { const on = !!ncDcMap[dc.code]; const v = ncDcMap[dc.code] || {}; return {
-      code: dc.code, name: dc.name, curLat: (dc.lat != null ? String(dc.lat) : '—'), curLng: (dc.lng != null ? String(dc.lng) : '—'), curTp: String(dc.tpOrder != null ? dc.tpOrder : ''),
+    const ncRouteCodeOptions = [{ value: '', label: 'Keep on this route' }]
+      .concat(ncOtherCodes.map(code => ({ value: code, label: 'Move to ' + code })))
+      .concat([{ value: '__SPLIT__', label: 'Split this route \u2192 new route' }]);
+    const ncDcList = ncRowObj ? this.genDcRows(ncRowObj).map(dc => { const on = !!ncDcMap[dc.code]; const v = ncDcMap[dc.code] || {}; const isSplitTarget = !!v.routeCode && v.routeCode === st.ncSplitCode; return {
+      code: dc.code, name: dc.name, curLat: (dc.lat != null ? String(dc.lat) : '—'), curLng: (dc.lng != null ? String(dc.lng) : '—'), curTp: String(dc.tpOrder != null ? dc.tpOrder : ''), curDist: String(dc.dist || '—').replace(' km', ''),
       flagged: on, notFlagged: !on,
-      latVal: v.lat || '', lngVal: v.lng || '', tpVal: v.tp || '',
+      latVal: v.lat || '', lngVal: v.lng || '', tpVal: v.tp || '', distVal: v.distance || '', routeCodeVal: v.routeCode || '',
+      isSplitTarget, splitVehicleVal: st.ncSplitVehicle || '',
+      routeCodeOptions: ncRouteCodeOptions.map(o => ({ value: o.value, label: o.label, selected: o.value === (v.routeCode === st.ncSplitCode ? '__SPLIT__' : (v.routeCode || '')) })),
       toggleBg: on ? '#C77B00' : '#fff', toggleFg: on ? '#fff' : '#5A5E66', toggleBd: on ? '#C77B00' : '#E6EBF2', toggleLabel: on ? 'Flagged' : 'Flag DC',
       onToggle: () => this.toggleNcDc(dc.code, {}), // start empty — current values shown as placeholders; only edited fields become changes
       onLat: (e) => this.setNcDc(dc.code, 'lat', e.target.value), onLng: (e) => this.setNcDc(dc.code, 'lng', e.target.value), onTp: (e) => this.setNcDc(dc.code, 'tp', e.target.value),
+      onDist: (e) => this.setNcDc(dc.code, 'distance', e.target.value),
+      onRouteCode: (e) => this.setNcDcRouteCode(dc.code, e.target.value),
+      onSplitVehicle: (e) => this.setState({ ncSplitVehicle: e.target.value }),
     }; }) : [];
     const ncDcFlaggedCount = Object.keys(ncDcMap).length;
-    // A3 — on a within-plan collision, suggest the next free code (SC prefix + next unused number). Cross-plan reuse is legitimate (a re-run of the same SC reuses codes), so we only guard within the plan.
-    const ncCodePrefix = (ncRowObj && ncRowObj.routeCode) ? String(ncRowObj.routeCode).replace(/\d+$/, '') : '';
-    const ncUsedNums = ncOtherCodes.map(x => parseInt(String(x).replace(/^\D+/, ''), 10)).filter(n => !isNaN(n));
-    const ncSuggestCode = ncCodePrefix ? (ncCodePrefix + String((ncUsedNums.length ? Math.max.apply(null, ncUsedNums) : 0) + 1).padStart(2, '0')) : '';
-    if (ncFlags.routeCode && c.routeCode && ncOtherCodes.indexOf(c.routeCode) >= 0) ncWarn.push({ lead: 'Error', text: 'Route code “' + c.routeCode + '” is already used by another route — a DC can’t be served by two routes.' + (ncSuggestCode ? ' Try “' + ncSuggestCode + '”.' : ' Use a unique code.'), fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' });
-    // #6 — TP-sequence (failure): the flagged touch-point count must be a whole number within the route's stop count.
-    const ncDcCount = (ncRowObj && ncRowObj.dcs) ? ncRowObj.dcs.length : 0;
-    // B2 — the max touch point is the route's stop count; fall back to the route's TP so the cap can never be skipped (empty dcs bug).
-    const ncTpMax = ncDcCount || (ncRowObj ? (Number(ncRowObj.tp) || 0) : 0);
-    if (ncFlags.touchpoint && c.touchpoint !== '' && c.touchpoint != null && (!Number.isInteger(tpN) || tpN < 1 || (ncTpMax && tpN > ncTpMax))) ncWarn.push({ lead: 'Error', text: 'Touch-point sequence invalid — enter a whole number between 1 and ' + (ncTpMax || tpN) + ' for this route.', fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' });
+    const ncSplitVehiclePicked = !st.ncSplitCode || !!(st.ncSplitVehicle && st.ncSplitVehicle.trim());
+    // Live validation: run the SAME recompute engine Validate/Simulate use, against a draft that
+    // merges this in-progress edit with every other row's already-effective feedback, so the modal's
+    // warnings/errors are never a separate, drifting copy of the real validation logic.
+    const ncWarn = [];
+    if (ncPlan && ncRowObj) {
+      const draftDcCells = {}; Object.keys(ncDcMap).forEach(code => { const v = ncDcMap[code]; const e = {}; if (v.lat !== '') e.lat = v.lat; if (v.lng !== '') e.lng = v.lng; if (v.tp !== '') e.tp = v.tp; if (v.distance !== '') e.distance = v.distance; if (v.routeCode) { e.routeCode = v.routeCode; if (v.routeCode === st.ncSplitCode) e.splitVehicle = st.ncSplitVehicle || ncRowObj.veh; } if (Object.keys(e).length) draftDcCells[code] = e; });
+      const draftCells = {}; if (ncFlags.vehicleType) draftCells.vehicleType = { from: ncRowObj.veh, to: c.vehicleType || ncRowObj.veh };
+      const mergedFb = this.effectiveFbFor(ncPlan);
+      mergedFb[st.ncRow.idx] = { cells: draftCells, dcCells: draftDcCells };
+      const hyp = this.computeHypotheticalPlan(ncPlan, mergedFb);
+      // surface only the errors/warnings that touch THIS route or its split target (the modal is
+      // scoped to one route at a time; unrelated pre-existing issues elsewhere don't belong here)
+      const relevantCode = (t) => t.indexOf(ncRowObj.routeCode) >= 0 || (st.ncSplitCode && t.indexOf(st.ncSplitCode) >= 0);
+      hyp.errors.filter(e => relevantCode(e.t)).forEach(e => ncWarn.push({ lead: 'Error', text: e.t, fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' }));
+      hyp.warnings.filter(w => relevantCode(w.t)).forEach(w => ncWarn.push({ lead: 'Warning', text: w.t, fail: false, bg: '#FBF1DF', accentBd: '0', fg: '#C77B00', textFg: '#C77B00' }));
+      if (!ncSplitVehiclePicked) ncWarn.push({ lead: 'Error', text: 'Pick a vehicle type for the new split route before submitting.', fail: true, bg: '#FAFBFD', accentBd: '3px solid #D14B4B', fg: '#D14B4B', textFg: '#5A5E66' });
+    }
     const ncHasFail = ncWarn.some(w => w.fail);
     const ncRemarkFilled = !!(st.ncRemark || '').trim();  // §4 — remark is mandatory before an Ops-Lead can flag a change
     const ncRowCode = st.ncRow ? d.plans.find(p => p.id === st.ncRow.planId).rows[st.ncRow.idx].routeCode : '';
@@ -6119,59 +6427,45 @@ class NDCApp extends React.Component {
     const alignAllPlan = st.alignAllPlanId ? d.plans.find(p => p.id === st.alignAllPlanId) : null;
     const alignAllPending = alignAllPlan ? alignAllPlan.rows.filter((r, i) => { const dec = (st.opsRowDec[alignAllPlan.id] || {})[i] || 'Pending'; return dec !== 'Needs Change' && dec !== 'Aligned'; }).length : 0;
 
-    // Plan-level Simulate impact (Ops Lead) — aggregates over all Needs Change rows for this plan.
-    // Gates on ≥1 NC row (submitted or not). Reuses the same nudge math as the old per-NC-modal sim,
-    // but scoped to the whole plan's metrics object + a count-weighted nudge.
+    // Plan-level Simulate impact (Ops Lead) — real recompute (2026-07-09), not an approximation.
+    // Merges every reviewer's already-submitted + this session's in-progress feedback (see
+    // effectiveFbFor), builds the hypothetical reordered structure, and reads real distance/cost/CPS
+    // off it. Gated on Validate returning zero errors (warnings are fine) — see canOpsSim below.
     const opsPlan = plan; // the currently selected plan in the Ops Lead view
     const opsNcRows = opsPlan ? opsPlan.rows.filter(r => { const dec = (st.opsRowDec[opsPlan.id] || {})[opsPlan.rows.indexOf(r)]; return dec === 'Needs Change' || r.ops === 'Needs Change'; }) : [];
-    const canOpsSim = opsNcRows.length > 0;
+    const opsMergedFb = opsPlan ? this.effectiveFbFor(opsPlan) : {};
+    const opsHyp = opsPlan ? this.computeHypotheticalPlan(opsPlan, opsMergedFb) : null;
+    const canOpsSim = opsNcRows.length > 0 && !!opsHyp && !opsHyp.hasErrors;
     let opsSimRows = [];
     if (canOpsSim && opsPlan) {
       const m = opsPlan.metrics;
-      // Aggregate nudge: each flagged row contributes a fraction of the per-row nudge.
-      const nFlagged = opsNcRows.length;
-      const rowFraction = Math.min(1, nFlagged / Math.max(1, opsPlan.rows.length));
-      // Nudge magnitudes scaled by how many rows have feedback (more feedback → larger deviation).
-      const vehNudge  = rowFraction * 0.055;
-      const distNudge = rowFraction * 0.038;
-      const tpNudge   = rowFraction * 0.022;
       const pct2 = (v) => v.toFixed(1) + '%';
       const fmtDist2 = (v) => v.toLocaleString('en-IN') + ' km';
       const deltaColor2 = (dd) => dd < 0 ? '#128A3E' : dd > 0 ? '#D14B4B' : '#5A5E66';
       const deltaSign2 = (dd, decimals) => (dd === 0 ? '—' : (dd > 0 ? '+' : '') + (decimals !== undefined ? dd.toFixed(decimals) : dd));
-      const pRoutes2   = Math.max(1, Math.round(m.routes   * (1 - tpNudge * 0.5 + vehNudge * 0.3)));
-      const pVehicles2 = Math.max(1, Math.round(m.vehicles * (1 - vehNudge)));
-      const pUtil2     = Math.min(99, +(m.util + vehNudge * 58 + distNudge * 29).toFixed(1));
-      const pDistance2 = Math.max(1, Math.round(m.distance * (1 - distNudge * 0.5 + vehNudge * 0.04)));
-      const pAvgTat2   = +(m.avgTat + vehNudge * 5.5 - tpNudge * 9).toFixed(1);
-      const pCps2      = +(m.cps * (1 - distNudge * 0.4 + vehNudge * 0.15)).toFixed(2);
-      const dRoutes2   = pRoutes2   - m.routes;
-      const dVehicles2 = pVehicles2 - m.vehicles;
-      const dUtil2     = +(pUtil2   - m.util).toFixed(1);
-      const dDist2     = pDistance2 - m.distance;
-      const dTat2      = +(pAvgTat2  - m.avgTat).toFixed(1);
-      const dCps2      = +(pCps2     - m.cps).toFixed(2);
+      const newDistance = opsHyp.routes.reduce((a, r) => a + r.distance, 0);
+      const newVehicles = opsHyp.routes.length;
+      const dVehicles2 = newVehicles - m.vehicles;
+      const dDist2 = +(newDistance - m.distance).toFixed(0);
+      const dCps2 = +(opsHyp.scCPS - opsHyp.originalScCPS).toFixed(2);
       opsSimRows = [
-        { metric: 'Routes',         original: String(m.routes),            proposed: String(pRoutes2),             delta: deltaSign2(dRoutes2),               deltaColor: deltaColor2(dRoutes2)   },
-        { metric: 'Vehicles',       original: String(m.vehicles),          proposed: String(pVehicles2),           delta: deltaSign2(dVehicles2),             deltaColor: deltaColor2(dVehicles2) },
-        { metric: 'Utilisation %',  original: pct2(m.util),                proposed: pct2(pUtil2),                 delta: deltaSign2(dUtil2, 1) + '%',         deltaColor: deltaColor2(-dUtil2)    },
-        { metric: 'Total Distance', original: fmtDist2(m.distance),        proposed: fmtDist2(pDistance2),         delta: deltaSign2(dDist2, 0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + ' km', deltaColor: deltaColor2(dDist2) },
-        { metric: 'CPS (est.)',     original: '₹' + m.cps.toFixed(2), proposed: '₹' + pCps2.toFixed(2), delta: deltaSign2(dCps2, 2),                deltaColor: deltaColor2(dCps2)      },
+        { metric: 'Routes',         original: String(m.routes),            proposed: String(opsHyp.routes.length), delta: deltaSign2(opsHyp.routes.length - m.routes), deltaColor: deltaColor2(opsHyp.routes.length - m.routes) },
+        { metric: 'Vehicles',       original: String(m.vehicles),          proposed: String(newVehicles),          delta: deltaSign2(dVehicles2),             deltaColor: deltaColor2(dVehicles2) },
+        { metric: 'Total Distance', original: fmtDist2(m.distance),        proposed: fmtDist2(newDistance),        delta: deltaSign2(dDist2, 0).replace(/(\d)(?=(\d{3})+$)/g, '$1,') + ' km', deltaColor: deltaColor2(dDist2) },
+        { metric: 'SC CPS',         original: '₹' + opsHyp.originalScCPS.toFixed(2), proposed: '₹' + opsHyp.scCPS.toFixed(2), delta: deltaSign2(dCps2, 2), deltaColor: deltaColor2(dCps2) },
       ];
     }
-    // C — headwind callout for ops side: CPS delta as signed % for negotiation framing.
+    // Headwind callout — real CPS delta, SC-level, as a signed % for negotiation framing.
     let opsSimCpsHeadwind = 0, opsSimHeadwindPositive = false, opsSimHeadwindLabel = '', opsSimHeadwindColor = '#128A3E', opsSimHeadwindBg = '#E7F4EC', opsSimHeadwindBd = '#B6E0C6';
     if (canOpsSim && opsPlan) {
-      const opsCpsOrig = opsPlan.metrics.cps;
-      const opsPCps = +(opsCpsOrig * (1 - (Math.min(1, opsNcRows.length / Math.max(1, opsPlan.rows.length)) * 0.038) * 0.4 + (Math.min(1, opsNcRows.length / Math.max(1, opsPlan.rows.length)) * 0.055) * 0.15)).toFixed(2);
-      const opsCpsDelta = +(opsPCps - opsCpsOrig).toFixed(2);
-      opsSimCpsHeadwind = opsCpsOrig > 0 ? +(opsCpsDelta / opsCpsOrig * 100).toFixed(1) : 0;
+      const opsCpsOrig = opsHyp.originalScCPS;
+      opsSimCpsHeadwind = opsCpsOrig > 0 ? +((opsHyp.scCPS - opsCpsOrig) / opsCpsOrig * 100).toFixed(1) : 0;
       opsSimHeadwindPositive = opsSimCpsHeadwind > 0;
       opsSimHeadwindLabel = opsSimCpsHeadwind > 0
-        ? 'These changes raise CPS by +' + opsSimCpsHeadwind + '% vs the published design — negotiate before accepting.'
+        ? 'These changes raise SC CPS by +' + opsSimCpsHeadwind + '% vs the published design — negotiate before accepting.'
         : opsSimCpsHeadwind < 0
-          ? 'These changes improve CPS by ' + opsSimCpsHeadwind + '% vs the published design.'
-          : 'No CPS impact from these changes vs the published design.';
+          ? 'These changes improve SC CPS by ' + opsSimCpsHeadwind + '% vs the published design.'
+          : 'No SC CPS impact from these changes vs the published design.';
       opsSimHeadwindColor = opsSimCpsHeadwind > 0 ? '#C77B00' : '#128A3E';
       opsSimHeadwindBg = opsSimCpsHeadwind > 0 ? '#FBF1DF' : '#E7F4EC';
       opsSimHeadwindBd = opsSimCpsHeadwind > 0 ? '#F0DBA8' : '#B6E0C6';
@@ -6221,39 +6515,35 @@ class NDCApp extends React.Component {
       const opsSimCards = (() => {
         if (!canOpsSim || !opsPlan) return [];
         const m2 = opsPlan.metrics;
-        const nF = opsNcRows.length;
-        const rf = Math.min(1, nF / Math.max(1, opsPlan.rows.length));
-        const pV2 = Math.max(1, Math.round(m2.vehicles * (1 - rf * 0.055)));
-        const pD2 = Math.max(1, Math.round(m2.distance * (1 - rf * 0.038 * 0.5 + rf * 0.055 * 0.04)));
-        const pC2 = +(m2.cps * (1 - rf * 0.038 * 0.4 + rf * 0.055 * 0.15)).toFixed(2);
+        const newDistance2 = opsHyp.routes.reduce((a, r) => a + r.distance, 0);
         const mkCard = (label, origRaw, propRaw, fmt) => {
           const changed = origRaw !== propRaw;
           return { label, origVal: fmt(origRaw), propVal: fmt(propRaw), cardBd: changed ? '2px solid #C77B00' : '1px solid #E6EBF2', suggestedLabel: changed ? 'Suggested change' : 'Suggested', suggestedLabelFg: changed ? '#C77B00' : '#8E96A3', propFg: changed ? '#C77B00' : '#5A5E66' };
         };
         return [
-          mkCard('Total Vehicles', m2.vehicles, pV2, v => String(v)),
-          mkCard('Total Distance (km)', m2.distance, pD2, v => v.toLocaleString('en-IN')),
-          mkCard('Avg CPS (₹)', +m2.cps.toFixed(2), pC2, v => '₹' + v.toFixed(2)),
+          mkCard('Total Routes', m2.routes, opsHyp.routes.length, v => String(v)),
+          mkCard('Total Distance (km)', m2.distance, +newDistance2.toFixed(0), v => v.toLocaleString('en-IN')),
+          mkCard('SC CPS (₹)', +opsHyp.originalScCPS.toFixed(2), +opsHyp.scCPS.toFixed(2), v => '₹' + v.toFixed(2)),
         ];
       })();
-      // Section 2: route-level rows for ops
+      // Section 2: per-route reference — kept as the ORIGINAL structure with a status indicator only.
+      // A true per-route proposed-CPS column isn't shown here because routes can split/merge under
+      // feedback, so "this original route's new CPS" isn't always a well-defined 1:1 mapping — the
+      // SC-level card above is the real number; this table is just "what's touched, and why".
       const opsSimRouteRows = opsPlan ? opsPlan.rows.map((r, ri) => {
-        const decVal = (st.opsRowDec[opsPlan.id] || {})[ri];
-        const isChanged = decVal === 'Needs Change' || r.ops === 'Needs Change';
-        const fbCells = r.fb ? r.fb.cells : {};
+        const fbEff = opsMergedFb[ri];
+        const isChanged = !!fbEff;
+        const fbCells = fbEff ? fbEff.cells : {};
         const origVeh = r.veh;
-        const propVeh = (fbCells.vehicleType && fbCells.vehicleType.to) ? String(fbCells.vehicleType.to) : origVeh;
+        const propVeh = (fbCells && fbCells.vehicleType && fbCells.vehicleType.to) ? String(fbCells.vehicleType.to) : origVeh;
         const vehChanged = propVeh !== origVeh;
-        const origCpsVal = +Number(r.cps).toFixed(2);
-        const nF = opsNcRows.length; const rfR = Math.min(1, nF / Math.max(1, opsPlan.rows.length));
-        const propCpsVal = isChanged ? +(origCpsVal * (1 - rfR * 0.038 * 0.4 + rfR * 0.055 * 0.15)).toFixed(2) : origCpsVal;
-        const cpsChanged = isChanged && Math.abs(propCpsVal - origCpsVal) >= 0.01;
-        const note = r.fb ? (r.fb.remark || '—') : '—';
+        const dcMoveCount = fbEff && fbEff.dcCells ? Object.keys(fbEff.dcCells).filter(c => fbEff.dcCells[c].routeCode).length : 0;
+        const note = fbEff ? (fbEff.remark || '—') : '—';
         const osVehRecord = (d.VEH || []).find(v => v.name === origVeh) || {};
         const osCapVal = osVehRecord.cap ? fmtInt(osVehRecord.cap) : '—';
         const osVolVal = r.volume != null ? fmtInt(r.volume) : '—';
         const osUtilVal = r.util != null ? Math.round(r.util * 100) + '%' : '—';
-        return { routeCode: r.routeCode, origVeh, propVeh, vehChanged, vehUnchanged: !vehChanged, countDisp: String(r.dcs ? r.dcs.length : r.tp || 1), distDisp: r.rtDist + ' km', origCps: '₹' + origCpsVal.toFixed(2), propCps: '₹' + propCpsVal.toFixed(2), cpsChanged, cpsUnchanged: !cpsChanged, note, isChanged, isNoChange: !isChanged, rowBg: isChanged ? '#FFFBF2' : '#fff', vol: osVolVal, util: osUtilVal, cap: osCapVal };
+        return { routeCode: r.routeCode, origVeh, propVeh, vehChanged, vehUnchanged: !vehChanged, countDisp: String(r.dcs ? r.dcs.length : r.tp || 1), distDisp: r.rtDist + ' km', origCps: '₹' + Number(r.cps).toFixed(2), dcMoveCount, hasDcMoves: dcMoveCount > 0, note, isChanged, isNoChange: !isChanged, rowBg: isChanged ? '#FFFBF2' : '#fff', vol: osVolVal, util: osUtilVal, cap: osCapVal };
       }) : [];
       // Section 3: filter state
       const opsSmOrigSearch = st.opsSmOrigSearch || '';
