@@ -449,6 +449,12 @@ function View(B, self) {
 {(mastersTabs || []).map((m, __i14) => (<React.Fragment key={__i14}><button onClick={m.onClick} style={css(`display:flex; align-items:center; gap:7px; padding:6px 12px; border:1px solid ${m.bd}; background:${m.bg}; border-radius:8px; cursor:pointer; font-family:inherit; font-size:12px; font-weight:${m.weight}; color:${m.color};`)}>{m.label}<span className={"ndc-tip"} style={css(`position:relative; display:inline-flex; align-items:center; opacity:0.7;`)}><svg width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"} strokeLinecap={"round"} strokeLinejoin={"round"}><path d={"M12 16v-4M12 8h.01M12 21a9 9 0 100-18 9 9 0 000 18z"} /></svg><span className={"ndc-tip-pop"}>{m.tip}</span></span></button></React.Fragment>))}
 </div>
 {(isScMaster) ? (<>
+<div style={css(`display:flex; align-items:center; gap:14px; padding:15px 18px; background:#fff; border:1px solid #E6EBF2; border-radius:8px; margin-bottom:16px;`)}>
+<div style={css(`width:38px; height:38px; border-radius:8px; background:#EAEEFB; display:flex; align-items:center; justify-content:center; flex-shrink:0;`)}><svg width={"19"} height={"19"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#003F98"} strokeWidth={"1.6"}><path d={"M7 3h7l5 5v12a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1zM14 3v5h5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></div>
+<div style={css(`flex:1; min-width:0;`)}><div style={css(`font-size:13.5px; font-weight:700; color:#14171F;`)}>Bulk Upload — Sort Centre Master</div><div style={css(`font-size:11.5px; color:#5A5E66;`)}>One row per Sort Centre · upload replaces all prior records</div></div>
+<button onClick={scMasterTemplate} style={css(`display:inline-flex; align-items:center; gap:6px; height:34px; padding:0 13px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#C3C9D4;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:6px; height:34px; padding:0 13px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `border-color:#C3C9D4;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M12 4v12M7 11l5 5 5-5M5 20h14"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Template</button>
+<button onClick={uploadFile} style={css(`display:inline-flex; align-items:center; gap:6px; height:34px; padding:0 14px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:6px; height:34px; padding:0 14px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}>Upload CSV</button>
+</div>
 <div style={css(`display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:13px;`)}>
 <div style={css(`display:flex; align-items:center; gap:7px; height:36px; padding:0 11px; border:1px solid #E6EBF2; border-radius:8px; background:#fff;`)}>
 <svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#5A5E66"} strokeWidth={"1.8"}><path d={"M11 4a7 7 0 105 12 7 7 0 00-5-12zM21 21l-4.5-4.5"} strokeLinecap={"round"} /></svg>
@@ -1879,35 +1885,25 @@ function View(B, self) {
 {/* Route View (Pivot at Route) — default */}
 {(reviewDetail.isRouteView) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1200px;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; background:#E6EBF2;`)}>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FREQ</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DIST (KM)</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CPS</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TPs</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTIL</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAP</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT / LONG</div>
+<div style={css(`min-width:820px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT OF NODES</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL VOLUME</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL DISTANCE (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTILISATION</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAPACITY</div>
 </div>
 {(reviewDetail.routeRows || []).map((r, __i67) => (<React.Fragment key={__i67}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.lmdc}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.segment}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.count}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{r.freq}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.segment}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
-<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
-<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;`)}>{r.latLng}</div>
 </div>
 </React.Fragment>))}
 </div>
@@ -2202,35 +2198,25 @@ function View(B, self) {
 {/* ROUTE VIEW — read-only pivot, one row per route, same layout as Design Review / Ops Lead. */}
 {(aSel.secRoute) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1200px;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; background:#E6EBF2;`)}>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FREQ</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DIST (KM)</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CPS</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TPs</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTIL</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAP</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT / LONG</div>
+<div style={css(`min-width:820px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT OF NODES</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL VOLUME</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL DISTANCE (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTILISATION</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAPACITY</div>
 </div>
 {(aSel.routeViewRows || []).map((r, __i101) => (<React.Fragment key={__i101}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.lmdc}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.segment}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.count}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{r.freq}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.segment}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
-<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
-<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;`)}>{r.latLng}</div>
 </div>
 </React.Fragment>))}
 </div>
@@ -2664,35 +2650,25 @@ function View(B, self) {
 </div>
 </div>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1200px;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; background:#E6EBF2;`)}>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FREQ</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DIST (KM)</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CPS</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TPs</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTIL</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAP</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT / LONG</div>
+<div style={css(`min-width:820px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT OF NODES</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL VOLUME</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL DISTANCE (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTILISATION</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAPACITY</div>
 </div>
 {(oSel.routeViewRows || []).map((r, __i101) => (<React.Fragment key={__i101}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1fr 0.95fr 0.85fr 0.5fr 0.7fr 0.7fr 0.7fr 0.5fr 0.6fr 0.65fr 0.65fr 0.95fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.lmdc}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.segment}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.count}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{r.freq}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.segment}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
-<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
-<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;`)}>{r.latLng}</div>
 </div>
 </React.Fragment>))}
 </div>
@@ -4586,6 +4562,7 @@ class NDCApp extends React.Component {
       addVehBtnBg: addVehValid ? '#003F98' : '#E6EBF2', addVehBtnFg: addVehValid ? '#fff' : '#8E96A3', addVehBtnCursor: addVehValid ? 'pointer' : 'not-allowed',
       closeAddVeh: () => this.setState({ addVehOpen: false, addVehForm: {}, addVehEditName: null }),
       submitAddVeh: () => this.submitAddVeh(),      availTemplate: () => this.downloadTemplate('SC Vehicle Availability', [{ k: 'SC Code' }, { k: 'Vehicle Type' }, { k: 'Available Count' }, { k: 'Zone Feasibility' }]),
+      scMasterTemplate: () => this.downloadTemplate('Sort Centre Master', [{ k: 'SC Code' }, { k: 'Name' }, { k: 'City' }, { k: 'State' }, { k: 'SC Type' }, { k: 'Zone' }, { k: 'Volume Capacity' }, { k: 'Sort Capacity' }, { k: 'NLH Docks' }, { k: 'RLH Docks' }, { k: 'Local TP Limit' }, { k: 'Non-Local TP Limit' }, { k: 'Open Time' }, { k: 'Close Time' }, { k: 'Ops Leads' }]),
       changesTemplate: () => this.downloadTemplate('Node Changes', [{ k: 'Change Type' }, { k: 'DC Code' }, { k: 'DC Name' }, { k: 'SC Code' }, { k: 'From SC' }, { k: 'To SC' }, { k: 'Zone' }, { k: 'Capacity' }, { k: 'Reason' }]),
       nodeChangeUploadedBy: st.nodeChangeBy || 'Shashvat Jain', nodeChangeUploadedDate: st.nodeChangeDate || '10 Jul · 11:24', uploadNodeChanges: () => this.uploadNodeChanges(),
       ingestTemplate: () => this.downloadTemplate('RLH Plan Ingestion', [{ k: 'SC Code' }, { k: 'Route Code' }, { k: 'Vehicle Type' }, { k: 'Touch Points' }, { k: 'Round-Trip Distance' }, { k: 'Out Cutoff' }]),
@@ -5652,15 +5629,20 @@ class NDCApp extends React.Component {
       const locked = ps === 'Acknowledged' || ps === 'Finalised';
       const FIELD = { vehicleType: 'Vehicle Type' }; // route-level cells only ever carry vehicleType now (2026-07-09) — routeCode/distance/touchpoint moved to dcCells
       const rows = plan.rows.map((r, idx) => {
-        const needsAttn = r.ops === 'Needs Change';
+        // 2026-07-10 — a plan still Pushed (pending feedback) must never show a flagged change to the
+        // Planner, even if a row carries co-reviewer-visibility demo data (r.ops/r.fb seeded for the
+        // Ops Lead side's "see what another reviewer already proposed" demo, see buildSeed()'s
+        // demoPushed block). Feedback only becomes visible to the Planner once it's actually "in."
+        const needsAttn = ps !== 'Pushed' && r.ops === 'Needs Change';
         const manualDec = (st.alignDecisions[plan.id] && st.alignDecisions[plan.id][idx]) || null;
         // A6 — deterministic per-row CPS delta of the proposed change; |Δ| <= 0.5% auto-approves (planner can still override by rejecting).
         const cpsDeltaPct = needsAttn ? ((((idx * 37 + Math.round(r.rtDist)) % 21) - 10) / 10) : 0;
         const autoApprovable = false; // auto-accept flow removed (2026-07-06) — every flagged change needs an explicit Accept/Reject
         const dec = manualDec || (autoApprovable ? 'Accept' : r.planner);
-        const cells = r.fb ? Object.keys(r.fb.cells || {}).map(k => ({ key: k, field: FIELD[k] || k, from: String(r.fb.cells[k].from), to: String(r.fb.cells[k].to) })).filter(c => c.from !== c.to) : [];
+        const effFb = (ps !== 'Pushed') ? r.fb : null; // pending-feedback plans show nothing flagged to the Planner, regardless of any co-reviewer-visibility demo data on the row
+        const cells = effFb ? Object.keys(effFb.cells || {}).map(k => ({ key: k, field: FIELD[k] || k, from: String(effFb.cells[k].from), to: String(effFb.cells[k].to) })).filter(c => c.from !== c.to) : [];
         // Per-DC (node-level) changes flagged by the Ops Lead — summarised as one chip per DC (which fields changed).
-        const dcCellsObj = (r.fb && r.fb.dcCells) ? r.fb.dcCells : {};
+        const dcCellsObj = (effFb && effFb.dcCells) ? effFb.dcCells : {};
         // which route-context attributes carry a flagged change (to highlight them inline in the meta line)
         const mlVehChg = cells.some(c => c.key === 'vehicleType');
         const mlTpChg = Object.keys(dcCellsObj).some(code => dcCellsObj[code].tp != null);
@@ -5668,10 +5650,10 @@ class NDCApp extends React.Component {
         const dcChips = Object.keys(dcCellsObj).map(code => { const e = dcCellsObj[code] || {}; const parts = []; if (e.lat != null) parts.push('lat'); if (e.lng != null) parts.push('lng'); if (e.tp != null) parts.push('TP'); if (e.distance != null) parts.push('dist'); if (e.routeCode) parts.push('route→' + e.routeCode); return { code: code, fields: parts.join(' · ') }; });
         const km = needsAttn ? -(Math.round(r.rtDist * 0.11) + 2) : 0;
         const cost = needsAttn ? -(Math.round(r.volume * 0.05)) : 0;
-        const op = { 'Aligned': { bg: '#E7F4EC', fg: '#128A3E' }, 'Needs Change': { bg: '#FBF1DF', fg: '#C77B00' } }[r.ops] || { bg: 'transparent', fg: '#C3C9D4' };
+        const op = { 'Aligned': { bg: '#E7F4EC', fg: '#128A3E' }, 'Needs Change': { bg: '#FBF1DF', fg: '#C77B00' } }[ps !== 'Pushed' ? r.ops : 'Pending'] || { bg: 'transparent', fg: '#C3C9D4' };
         const remark = (st.alignRemarks[plan.id] && st.alignRemarks[plan.id][idx] !== undefined) ? st.alignRemarks[plan.id][idx] : '';
         // §10 O2 — planner sees who proposed the change (fb.by stamped at submit, or the seeded proposer).
-        const propBy = (r.fb && r.fb.by) || r.proposedBy || null;
+        const propBy = (effFb && effFb.by) || (ps !== 'Pushed' ? r.proposedBy : null) || null;
         const aVehRecord = (d.VEH || []).find(v => v.name === r.veh) || {};
         const aCapVal = aVehRecord.cap ? fmtInt(aVehRecord.cap) : '—';
         const aVolVal = r.volume != null ? fmtInt(r.volume) : '—';
@@ -5769,7 +5751,7 @@ class NDCApp extends React.Component {
         const changeTotal = changeList.length;
         const changeDecidedCount = changeList.filter(c => c.decided).length;
         const allChangesDecided = changeTotal > 0 && changeDecidedCount === changeTotal;
-        return { idx, routeCode: r.routeCode, veh: r.veh, tp: r.tp, ops: r.ops, opsChip: (r.ops === 'Pending' ? '—' : r.ops), opsBg: op.bg, opsFg: op.fg, needsAttn, hasFb: !!r.fb, noFb: !r.fb, fbText: r.fb ? r.fb.remark : '', cells, dcChips, hasDcChips: dcChips.length > 0,
+        return { idx, routeCode: r.routeCode, veh: r.veh, tp: r.tp, ops: (ps !== 'Pushed' ? r.ops : 'Pending'), opsChip: (ps === 'Pushed' || r.ops === 'Pending') ? '—' : r.ops, opsBg: op.bg, opsFg: op.fg, needsAttn, hasFb: !!effFb, noFb: !effFb, fbText: effFb ? effFb.remark : '', cells, dcChips, hasDcChips: dcChips.length > 0,
           proposedBy: propBy, hasProposed: !!propBy, proposedLabel: propBy ? ('Proposed by ' + propBy) : '',
           autoApproved: autoApprovable, autoApprovedLabel: 'Auto-approved · ' + (cpsDeltaPct >= 0 ? '+' : '') + cpsDeltaPct.toFixed(1) + '% CPS',
           dcCount: r.dcs.length, rtDist: r.rtDist + ' km', cps: '₹' + Number(r.cps).toFixed(2), tat: r.breakdownTat + 'h',
@@ -7174,7 +7156,7 @@ class NDCApp extends React.Component {
         onRouteView: () => this.setState({ reviewDetailView: 'route' }),
         onDcView: () => this.setState({ reviewDetailView: 'dc' }),
         dcRows, hasDcRows: dcRows.length > 0,
-        onDownloadCsv: () => { const head = 'Route,First LMDC,Vehicle,Frequency,Distance (km),CPS,Touch Points,Utilisation\n'; const body = dRouteRows.map(r => [r.segment, r.lmdc, r.veh, r.freq, r.dist, String(r.cps || '').replace('₹', ''), r.tps, r.util].join(',')).join('\n'); this.downloadText(detailRun.runId + '-routes.csv', head + body); this.showToast('Route breakdown downloaded · ' + dRouteRows.length + ' routes', '#128A3E'); },
+        onDownloadCsv: () => { const head = 'Route Code,Count of Nodes,Total Volume,Total Distance (km),Vehicle Type,Utilisation,Capacity\n'; const body = dRouteRows.map(r => [r.segment, r.tps, r.vol, r.dist, r.veh, r.util, r.cap].join(',')).join('\n'); this.downloadText(detailRun.runId + '-routes.csv', head + body); this.showToast('Route breakdown downloaded · ' + dRouteRows.length + ' routes', '#128A3E'); },
         onMap: () => openRunMap(detailRun), close: () => this.setState({ reviewDetailRunId: null }),
         sections: [['details', 'Plan Detail'], ['route', 'Route View']].map(t => ({ label: t[1], active: rdt === t[0], color: rdt === t[0] ? '#003F98' : '#5A5E66', weight: rdt === t[0] ? '700' : '600', onClick: () => this.setState({ reviewDetailTab: t[0] }) })),
         secDetails: rdt === 'details', secRoute: rdt === 'route' };
@@ -7660,39 +7642,97 @@ class NDCApp extends React.Component {
   // geometry + this app's colour palette), scaled up to fill the screen via SVG viewBox rather than
   // re-deriving Network Map's own filter/search machinery from scratch.
   renderStandaloneMap() {
-    const d = this.state.data;
+    const e = React.createElement;
+    const st = this.state, d = st.data;
     const sc = d.scs.find(s => s.code === this.standaloneMapSc);
     const plan = d.plans.find(p => p.scCode === this.standaloneMapSc);
     if (!sc || !plan) {
-      return React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'Inter, sans-serif', color: '#5A5E66' } }, 'No plan found for ' + this.standaloneMapSc);
+      return e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', fontFamily: 'Inter, sans-serif', color: '#5A5E66' } }, 'No plan found for ' + this.standaloneMapSc);
     }
-    const srcRows = plan.rows.map(r => ({ id: r.routeCode, veh: r.veh, tpN: r.dcs.length, rtDist: r.rtDist }));
-    const mm = this.buildMiniMap(sc, srcRows, -1, '') || {};
-    const arcs = mm.origArcs || [];
-    const dcMarkers = mm.origDcMarkers || [];
-    const MW = mm.MW || 280, MH = mm.MH || 174;
-    return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: "'Inter', sans-serif", background: '#F4F5F8' } },
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 26px', background: '#fff', borderBottom: '1px solid #E6EBF2', flexShrink: 0 } },
-        React.createElement('div', { style: { width: '32px', height: '32px', borderRadius: '8px', background: '#003F98', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '13px', flexShrink: 0 } }, 'N'),
-        React.createElement('div', null,
-          React.createElement('div', { style: { fontSize: '15px', fontWeight: 700, color: '#14171F' } }, sc.code + ' · ' + sc.name),
-          React.createElement('div', { style: { fontSize: '11.5px', color: '#8E96A3' } }, 'Independent map view' + (this.standaloneMapMode ? ' · ' + this.standaloneMapMode : '') + ' — opened from a review tab; not a live mirror of unsaved edits there.')
+    const PALETTE = ['#6E82C4', '#6BA083', '#C6A06A', '#C88585', '#7EA3C9', '#9C8AC4', '#C892AC', '#72A39C', '#C99E74', '#96A6D6', '#9BA1AE', '#8FB185'];
+    const W = 760, H = 470, cx = W / 2, cy = H / 2, scale = 900;
+    const proj = (lat, lng) => ({ x: +(cx + (lng - sc.lng) * scale).toFixed(1), y: +(cy - (lat - sc.lat) * scale).toFixed(1) });
+    const scPt = proj(sc.lat, sc.lng);
+
+    // 2026-07-10 — the ONE change from the earlier version: node positions come from genDcRows(),
+    // the exact same source Design Review / Ops Lead / Planner's Details tab reads, instead of a
+    // second, separate synthetic scatter (what both buildMiniMap() and the main Network Map's own
+    // mapVals() do internally). A DC in this map is now the same DC, in the same place, as the one
+    // in whichever Details table sent you here.
+    const routes = plan.rows.map((r, ri) => {
+      const color = PALETTE[ri % PALETTE.length];
+      const dcs = this.genDcRows(r).map(dc => Object.assign({}, dc, proj(Number(dc.lat), Number(dc.lng))));
+      const pts = [scPt].concat(dcs).concat([scPt]); // round trip: SC -> DCs in TP order -> back to SC
+      let arcD = 'M' + pts[0].x + ',' + pts[0].y;
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)], t = 0.3;
+        arcD += ' C' + (p1.x + (p2.x - p0.x) * t).toFixed(1) + ',' + (p1.y + (p2.y - p0.y) * t).toFixed(1) + ' ' + (p2.x - (p3.x - p1.x) * t).toFixed(1) + ',' + (p2.y - (p3.y - p1.y) * t).toFixed(1) + ' ' + p2.x + ',' + p2.y;
+      }
+      return { id: r.routeCode, veh: r.veh, color, dcs, d: arcD, tpN: dcs.length, rtDist: r.rtDist };
+    });
+
+    const fRoute = st.standaloneMapRoute || 'All', fVeh = st.standaloneMapVeh || 'All', dcq = (st.standaloneMapSearch || '').toLowerCase();
+    const searchActive = dcq.length > 0;
+    let vis = routes.filter(rt => (fRoute === 'All' || rt.id === fRoute) && (fVeh === 'All' || rt.veh === fVeh));
+    if (searchActive) vis = vis.filter(rt => rt.dcs.some(dc => dc.code.toLowerCase().indexOf(dcq) >= 0 || dc.name.toLowerCase().indexOf(dcq) >= 0));
+
+    const routeOptions = ['All'].concat(routes.map(r => r.id));
+    const vehOptions = ['All'].concat(Array.from(new Set(routes.map(r => r.veh))));
+    const hasActiveFilters = fRoute !== 'All' || fVeh !== 'All' || searchActive;
+    const clearFilters = () => this.setState({ standaloneMapRoute: 'All', standaloneMapVeh: 'All', standaloneMapSearch: '' });
+
+    const dcMarkers = [];
+    vis.forEach(rt => rt.dcs.forEach(dc => dcMarkers.push({ x: dc.x, y: dc.y, color: rt.color, code: dc.code, name: dc.name, dimmed: searchActive && dcq && dc.code.toLowerCase().indexOf(dcq) < 0 && dc.name.toLowerCase().indexOf(dcq) < 0 })));
+
+    return e('div', { style: { display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: "'Inter', sans-serif", background: '#F4F5F8' } },
+      // header
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', padding: '13px 24px', background: '#fff', borderBottom: '1px solid #E6EBF2', flexShrink: 0 } },
+        e('div', { style: { width: '32px', height: '32px', borderRadius: '8px', background: '#003F98', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '13px', flexShrink: 0 } }, 'N'),
+        e('div', null,
+          e('div', { style: { fontSize: '14px', fontWeight: 700, color: '#14171F' } }, sc.code + ' · ' + sc.name),
+          e('div', { style: { fontSize: '11px', color: '#8E96A3' } }, 'Independent map view' + (this.standaloneMapMode ? ' · ' + this.standaloneMapMode : '') + ' — a read-only snapshot, not a live mirror of unsaved edits in the tab you opened this from.')
         ),
-        React.createElement('div', { style: { flex: 1 } }),
-        React.createElement('span', { style: { fontSize: '11.5px', color: '#5A5E66', background: '#F2F5FA', padding: '4px 10px', borderRadius: '999px' } }, plan.rows.length + ' routes')
+        e('div', { style: { flex: 1 } })
       ),
-      React.createElement('div', { style: { flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', minHeight: 0 } },
-        React.createElement('svg', { viewBox: '0 0 ' + MW + ' ' + MH, style: { width: '100%', height: '100%', maxWidth: '1400px' } },
-          arcs.map((a, i) => React.createElement('path', { key: 'arc' + i, d: a.d, fill: 'none', stroke: a.color, strokeWidth: 1.6, opacity: 0.85 })),
-          dcMarkers.map((m, i) => React.createElement('circle', { key: 'dc' + i, cx: m.x, cy: m.y, r: 2.6, fill: m.color || '#5A5E66' })),
-          React.createElement('circle', { cx: MW / 2, cy: MH / 2, r: 6, fill: '#003F98' }),
-          React.createElement('circle', { cx: MW / 2, cy: MH / 2, r: 9, fill: 'none', stroke: '#003F98', strokeWidth: 1, opacity: 0.4 })
+      // filter bar (same controls as Network Map: route, vehicle, search, clear)
+      e('div', { style: { display: 'flex', alignItems: 'center', gap: '11px', flexWrap: 'wrap', padding: '12px 24px', background: '#fff', borderBottom: '1px solid #E6EBF2', flexShrink: 0 } },
+        e('div', { style: { display: 'flex', alignItems: 'center', gap: '7px' } },
+          e('span', { style: { fontSize: '11.5px', color: '#5A5E66' } }, 'Route'),
+          e('select', { value: fRoute, onChange: (ev) => this.setState({ standaloneMapRoute: ev.target.value }), style: { height: '32px', padding: '0 9px', border: '1px solid #E6EBF2', borderRadius: '8px', fontFamily: 'inherit', fontSize: '12px', color: '#14171F', background: '#fff', cursor: 'pointer' } },
+            routeOptions.map((o, i) => e('option', { key: i, value: o }, o)))
+        ),
+        e('div', { style: { display: 'flex', alignItems: 'center', gap: '7px' } },
+          e('span', { style: { fontSize: '11.5px', color: '#5A5E66' } }, 'Vehicle'),
+          e('select', { value: fVeh, onChange: (ev) => this.setState({ standaloneMapVeh: ev.target.value }), style: { height: '32px', padding: '0 9px', border: '1px solid #E6EBF2', borderRadius: '8px', fontFamily: 'inherit', fontSize: '12px', color: '#14171F', background: '#fff', cursor: 'pointer' } },
+            vehOptions.map((o, i) => e('option', { key: i, value: o }, o)))
+        ),
+        e('div', { style: { display: 'flex', alignItems: 'center', gap: '7px', height: '32px', padding: '0 11px', border: '1px solid #E6EBF2', borderRadius: '8px', background: '#fff' } },
+          e('input', { value: st.standaloneMapSearch || '', onInput: (ev) => this.setState({ standaloneMapSearch: ev.target.value }), placeholder: 'Search LMDC…', style: { border: 'none', outline: 'none', fontFamily: 'inherit', fontSize: '12px', color: '#14171F', background: 'transparent', width: '130px' } })
+        ),
+        e('div', { style: { flex: 1 } }),
+        e('span', { style: { fontSize: '12px', color: '#5A5E66' } }, 'Showing ', e('strong', { style: { color: '#14171F' } }, vis.length), ' of ', routes.length, ' routes'),
+        hasActiveFilters ? e('button', { onClick: clearFilters, style: { height: '32px', padding: '0 12px', border: '1px solid #E6EBF2', background: '#fff', color: '#5A5E66', fontFamily: 'inherit', fontSize: '12px', fontWeight: 600, borderRadius: '8px', cursor: 'pointer' } }, 'Clear all') : null
+      ),
+      // map canvas
+      e('div', { style: { flex: 1, minHeight: 0, position: 'relative', background: '#F0F2EC', overflow: 'hidden' } },
+        e('svg', { viewBox: '0 0 ' + W + ' ' + H, style: { width: '100%', height: '100%' } },
+          e('rect', { x: 0, y: 0, width: W, height: H, fill: '#F0F2EC' }),
+          vis.map((rt, i) => e('path', { key: 'case' + i, d: rt.d, fill: 'none', stroke: '#fff', strokeWidth: 3.2, strokeLinecap: 'round', strokeLinejoin: 'round' })),
+          vis.map((rt, i) => e('path', { key: 'arc' + i, d: rt.d, fill: 'none', stroke: rt.color, strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', opacity: 0.92 })),
+          dcMarkers.map((m, i) => e('circle', { key: 'dc' + i, cx: m.x, cy: m.y, r: 3.4, fill: m.color, opacity: m.dimmed ? 0.25 : 1, stroke: '#fff', strokeWidth: 1 })),
+          e('circle', { cx: scPt.x, cy: scPt.y, r: 7, fill: '#0B1430' }),
+          e('circle', { cx: scPt.x, cy: scPt.y, r: 11, fill: 'none', stroke: '#0B1430', strokeWidth: 1, opacity: 0.35 })
+        ),
+        e('div', { style: { position: 'absolute', top: '12px', right: '14px', display: 'flex', alignItems: 'center', gap: '14px', fontSize: '11px', color: '#5A5E66', background: 'rgba(255,255,255,0.9)', padding: '6px 11px', borderRadius: '8px' } },
+          e('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px' } }, e('span', { style: { width: '11px', height: '11px', background: '#0B1430', display: 'inline-block' } }), sc.code + ' origin'),
+          e('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px' } }, e('span', { style: { width: '10px', height: '10px', borderRadius: '50%', background: '#5A5E66', display: 'inline-block' } }), 'LMDC delivery')
         )
       ),
-      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '10px', padding: '12px 26px', background: '#fff', borderTop: '1px solid #E6EBF2', flexShrink: 0 } },
-        plan.rows.map((r, i) => React.createElement('span', { key: 'leg' + i, style: { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#5A5E66' } },
-          React.createElement('span', { style: { width: '9px', height: '9px', borderRadius: '2px', background: (arcs[i] && arcs[i].color) || '#8E96A3', display: 'inline-block' } }),
-          r.routeCode + ' · ' + r.veh.split(/[/·]/)[0].trim()
+      // legend
+      e('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '12px', padding: '11px 24px', background: '#fff', borderTop: '1px solid #E6EBF2', flexShrink: 0, maxHeight: '84px', overflowY: 'auto' } },
+        vis.map((rt, i) => e('span', { key: 'leg' + i, style: { display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: '#5A5E66' } },
+          e('span', { style: { width: '9px', height: '9px', borderRadius: '2px', background: rt.color, display: 'inline-block' } }),
+          rt.id + ' · ' + rt.veh.split(/[/·]/)[0].trim() + ' · ' + rt.tpN + ' TPs'
         ))
       )
     );
