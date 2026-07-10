@@ -648,3 +648,155 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      Master didn't) — added the same Template/Upload CSV bar, with a
      dedicated `scMasterTemplate` handler covering the SC Master's own
      15 columns.
+- **2026-07-10, fourth pass** — three small-fix requests:
+  1. **Volume Inputs library only ever shows valid files.** Invalid
+     uploads (route through `pickVolFile`/`replaceVolFile`) are validated
+     immediately, same as before, but a failed validation no longer adds
+     a record to the library at all — only the error modal shows, the
+     file itself isn't persisted. Also added a defensive filter on
+     `allVol` so this holds regardless of source, catching two seeded
+     demo rows that had `validated:false`. The VALIDATION column is
+     removed from the table (nothing left to show there), and the Delete
+     action is removed from the row actions — files can no longer be
+     deleted once uploaded, only replaced.
+  2. **Vehicle TP limits: warn instead of block, everywhere.**
+     - Vehicle Master: setting an RLH-feasible vehicle's TP limit above 7
+       used to hard-block the save (`submitAddVeh`); now it saves and
+       shows a warning toast, plus a persistent "⚠ over 7 (RLH)" badge
+       on that row's Touch Point Limit cell going forward.
+     - SC Vehicle Availability and Design Creation Step 2: found this was
+       already mostly built (a `vmTp`/`exceeds` comparison against
+       Vehicle Master's configured TP already existed), but it was
+       styled and gated as a hard *error* (red, and — at the Design
+       Creation summary level — actually blocked plan triggering via
+       `sev:'danger'`). Split the "TP exceeds master" case out from the
+       (unrelated, and correctly still-blocking) "vehicle count exceeds
+       max" case: TP-over-master is now `sev:'warning'` (orange, doesn't
+       block triggering), count-over-max is untouched. Matches the
+       worked example directly: Vehicle Master's own TP field at 6 shows
+       no warning there (6 ≤ 7); a route configured at 8 TPs against that
+       same 6-limit type warns at Design Creation, compared against the
+       Master's 6, not a hardcoded 7.
+  3. **Guidelines popup on a fresh Design Creation start.** New
+     `showCreationGuidelines` flag, set whenever `go('creation')` fires
+     from a different view or `goCreateMore()` runs (both are genuine
+     "starting fresh" entry points — distinguished from the "resume to
+     fix a specific SC" flows elsewhere, which set a specific
+     `focusSC`/`fixReturnStep` and intentionally don't re-show this).
+     Modal lists the six guideline lines verbatim, dismissible via "Got
+     it" or the close icon, same visual pattern as the existing Push
+     modal.
+- **2026-07-10, fifth pass** — Ops Alignment tab, five requested fixes,
+  plus a zone-filter request from a screenshot. Discussed the approach
+  before building per the request; decisions below reflect what was
+  agreed (inline over modal for both validation results and the
+  Needs-Change diff view; TP reordering computed backend-only for now).
+  1. **Zone filters mirrored from Design Review onto both Ops Alignment
+     personas**, and **"Central" removed as a selectable option
+     everywhere** (Design Inputs, Design Creation, Network Map, Design
+     Review, the Add-SC form, and the Cycle Summary's zone breakdown).
+     Deliberately left untouched: the underlying SC-zone seed data and
+     Design Creation's SC-grouping array — removing "Central" there would
+     have made real Central-zone SCs (Raipur, Jabalpur, Gwalior, etc.)
+     disappear from selection entirely rather than just removing a
+     filter chip, which reads as a bigger, riskier change than "remove
+     the option."
+  2. **Submit is now gated on validation, not always visible.** Root
+     cause: `canSubmit: !planLocked` had zero relationship to validation
+     state. Fixed so Submit stays available immediately when nothing's
+     flagged, but requires the current proposed state to validate clean
+     (zero errors, derived fresh each render off the same engine
+     Validate uses — not a stateful "did they click Validate" flag)
+     once anything is.
+  3. **Validation results are now persistent and inline, not a 3.5s
+     toast.** Every error/warning `computeHypotheticalPlan` produces is
+     now tagged with the `routeCode` (and `dcCode` where relevant) it
+     belongs to. Validate sets a flag that reveals: (a) a small dismissible
+     summary next to the Validate button, and (b) the actual errors/
+     warnings inline in each affected route's group header in the
+     Details tab — both personas, same pattern.
+  4. **Re-opening Needs Change on an already-flagged route shows what
+     was actually proposed**, instead of a blank form (`openNc()`
+     previously reset unconditionally). Also upgraded the Ops Lead's own
+     Details tab to show the same original-struck-through → proposed
+     diff style the Planner sees (it previously just silently displayed
+     the overridden value with no visual distinction), with a per-field
+     revert icon so a change can be undone directly inline, not only by
+     reopening the modal. Available any time the plan isn't locked yet.
+  5. **Touch points auto-reorder on move, computed in the recompute
+     engine.** A DC's `tp` is now treated as insertion intent rather than
+     a literal final label: routes sort DCs by (tp, then "the just-edited
+     DC wins a tie" so an inserted node displaces whatever was already at
+     that slot), then reassign a clean 1..N sequence over the result.
+     This replaces the old "broken sequence" hard error entirely — there
+     no longer is a broken-sequence state, since a valid order is always
+     derived rather than demanded from raw input. Matches the Rt-2/Rt-4
+     example directly. Live in-modal preview of the reordering was
+     explicitly deferred; this is backend-only for now.
+  6. **Split routes persist as dropdown options going forward.** The
+     Route Code dropdown previously only listed `plan.rows` — a plan's
+     committed routes — so a split created in one session (e.g. RT-02_A)
+     never appeared for a different DC afterward. Now scans every route's
+     current effective feedback (submitted + in-progress) for any
+     routeCode not in `plan.rows` and offers those too, plan-wide, any
+     session.
+- **2026-07-10, sixth pass** — field-level decision granularity for the
+  Planner, discussed before building. Three explicit refinements folded
+  in per your follow-up.
+  1. **DC-level decisions are now per field, not bundled per DC.**
+     Route Code, Touch Point, Lat/Lng (decided together as one
+     "position" — splitting them wouldn't be meaningful), and Distance
+     each get their own independent Accept/Reject, right at that field's
+     cell in the Details table. `alignDcDecisions` changed shape from
+     `{ [dcCode]: 'Accept'|'Reject' }` to `{ [dcCode]: { [field]:
+     'Accept'|'Reject' } }` — touched `decideDcRow`, `enrichedDcRows`,
+     `changeList` (now pushes one entry per field instead of one bundled
+     entry per DC), `effectiveFbForFinalise` (filters per field), the
+     plan-level "all decided" rollup, and both `acceptRowChanges`
+     (per-route accept-all) and `decideAllFlagged` (plan-wide accept-all)
+     — the latter was still writing the old bundled shape and is now
+     fixed to match.
+  2. **Accept/Reject converted to tick/cross icon buttons** (small
+     circular ✓/✕, colour-filled on the current decision) everywhere a
+     decision is made — route-level vehicle change and all four per-field
+     DC-level controls — replacing the old "Accept"/"Reject" text
+     buttons, for the space reasons discussed.
+  3. **Lat/Lng added as real columns** to all three Details tables
+     (Design Review, Planner, Ops Lead) — previously absent even though
+     it's an editable Ops Feedback field and appears in the reference
+     plan-output sheet. Design Review's own synthetic demo data didn't
+     generate lat/lng at all; added that too so the read-only reference
+     table isn't missing a column its own header would've implied.
+  4. **Distance recalculation confirmed to use the actually-decided
+     state.** The recompute engine already always derives a system leg
+     distance via haversine and flags >25% mismatches; the real fix here
+     was upstream — `effectiveFbForFinalise`'s per-field rewrite means
+     that once a planner accepts a Distance correction but rejects the
+     paired Lat/Lng change (or vice versa), Validate's recalculation now
+     correctly reflects exactly that decided combination, not the whole
+     DC's raw proposal. No separate distance-specific code was needed;
+     it falls out of the field-level fix.
+  5. **New Finalise preview**, shown in the (now much larger) Finalise
+     confirmation modal before commit: real metrics (Routes, Distance, SC
+     CPS — current vs. what finalising will produce, both directions,
+     colour-coded) and the actual derived route table (route code,
+     vehicle, TP count, distance, volume, CPS, capacity — new/split
+     routes flagged), computed from the exact same
+     `computeHypotheticalPlan(plan, effectiveFbForFinalise(plan))` call
+     `confirmFin()` itself uses — what's previewed is guaranteed to be
+     what gets committed, not a separate approximation.
+  - **Verification pass, same day**: re-checked the sixth pass end to
+    end before calling it done, and caught two real leftovers:
+    - The Finalise modal's "X accepted, Y rejected" summary was still
+      counting only route-level (`alignDecisions`) decisions — a holdover
+      from before the per-field rewrite — silently undercounting every
+      DC-level field decision. Rebuilt it to tally across both
+      `alignDecisions`/`alignFieldDec` (route-level) and
+      `alignDcDecisions` (per DC, per field), matching what `changeList`
+      itself counts as decided.
+    - The Finalise preview showed metrics and the derived route table but
+      no warnings — so a lingering distance-variance (or any other
+      warning-level) issue on the structure about to be committed could
+      go unseen at the one point it matters most. Added a warnings panel
+      reading `computeHypotheticalPlan`'s own `warnings` array for the
+      preview, shown directly in the modal.
