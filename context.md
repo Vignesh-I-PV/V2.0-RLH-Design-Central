@@ -828,3 +828,34 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      route with full tick/cross controls — reusing the exact same
      `changeList` entries the old inline view read, just relocated and
      scoped to one route at a time instead of all of them simultaneously.
+- **2026-07-10, eighth pass** — two real bugs from the seventh pass, plus
+  a column-removal request.
+  1. **Bug: the Review Changes popup never rendered.** It had been
+     inserted right before the Push Modal comment without checking what
+     block that comment actually lives in — turned out to be inside
+     Design Review's exclusive `isReview` block, which is never active
+     while on the Ops Alignment screen. Moved it inside `isAlignPlanner`
+     (next to the working Finalise modal, confirmed by line-number
+     position relative to `isAlignPlanner`/`isAlignOps`'s boundaries)
+     where it's actually reachable.
+  2. **Bug: Accept All / Reject All silently did nothing.**
+     `decideRouteChanges` (and, found by inspection, the older
+     `decideAllFlagged` plan-wide accept-all) read the change data from
+     raw `row.fb` / `r.fb` — the single seeded/submitted record — instead
+     of `effectiveFbFor(plan)`, the merged, session-aware feedback that
+     `enrichedDcRows`/`changeList` actually display and decide against.
+     When the real proposed changes only existed in the merged view (a
+     co-reviewer's submission, or an in-progress session edit), `row.fb`
+     was empty, so the click computed against nothing — the button
+     registered, `setState` fired, but there was nothing to decide.
+     Fixed both functions to read the merged feedback.
+  3. **Out Cutoff, TAT, and In Cutoff columns removed** from all three
+     Details tables (Design Review, Planner, Ops Lead) — never editable,
+     never decided on, pure clutter per the request. While removing them
+     from Design Review's table, also fixed a pre-existing, unrelated bug
+     found in passing: that table's header row's `grid-template-columns`
+     only had 10 values for 12 header cells (a stale template predating
+     the Lat/Lng columns being added), while the data row correctly had
+     12 — headers and data were silently misaligned. Rebuilt both to
+     match. Shrunk all three tables' `min-width` wrappers to fit the
+     now-narrower column set.
