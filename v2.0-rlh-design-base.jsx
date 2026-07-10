@@ -411,32 +411,26 @@ function View(B, self) {
 <span style={css(`font-size:12px; color:#5A5E66;`)}>Showing <strong style={css(`color:#14171F;`)}>{volFilesShown}</strong> of <strong style={css(`color:#14171F;`)}>{volFilesTotal}</strong></span>
 </div>
 </div>
-<div style={css(`display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,0.85fr) minmax(0,0.85fr) minmax(0,1.15fr) minmax(0,1.2fr) minmax(0,1.15fr) minmax(0,0.95fr); background:#F2F5FA; border-top:1px solid #E6EBF2;`)}>
+<div style={css(`display:grid; grid-template-columns:minmax(0,2.4fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.25fr) minmax(0,1.3fr) minmax(0,0.9fr); background:#F2F5FA; border-top:1px solid #E6EBF2;`)}>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>FILE NAME</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>TYPE</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>ROWS</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>UPLOADED</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>UPLOADED BY</div>
-<div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VALIDATION</div>
 <div style={css(`padding:10px 14px; font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>ACTIONS</div>
 </div>
 {(volumeFiles || []).map((f, __i13) => (<React.Fragment key={__i13}>
-<div style={css(`display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,0.85fr) minmax(0,0.85fr) minmax(0,1.15fr) minmax(0,1.2fr) minmax(0,1.15fr) minmax(0,0.95fr); align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,0.85fr) minmax(0,0.85fr) minmax(0,1.15fr) minmax(0,1.2fr) minmax(0,1.15fr) minmax(0,0.95fr); align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`display:grid; grid-template-columns:minmax(0,2.4fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.25fr) minmax(0,1.3fr) minmax(0,0.9fr); align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:minmax(0,2.4fr) minmax(0,1.3fr) minmax(0,0.9fr) minmax(0,0.9fr) minmax(0,1.25fr) minmax(0,1.3fr) minmax(0,0.9fr); align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
 <div style={css(`padding:12px 14px; font-size:13px; font-weight:600; color:#14171F; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)} title={f.name}>{f.name}</div>
 <div style={css(`padding:12px 14px;`)}><span style={css(`display:inline-flex; padding:2px 8px; border-radius:999px; font-size:10.5px; font-weight:600; background:#EAEEFB; color:#2F4FC6;`)}>{f.type}</span></div>
 <div style={css(`padding:12px 14px; font-size:12.5px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{f.rows}</div>
 <div style={css(`padding:12px 14px; font-size:12.5px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{f.vol}</div>
 <div style={css(`padding:12px 14px; font-size:12px; color:#5A5E66;`)}>{f.date}</div>
 <div style={css(`padding:12px 14px; font-size:12px; color:#14171F;`)}>{f.by}</div>
-<div style={css(`padding:10px 14px;`)}>
-{(f.hasErrors) ? (<><button onClick={f.onViewErrors} style={css(`display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; background:${f.valBg}; color:${f.valFg}; border:none; cursor:pointer; font-family:inherit;`)} onMouseEnter={(e) => hoverOn(e, `opacity:0.85;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; background:${f.valBg}; color:${f.valFg}; border:none; cursor:pointer; font-family:inherit;`, `opacity:0.85;`)}>{f.valLabel}</button></>) : null}
-{(f.hasNoErrors) ? (<><span style={css(`display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:999px; font-size:11px; font-weight:600; background:#E7F4EC; color:#128A3E;`)}>✓ Validated</span></>) : null}
-</div>
 <div style={css(`padding:8px 14px; display:flex; gap:5px; justify-content:flex-end;`)}>
 <button onClick={f.downloadCsv} aria-label={"Download CSV"} title={"Download"} style={css(`width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg aria-hidden={"true"} width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 <button onClick={f.onReplace} aria-label={"Replace file"} title={"Replace"} style={css(`width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `width:28px; height:28px; border:1px solid #E6EBF2; background:#fff; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#5A5E66;`, `border-color:#003F98; color:#003F98;`)}><svg aria-hidden={"true"} width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5M21 12a9 9 0 01-15 6.7L3 16M3 21v-5h5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={f.onDelete} aria-label={"Delete file"} title={"Delete"} style={css(`width:28px; height:28px; border:1px solid #F2C9C9; background:#FDF3F3; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#D14B4B;`)} onMouseEnter={(e) => hoverOn(e, `background:#FBEAEA;`)} onMouseLeave={(e) => hoverOff(e, `width:28px; height:28px; border:1px solid #F2C9C9; background:#FDF3F3; border-radius:7px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#D14B4B;`, `background:#FBEAEA;`)}><svg aria-hidden={"true"} width={"13"} height={"13"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.8"}><path d={"M5 7h14M9 7V5h6v2M6 7l1 13h10l1-13"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
 </div>
 </div>
 </React.Fragment>))}
@@ -663,7 +657,7 @@ function View(B, self) {
 <div style={css(`display:flex; align-items:center; gap:12px; margin-bottom:14px;`)}>
 <div style={css(`display:flex; align-items:center; gap:8px; padding:10px 14px; background:#EAF1FB; border:1px solid #CFE0F1; border-radius:8px; flex:1;`)}>
 <svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"} style={css(`flex-shrink:0;`)}><path d={"M12 8v5m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"} strokeLinecap={"round"} /></svg>
-<span style={css(`font-size:12px; color:#1E6FB8; font-weight:600;`)}>Touch Point Limit is the hard cap — SC Vehicle Availability cannot exceed this</span>
+<span style={css(`font-size:12px; color:#1E6FB8; font-weight:600;`)}>Touch Point Limit is the reference cap — SC Vehicle Availability and plan creation flag (don't block) when a vehicle's TPs exceed it. RLH-feasible types default to 7; setting a limit above 7 here is also flagged.</span>
 </div> {(addVehNotOpen) ? (<><button onClick={addVehType} style={css(`display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M12 5v14M5 12h14"} strokeLinecap={"round"} /></svg>Add Vehicle Type</button></>) : null}
 {(addVehOpen) ? (<><span style={css(`font-size:12px; color:#5A5E66; white-space:nowrap;`)}>{addVehInlineHint}</span></>) : null}
 </div>
@@ -733,7 +727,7 @@ function View(B, self) {
 {(v.notEditing) ? (<><div style={css(`padding:13px 14px; text-align:right; font-size:13px; color:#14171F; font-variant-numeric:tabular-nums;`)}>{v.dist} km</div></>) : null}
 {(v.editing) ? (<><div style={css(`padding:7px 10px;`)}><input type={"number"} min={"0"} value={v.draftDist} onInput={v.onDraftDist} placeholder={"0"} style={css(`width:100%; height:30px; border:1px solid #C3C9D4; border-radius:7px; font-family:inherit; font-size:12.5px; color:#14171F; padding:0 8px; box-sizing:border-box; outline:none; text-align:right; background:#fff;`)} /></div></>) : null}
 {/* TOUCH POINT LIMIT */}
-{(v.notEditing) ? (<><div style={css(`padding:13px 14px; display:flex; justify-content:center;`)}><span style={css(`display:inline-flex; min-width:28px; height:24px; align-items:center; justify-content:center; padding:0 9px; border-radius:999px; background:#EAF1FB; color:#1E6FB8; font-size:12.5px; font-weight:700;`)}>{v.tp}</span></div></>) : null}
+{(v.notEditing) ? (<><div style={css(`padding:13px 14px; display:flex; flex-direction:column; align-items:center; gap:3px;`)}><span style={css(`display:inline-flex; min-width:28px; height:24px; align-items:center; justify-content:center; padding:0 9px; border-radius:999px; background:${v.tpOverCap ? '#FBF1DF' : '#EAF1FB'}; color:${v.tpOverCap ? '#C77B00' : '#1E6FB8'}; font-size:12.5px; font-weight:700;`)}>{v.tp}</span>{(v.tpOverCap) ? (<><span style={css(`font-size:9.5px; font-weight:600; color:#C77B00;`)}>⚠ over 7 (RLH)</span></>) : null}</div></>) : null}
 {(v.editing) ? (<><div style={css(`padding:7px 10px;`)}><input type={"number"} min={"0"} value={v.draftTp} onInput={v.onDraftTp} placeholder={"0"} style={css(`width:100%; height:30px; border:1px solid #C3C9D4; border-radius:7px; font-family:inherit; font-size:12.5px; color:#14171F; padding:0 8px; box-sizing:border-box; outline:none; text-align:center; background:#fff;`)} /></div></>) : null}
 {/* LH FEASIBILITY */}
 {(v.notEditing) ? (<><div style={css(`padding:10px 14px; display:flex; flex-wrap:wrap; gap:6px;`)}>{(v.feas || []).map((lf, __i25) => (<React.Fragment key={__i25}><span style={css(`padding:3px 10px; border-radius:6px; font-size:11px; font-weight:600; background:#F2F5FA; color:#5A5E66;`)}>{lf}</span></React.Fragment>))}</div></>) : null}
@@ -979,6 +973,33 @@ function View(B, self) {
 </>) : null}
 {/* ===== DESIGN CREATION ===== */}
 {(isCreation) ? (<>
+{/* GUIDELINES POPUP — shown once whenever a fresh plan creation starts (2026-07-10) */}
+{(showCreationGuidelines) ? (<>
+<div style={css(`position:fixed; inset:0; z-index:80; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
+<div style={css(`width:520px; max-width:100%; max-height:90vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid #E6EBF2;`)}>
+<div style={css(`display:flex; align-items:center; gap:10px;`)}>
+<div style={css(`width:34px; height:34px; border-radius:9px; background:#EAF1FB; display:flex; align-items:center; justify-content:center; flex-shrink:0;`)}><svg width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></div>
+<div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>Before you start a new plan</div>
+</div>
+<button onClick={closeCreationGuidelines} aria-label={"Close dialog"} style={css(`border:none; background:transparent; cursor:pointer; padding:6px; color:#5A5E66; display:flex;`)}><svg aria-hidden={"true"} width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+</div>
+<div style={css(`padding:18px 22px;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:12px;`)}>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>1</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Please make sure you have uploaded the latest volume file.</span></div>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>2</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Please ensure all SCs you want to create a plan for are part of Sort Centre Master.</span></div>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>3</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Please ensure all vehicle types are configured under Vehicle Master for plan creation.</span></div>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>4</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Any new nodes to be added must be ingested via Node Additions.</span></div>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>5</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Please ensure nodes connected via co-loading are excluded via Node Closures.</span></div>
+<div style={css(`display:flex; align-items:flex-start; gap:10px;`)}><span style={css(`width:20px; height:20px; border-radius:50%; background:#EAEEFB; color:#003F98; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;`)}>6</span><span style={css(`font-size:13px; color:#14171F; line-height:1.45;`)}>Resolve all errors on AutoDML prior to plan creation.</span></div>
+</div>
+</div>
+<div style={css(`display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:16px 22px; border-top:1px solid #E6EBF2; background:#FAFBFD;`)}>
+<button onClick={closeCreationGuidelines} style={css(`height:38px; padding:0 20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `background:#00337D;`)} onMouseLeave={(e) => hoverOff(e, `height:38px; padding:0 20px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#00337D;`)}>Got it</button>
+</div>
+</div>
+</div>
+</>) : null}
 <div style={css(`display:flex; flex-direction:column; height:100%;`)}>
 {/* Design-cycle blue banner removed (2026-07-06) — the cycle + progress live in the sidebar cycle selector. */}
 {/* Network-tier selector (placeholder): RLH is built; NLH & FM Carting arrive in a future
@@ -1912,10 +1933,12 @@ function View(B, self) {
 {/* Detail View (DC × Route) — §P3.2 */}
 {(reviewDetail.isDcView) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1100px;`)}>
+<div style={css(`min-width:1300px;`)}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LNG</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
@@ -1926,9 +1949,11 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
 </div>
 {(reviewDetail.dcRows || []).map((d, __i68) => (<React.Fragment key={__i68}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${d.isFirstInGroup ? '2px solid #8E96A3' : '1px solid #F4F5F8'}; border-bottom:${d.isLastInGroup ? '2px solid #8E96A3' : 'none'}; margin-top:${d.isFirstInGroup ? '6px' : '0'};`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `background:transparent;`, `background:#FAFBFD;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 0.7fr 0.7fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${d.isFirstInGroup ? '2px solid #8E96A3' : '1px solid #F4F5F8'}; border-bottom:${d.isLastInGroup ? '2px solid #8E96A3' : 'none'}; margin-top:${d.isFirstInGroup ? '6px' : '0'};`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `background:transparent;`, `background:#FAFBFD;`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{d.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.designVol}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.lat}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.lng}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{d.routeCode}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{d.tp}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{d.zone}</div>
@@ -1968,6 +1993,10 @@ function View(B, self) {
 <div style={css(`display:flex; gap:3px; background:#F2F5FA; border-radius:8px; padding:3px;`)}>
 {(alignFilterSeg || []).map((fs, __i69) => (<React.Fragment key={__i69}><button onClick={fs.onClick} title={fs.label} style={css(`flex:1; min-width:0; height:29px; border:none; border-radius:6px; background:${fs.bg}; color:${fs.fg}; font-family:inherit; font-size:11px; font-weight:${fs.weight}; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;`)}>{fs.short} {fs.count}</button></React.Fragment>))}
 </div>
+</div>
+{/* zone-chip row — mirrors Design Review's zone filter */}
+<div style={css(`padding:0 12px 10px; display:flex; gap:5px; flex-wrap:wrap; flex-shrink:0;`)}>
+{(alignZoneChips || []).map((z, __i69b) => (<React.Fragment key={__i69b}><button onClick={z.onClick} style={css(`border:1px solid ${z.bd}; background:${z.bg}; color:${z.fg}; font-family:inherit; font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; cursor:pointer;`)}>{z.label}</button></React.Fragment>))}
 </div>
 <div style={css(`padding:0 16px 8px; font-size:10.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; flex-shrink:0;`)}>{planCount} PLANS</div>
 <div style={css(`flex:1; overflow-y:auto; padding:0 9px 12px; min-height:0;`)}>
@@ -2133,10 +2162,12 @@ function View(B, self) {
     changes (if any, and if this plan isn't Finalised) are overlaid inline with Accept/Reject. */}
 {(aSel.secDetails) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1180px;`)}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.5fr; background:#E6EBF2;`)}>
+<div style={css(`min-width:1380px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LNG</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
@@ -2145,7 +2176,6 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>IN CUTOFF</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>REVIEW</div>
 </div>
 {(aSel.dcViewRows || []).map((dv, __i100) => (<React.Fragment key={__i100}>
 {(dv.isFirstInGroup) ? (<>
@@ -2155,40 +2185,44 @@ function View(B, self) {
 {((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasRouteChange) ? (<>
 <span style={css(`font-size:11px; color:#5A5E66;`)}>Vehicle: <span style={css(`text-decoration:line-through; color:#8E96A3;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).vehOrig}</span> <span style={css(`color:#C77B00; font-weight:600;`)}>{((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).changeVal}</span></span>
 {(((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).canDecide) ? (<>
-<div style={css(`display:flex; gap:6px; margin-left:auto;`)}>
-<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onAccept} style={css(`height:24px; padding:0 10px; border:1px solid #128A3E; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Accept</button>
-<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onReject} style={css(`height:24px; padding:0 10px; border:1px solid #D14B4B; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Reject</button>
+<div style={css(`display:flex; gap:5px; margin-left:auto;`)}>
+<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onAccept} aria-label={"Accept"} title={"Accept"} style={css(`width:21px; height:21px; padding:0; border:1px solid #128A3E; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accFg}; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onReject} aria-label={"Reject"} title={"Reject"} style={css(`width:21px; height:21px; padding:0; border:1px solid #D14B4B; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejFg}; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
 </div>
 </>) : null}
 </>) : null}
 </div>
 {((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasRemark && !aSel.isFinal) ? (<><div style={css(`font-size:11px; color:#9A5E00; font-style:italic;`)}>"{(aSel.dcGroupHeaders[dv.routeIdx] || {}).remark}"</div></>) : null}
+{(aSel.alignValidateOpen && (aSel.dcGroupHeaders[dv.routeIdx] || {}).hasValidationIssues) ? (<>
+<div style={css(`display:flex; flex-direction:column; gap:3px;`)}>
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).validationErrors || []).map((et, __iVE2) => (<React.Fragment key={__iVE2}><div style={css(`display:flex; align-items:flex-start; gap:5px; font-size:11px; color:#D14B4B;`)}><span style={css(`flex-shrink:0;`)}>✕</span><span>{et}</span></div></React.Fragment>))}
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).validationWarnings || []).map((wt, __iVW2) => (<React.Fragment key={__iVW2}><div style={css(`display:flex; align-items:flex-start; gap:5px; font-size:11px; color:#C77B00;`)}><span style={css(`flex-shrink:0;`)}>⚠</span><span>{wt}</span></div></React.Fragment>))}
 </div>
 </>) : null}
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.5fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasAnyChange ? '#FFFCF6' : '#fff'};`)}>
+</div>
+</>) : null}
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasAnyChange ? '#FFFCF6' : '#fff'};`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{dv.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
-<div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasRouteCodeChange) ? (<><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.routeCode}</span><span style={css(`color:#C77B00; font-weight:600; margin-left:4px;`)}>→{dv.routeCodeProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.routeCode}</span></>)}</div>
-<div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums;`)}>{(dv.hasTpChange) ? (<><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.tp}</span><span style={css(`color:#C77B00; font-weight:700; margin-left:3px;`)}>{dv.tpProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.tp}</span></>)}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>
+{(dv.hasLatLngChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lat}</span><span style={css(`color:#C77B00; font-weight:600; font-size:10.5px;`)}>{dv.latProposed}</span>{(dv.fLatLng.has && dv.fLatLng.canDecide) ? (<><button onClick={dv.fLatLng.onAccept} aria-label={"Accept position"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fLatLng.accBg}; color:${dv.fLatLng.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fLatLng.onReject} aria-label={"Reject position"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fLatLng.rejBg}; color:${dv.fLatLng.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.lat}</span></>)}
+</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>
+{(dv.hasLatLngChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lng}</span><span style={css(`color:#C77B00; font-weight:600; font-size:10.5px;`)}>{dv.lngProposed}</span>{(dv.fLatLng.has && dv.fLatLng.canDecide) ? (<><button onClick={dv.fLatLng.onAccept} aria-label={"Accept position"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fLatLng.accBg}; color:${dv.fLatLng.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fLatLng.onReject} aria-label={"Reject position"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fLatLng.rejBg}; color:${dv.fLatLng.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.lng}</span></>)}
+</div>
+<div style={css(`padding:11px 12px; font-size:12px;`)}>
+{(dv.hasRouteCodeChange) ? (<><div style={css(`display:flex; align-items:center; gap:4px; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.routeCode}</span><span style={css(`color:#C77B00; font-weight:600;`)}>→{dv.routeCodeProposed}</span>{(dv.fRouteCode.has && dv.fRouteCode.canDecide) ? (<><button onClick={dv.fRouteCode.onAccept} aria-label={"Accept route code"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fRouteCode.accBg}; color:${dv.fRouteCode.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fRouteCode.onReject} aria-label={"Reject route code"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fRouteCode.rejBg}; color:${dv.fRouteCode.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.routeCode}</span></>)}
+</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums;`)}>
+{(dv.hasTpChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:center; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.tp}</span><span style={css(`color:#C77B00; font-weight:700;`)}>{dv.tpProposed}</span>{(dv.fTp.has && dv.fTp.canDecide) ? (<><button onClick={dv.fTp.onAccept} aria-label={"Accept touch point"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fTp.accBg}; color:${dv.fTp.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fTp.onReject} aria-label={"Reject touch point"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fTp.rejBg}; color:${dv.fTp.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.tp}</span></>)}
+</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasVehChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.vehTypeProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.vehType}</span></>)}</div>
-<div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums;`)}>{(dv.hasDistChange) ? (<><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.rtDist}</span><span style={css(`color:#C77B00; font-weight:600; margin-left:4px;`)}>{dv.rtDistProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.rtDist}</span></>)}</div>
-<div style={css(`padding:11px 12px; text-align:right;`)}>
-{(dv.hasAnyChange) ? (<>
-{(dv.dcChange.canDecide) ? (<>
-<div style={css(`display:flex; gap:5px; justify-content:flex-end;`)}>
-<button onClick={dv.dcChange.onAccept} style={css(`height:24px; padding:0 9px; border:1px solid #128A3E; background:${dv.dcChange.accBg}; color:${dv.dcChange.accFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Accept</button>
-<button onClick={dv.dcChange.onReject} style={css(`height:24px; padding:0 9px; border:1px solid #D14B4B; background:${dv.dcChange.rejBg}; color:${dv.dcChange.rejFg}; font-family:inherit; font-size:10.5px; font-weight:600; border-radius:6px; cursor:pointer;`)}>Reject</button>
-</div>
-</>) : (<>
-{(dv.dcChange.accepted) ? (<><span style={css(`font-size:11px; font-weight:700; color:#128A3E;`)}>✓ Accepted</span></>) : null}
-{(dv.dcChange.rejected) ? (<><span style={css(`font-size:11px; font-weight:700; color:#D14B4B;`)}>✕ Rejected</span></>) : null}
-{(dv.dcChange.undecided) ? (<><span style={css(`font-size:10.5px; color:#8E96A3; font-style:italic;`)}>Acknowledge to decide</span></>) : null}
-</>)}
-</>) : null}
+<div style={css(`padding:11px 12px; font-size:12px; text-align:right;`)}>
+{(dv.hasDistChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.rtDist}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.rtDistProposed}</span>{(dv.fDistance.has && dv.fDistance.canDecide) ? (<><button onClick={dv.fDistance.onAccept} aria-label={"Accept distance"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fDistance.accBg}; color:${dv.fDistance.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fDistance.onReject} aria-label={"Reject distance"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fDistance.rejBg}; color:${dv.fDistance.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.rtDist}</span></>)}
 </div>
 </div>
 </React.Fragment>))}
@@ -2233,6 +2267,9 @@ function View(B, self) {
 <div style={css(`flex:1; min-width:10px;`)} />
 {/* Validate changes (plan-level checks: TP guard, vehicle feasibility, dup route codes) */}
 <button onClick={aSel.onPlanValidate} style={css(`display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M9 12l2 2 4-4M12 3l7 4v5a9 9 0 01-7 8 9 9 0 01-7-8V7l7-4z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Validate changes</button>
+{(aSel.alignValidateOpen) ? (<>
+<span style={css(`display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; color:${aSel.alignValidateClean ? '#128A3E' : '#C77B00'};`)}>{aSel.alignValidateClean ? '✓' : '⚠'} {aSel.alignValidateSummary}<button onClick={aSel.onCloseAlignValidate} aria-label={"Dismiss validation summary"} style={css(`border:none; background:transparent; cursor:pointer; padding:2px; color:#8E96A3; display:flex;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></span>
+</>) : null}
 {/* Accept all (bulk, flagged rows only) — only once the plan is Acknowledged */}
 {(aSel.canDecide) ? (<>
 <button onClick={aSel.onAcceptAllFlagged} style={css(`height:38px; padding:0 15px; border:1px solid ${aSel.acceptAllBd}; background:${aSel.acceptAllBg}; color:${aSel.acceptAllFg}; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:${aSel.acceptAllCursor};`)} title={aSel.acceptAllTitle}>Accept all changes</button>
@@ -2470,14 +2507,54 @@ function View(B, self) {
 {/* FIN MODAL */}
 {(finOpen) ? (<>
 <div style={css(`position:fixed; inset:0; z-index:95; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
-<div style={css(`width:480px; max-width:100%; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3); overflow:hidden;`)}>
-<div style={css(`padding:24px 24px 0; display:flex; gap:14px;`)}>
+<div style={css(`width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
+<div style={css(`padding:22px 24px 0; display:flex; gap:14px;`)}>
 <div style={css(`width:44px; height:44px; border-radius:8px; background:#E7F4EC; display:flex; align-items:center; justify-content:center; flex-shrink:0;`)}><svg width={"22"} height={"22"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#128A3E"} strokeWidth={"1.8"}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></div>
-<div><div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>Finalise this plan?</div><div style={css(`font-size:13px; color:#5A5E66; margin-top:8px; line-height:1.55;`)}><strong>{finPlanName}</strong> — <strong style={css(`color:#128A3E;`)}>{finAccepted} accepted</strong>, <strong style={css(`color:#D14B4B;`)}>{finRejected} rejected</strong>. Finalising marks the plan Approved and hands it to the LH team for RFQ creation.</div></div>
+<div><div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>Finalise this plan?</div><div style={css(`font-size:13px; color:#5A5E66; margin-top:6px; line-height:1.55;`)}><strong>{finPlanName}</strong> — <strong style={css(`color:#128A3E;`)}>{finAccepted} accepted</strong>, <strong style={css(`color:#D14B4B;`)}>{finRejected} rejected</strong>. This is exactly what will be committed — review it below before confirming; finalising cannot be undone.</div></div>
 </div>
-<div style={css(`display:flex; gap:10px; justify-content:flex-end; padding:22px 24px;`)}>
+<div style={css(`padding:18px 24px 0;`)}>
+<div style={css(`font-size:10.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:10px;`)}>METRICS — CURRENT vs. FINALISED</div>
+<div style={css(`display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:18px;`)}>
+<div style={css(`background:#fff; padding:12px 14px;`)}><div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:5px;`)}>ROUTES</div><div style={css(`display:flex; align-items:baseline; gap:7px;`)}><span style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:#14171F;`)}>{finNewRoutes}</span><span style={css(`font-size:11px; color:#8E96A3;`)}>was {finOrigRoutes}</span><span style={css(`font-size:11px; font-weight:700; color:${finRoutesDeltaColor};`)}>{finRoutesDelta}</span></div></div>
+<div style={css(`background:#fff; padding:12px 14px;`)}><div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:5px;`)}>TOTAL DISTANCE (KM)</div><div style={css(`display:flex; align-items:baseline; gap:7px;`)}><span style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:#14171F;`)}>{finNewDistance}</span><span style={css(`font-size:11px; color:#8E96A3;`)}>was {finOrigDistance}</span><span style={css(`font-size:11px; font-weight:700; color:${finDistDeltaColor};`)}>{finDistDelta}</span></div></div>
+<div style={css(`background:#fff; padding:12px 14px;`)}><div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:5px;`)}>SC CPS</div><div style={css(`display:flex; align-items:baseline; gap:7px;`)}><span style={css(`font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:500; color:#14171F;`)}>{finNewCpsF}</span><span style={css(`font-size:11px; color:#8E96A3;`)}>was {finOrigCpsF}</span><span style={css(`font-size:11px; font-weight:700; color:${finCpsDeltaColor};`)}>{finCpsDelta}</span></div></div>
+</div>
+{(finPreviewWarnings && finPreviewWarnings.length > 0) ? (<>
+<div style={css(`display:flex; align-items:flex-start; gap:9px; padding:11px 14px; margin-bottom:16px; background:#FBF1DF; border:1px solid #F0DBA8; border-radius:8px;`)}>
+<svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C77B00"} strokeWidth={"1.9"} style={css(`flex-shrink:0; margin-top:1px;`)}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<div style={css(`flex:1;`)}>
+<div style={css(`font-size:12px; font-weight:700; color:#9A5E00; margin-bottom:4px;`)}>{finPreviewWarnings.length} warning{finPreviewWarnings.length === 1 ? '' : 's'} on the structure being finalised — distances drive cost, worth a look before confirming:</div>
+{finPreviewWarnings.map((w, __iFW2) => (<React.Fragment key={__iFW2}><div style={css(`font-size:11.5px; color:#5A5E66; margin-top:2px;`)}>{w}</div></React.Fragment>))}
+</div>
+</div>
+</>) : null}
+<div style={css(`font-size:10.5px; font-weight:700; color:#8E96A3; letter-spacing:0.05em; margin-bottom:10px;`)}>DERIVED ROUTE STRUCTURE — CLEAN SEQUENCE, AS IT WILL BE FINALISED</div>
+<div style={css(`border:1px solid #E6EBF2; border-radius:8px; overflow:hidden; margin-bottom:4px; max-height:220px; overflow-y:auto;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 1.2fr 0.5fr 0.8fr 0.8fr 0.8fr 0.7fr; background:#F4F5F8; position:sticky; top:0;`)}>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TPs</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DIST (KM)</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>VOLUME</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CPS</div>
+<div style={css(`padding:8px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAP</div>
+</div>
+{(finPreviewRows || []).map((r, __iFR) => (<React.Fragment key={__iFR}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 1.2fr 0.5fr 0.8fr 0.8fr 0.8fr 0.7fr; align-items:center; border-top:1px solid #EEF1F6;`)}>
+<div style={css(`padding:9px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{r.routeCode}{(r.isNew) ? (<><span style={css(`padding:1px 6px; border-radius:999px; font-size:9px; font-weight:700; background:#EAF1FB; color:#1E6FB8;`)}>NEW</span></>) : null}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tpN}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
+<div style={css(`padding:9px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+<div style={css(`display:flex; gap:10px; justify-content:flex-end; padding:18px 24px 22px;`)}>
 <button onClick={closeFin} style={css(`height:38px; padding:0 16px; border:1px solid #E6EBF2; background:#fff; color:#5A5E66; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)}>Cancel</button>
-<button onClick={confirmFin} style={css(`height:38px; padding:0 18px; border:none; background:#128A3E; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `filter:brightness(0.94);`)} onMouseLeave={(e) => hoverOff(e, `height:38px; padding:0 18px; border:none; background:#128A3E; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`, `filter:brightness(0.94);`)}>Finalise plan</button>
+<button onClick={confirmFin} style={css(`height:38px; padding:0 18px; border:none; background:#128A3E; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `filter:brightness(0.94);`)} onMouseLeave={(e) => hoverOff(e, `height:38px; padding:0 18px; border:none; background:#128A3E; color:#fff; font-family:inherit; font-size:13px; font-weight:600; border-radius:8px; cursor:pointer;`, `filter:brightness(0.94);`)}>Confirm & finalise plan</button>
 </div>
 </div>
 </div>
@@ -2498,6 +2575,10 @@ function View(B, self) {
 <aside style={css(`width:300px; flex-shrink:0; border-right:1px solid #E6EBF2; background:#fff; display:flex; flex-direction:column; min-height:0;`)}>
 <div style={css(`padding:12px 12px 8px; flex-shrink:0; display:flex; gap:5px; flex-wrap:wrap;`)}>
 {(opsFilterSeg || []).map((fs, __i90) => (<React.Fragment key={__i90}><button onClick={fs.onClick} style={css(`height:26px; padding:0 10px; border:none; border-radius:999px; background:${fs.bg}; color:${fs.fg}; font-family:inherit; font-size:10.5px; font-weight:${fs.weight}; cursor:pointer; white-space:nowrap;`)}>{fs.label} {fs.count}</button></React.Fragment>))}
+</div>
+{/* zone-chip row — mirrors Design Review's zone filter */}
+<div style={css(`padding:0 12px 8px; display:flex; gap:5px; flex-wrap:wrap; flex-shrink:0;`)}>
+{(opsZoneChips || []).map((z, __i90b) => (<React.Fragment key={__i90b}><button onClick={z.onClick} style={css(`border:1px solid ${z.bd}; background:${z.bg}; color:${z.fg}; font-family:inherit; font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; cursor:pointer;`)}>{z.label}</button></React.Fragment>))}
 </div>
 <div style={css(`padding:0 16px 8px; font-size:10.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; flex-shrink:0;`)}>{opsPlanCount} ASSIGNED</div>
 <div style={css(`flex:1; overflow-y:auto; padding:0 9px 12px; min-height:0;`)}>
@@ -2593,10 +2674,12 @@ function View(B, self) {
     (route-group Aligned / Needs-Change actions) whenever the plan isn't locked yet. */}
 {(oSel.secDetails) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1180px;`)}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.3fr; background:#E6EBF2;`)}>
+<div style={css(`min-width:1380px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr 0.6fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LNG</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
@@ -2609,7 +2692,8 @@ function View(B, self) {
 </div>
 {(oSel.dcViewRows || []).map((dv, __i100) => (<React.Fragment key={__i100}>
 {(dv.isFirstInGroup) ? (<>
-<div style={css(`display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; padding:8px 12px; margin-top:6px; background:#F7F8FB; border:2px solid #8E96A3; border-bottom:none;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:6px; padding:8px 12px; margin-top:6px; background:#F7F8FB; border:2px solid #8E96A3; border-bottom:none;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px;`)}>
 <span style={css(`font-size:11.5px; font-weight:700; color:#003F98;`)}>{(oSel.dcGroupHeaders[dv.routeIdx] || {}).routeCode}</span>
 {((oSel.dcGroupHeaders[dv.routeIdx] || {}).editable) ? (<>
 <div style={css(`display:flex; gap:6px;`)}>
@@ -2618,18 +2702,27 @@ function View(B, self) {
 </div>
 </>) : (<><span style={css(`font-size:10.5px; font-weight:700; padding:2px 9px; border-radius:999px; background:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).opsBg}; color:${(oSel.dcGroupHeaders[dv.routeIdx] || {}).opsFg};`)}>{(oSel.dcGroupHeaders[dv.routeIdx] || {}).decChip}</span></>)}
 </div>
+{(oSel.opsValidateOpen && (oSel.dcGroupHeaders[dv.routeIdx] || {}).hasValidationIssues) ? (<>
+<div style={css(`display:flex; flex-direction:column; gap:3px;`)}>
+{((oSel.dcGroupHeaders[dv.routeIdx] || {}).validationErrors || []).map((et, __iVE) => (<React.Fragment key={__iVE}><div style={css(`display:flex; align-items:flex-start; gap:5px; font-size:11px; color:#D14B4B;`)}><span style={css(`flex-shrink:0;`)}>✕</span><span>{et}</span></div></React.Fragment>))}
+{((oSel.dcGroupHeaders[dv.routeIdx] || {}).validationWarnings || []).map((wt, __iVW) => (<React.Fragment key={__iVW}><div style={css(`display:flex; align-items:flex-start; gap:5px; font-size:11px; color:#C77B00;`)}><span style={css(`flex-shrink:0;`)}>⚠</span><span>{wt}</span></div></React.Fragment>))}
+</div>
 </>) : null}
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr 1.3fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasChange ? '#FFFCF6' : '#fff'};`)}>
+</div>
+</>) : null}
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr 0.6fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasChange ? '#FFFCF6' : '#fff'};`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{dv.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{dv.routeCode}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{dv.tp}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>{(dv.hasLatLngChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lat}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.latProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('latLng')} aria-label={"Revert position"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.lat}</span></>)}</div>
+<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>{(dv.hasLatLngChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lng}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.lngProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('latLng')} aria-label={"Revert position"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.lng}</span></>)}</div>
+<div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasRouteCodeChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.routeCode}</span><span style={css(`color:#C77B00; font-weight:600;`)}>→{dv.routeCodeProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('routeCode')} aria-label={"Revert route code"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.routeCode}</span></>)}</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums;`)}>{(dv.hasTpChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.tp}</span><span style={css(`color:#C77B00; font-weight:700;`)}>{dv.tpProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('tp')} aria-label={"Revert touch point"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.tp}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{dv.vehType}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.rtDist}</div>
+<div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasVehChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.vehTypeProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.vehType}</span></>)}</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:right;`)}>{(dv.hasDistChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.rtDist}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.rtDistProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('distance')} aria-label={"Revert distance"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.rtDist}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:11px; color:#8E96A3; text-align:right;`)}>{(dv.hasChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>Feedback pending</span></>) : null}</div>
 </div>
 </React.Fragment>))}
@@ -2692,6 +2785,9 @@ function View(B, self) {
 {(oSel.canSubmit) ? (<>
 <div style={css(`display:flex; gap:8px; flex-shrink:0; align-items:center;`)}>
 <button onClick={oSel.onOpsValidate} style={css(`display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} onMouseEnter={(e) => hoverOn(e, `border-color:#003F98; color:#003F98;`)} onMouseLeave={(e) => hoverOff(e, `display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 15px; border:1px solid #C3C9D4; background:#fff; color:#5A5E66; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `border-color:#003F98; color:#003F98;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"1.9"}><path d={"M9 12l2 2 4-4M12 3l7 4v5a9 9 0 01-7 8 9 9 0 01-7-8V7l7-4z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Validate changes</button>
+{(oSel.opsValidateOpen) ? (<>
+<span style={css(`display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; color:${oSel.opsValidateClean ? '#128A3E' : '#C77B00'};`)}>{oSel.opsValidateClean ? '✓' : '⚠'} {oSel.opsValidateSummary}<button onClick={oSel.onCloseOpsValidate} aria-label={"Dismiss validation summary"} style={css(`border:none; background:transparent; cursor:pointer; padding:2px; color:#8E96A3; display:flex;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></span>
+</>) : null}
 <button onClick={oSel.onAcceptAll} style={css(`height:38px; padding:0 15px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)} title={"Confirm before signing off all pending rows"} onMouseEnter={(e) => hoverOn(e, `background:#E7F4EC;`)} onMouseLeave={(e) => hoverOff(e, `height:38px; padding:0 15px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`, `background:#E7F4EC;`)}>Mark all Aligned</button>
 {(oSel.canOpsSim) ? (<><button onClick={oSel.onOpsSim} style={css(`display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 15px; border:1px solid #2F4FC6; background:${oSel.opsSimBtnBg}; color:${oSel.opsSimBtnFg}; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M13 2L3 14h9l-1 8 10-12h-9l1-8z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>Simulate</button></>) : null}
 <button onClick={oSel.onSubmit} style={css(`height:38px; padding:0 20px; border:none; background:${oSel.submitBg}; color:${oSel.submitFg}; font-family:inherit; font-size:12.5px; font-weight:600; border-radius:8px; cursor:${oSel.submitCursor};`)}>{oSel.submitLabel}</button>
@@ -3849,7 +3945,7 @@ class NDCApp extends React.Component {
   showToast(msg, dot, undoFn) { clearTimeout(this._t); this.setState({ toast: { msg, dot: dot || '#2F4FC6', undo: undoFn || null } }); this._t = setTimeout(() => this.setState({ toast: null }), undoFn ? 5200 : 3500); }
   runUndo() { const t = this.state.toast; clearTimeout(this._t); this.setState({ toast: null }); if (t && t.undo) t.undo(); }
   // C8a — entering Creation always starts at step 1 so re-entry never resumes mid-wizard.
-  go(view) { if (view === 'creation' && this.state.view !== 'creation') this.setState({ view, creationStep: 1, fixReturnStep: null, focusSC: null, creationView: 'wizard' }); else this.setState({ view }); }
+  go(view) { if (view === 'creation' && this.state.view !== 'creation') this.setState({ view, creationStep: 1, fixReturnStep: null, focusSC: null, creationView: 'wizard', showCreationGuidelines: true }); else this.setState({ view }); }
   setPersona(p) { this.setState({ persona: p, view: p === 'ops' ? 'align' : 'inputs' }); }
   comingSoon(label) { this.showToast((label || 'This action') + ' — coming soon', '#C77B00'); }
   // Reusable table pager. PAGE SIZE = 10. Given the full post-filter list, the raw page from state,
@@ -3904,7 +4000,7 @@ class NDCApp extends React.Component {
       txt('name', 'SC Name', false, 'e.g. Bengaluru'),
       txt('city', 'SC City, State', false, 'e.g. Bengaluru, KA'),
       sel('type', 'SC Type', true, opt(['LMSC', 'FMSC', 'Hybrid'])),
-      sel('zone', 'Zone', true, opt(['North', 'South', 'East', 'West', 'Central'])),
+      sel('zone', 'Zone', true, opt(['North', 'South', 'East', 'West'])),
       txt('volCap', 'Volume Capacity', true, 'shipments / day'),
       txt('sortCap', 'Sort Capacity', true, 'shipments / day'),
       txt('nlhDocks', 'NLH Docks', true, ''),
@@ -3967,8 +4063,10 @@ class NDCApp extends React.Component {
     const hardCap = String(f.hardCap == null ? '' : f.hardCap).trim();
     if (!name || !hardCap) { this.showToast('Vehicle Type and TP Limit (Hard Cap) are required', '#C77B00'); return; }
     const num = (x) => { const n = parseInt(String(x == null ? '' : x).replace(/[^0-9]/g, ''), 10); return isNaN(n) ? '' : n; };
-    // US4 — RLH-feasible vehicle types are hard-capped at 7 touch points.
-    if ((f.feas || []).indexOf('RLH') >= 0 && num(hardCap) > 7) { this.showToast('RLH-feasible vehicles are capped at 7 touch points — lower the TP limit or remove RLH from feasibility.', '#C77B00'); return; }
+    // 2026-07-10 — RLH-feasible vehicle types default to a 7 touch-point cap, but the planner can
+    // still set a larger number here; that no longer blocks saving, it just shows a warning (both
+    // right here at save time, and as a persistent flag on the vehicle master row below).
+    if ((f.feas || []).indexOf('RLH') >= 0 && num(hardCap) > 7) { this.showToast('TP limit ' + num(hardCap) + ' exceeds the default RLH cap of 7 for this vehicle type — saved, but flagged on the Vehicle Master row.', '#C77B00'); }
     // Edit mode — update the type's params via a vehEdits override keyed by the original name.
     if (st.addVehEditName) {
       const ve = Object.assign({}, st.vehEdits || {});
@@ -4125,7 +4223,10 @@ class NDCApp extends React.Component {
     const volEditsMap = st.volEdits || {};
     // Files uploaded this session (via the strip Upload buttons) merge on top of the seeded library;
     // volEdits overlays corrections from a Replace re-upload onto either an uploaded or seeded row.
-    const allVol = (st.uploadedVol || []).concat(d.volumeFiles).map(f => volEditsMap[f.name] ? Object.assign({}, f, volEditsMap[f.name]) : f);
+    // 2026-07-10 — only ever-valid files live in the library, full stop: this covers both the
+    // upload-gating above (new invalid files are never added) and any pre-existing/seeded records
+    // that might carry validated:false — neither should ever surface here.
+    const allVol = (st.uploadedVol || []).concat(d.volumeFiles).map(f => volEditsMap[f.name] ? Object.assign({}, f, volEditsMap[f.name]) : f).filter(f => f.validated && !f.errorCount);
     const pickVolFile = (type) => {
       const inp = document.createElement('input');
       inp.type = 'file'; inp.accept = '.csv';
@@ -4133,16 +4234,17 @@ class NDCApp extends React.Component {
         const f = e.target.files && e.target.files[0]; if (!f) return;
         const nm = 'July 2026 · ' + f.name.replace(/\.[^.]+$/, '');
         const v = this.validateVolCsv(f, type);
-        const rec = { name: nm, type: type, rows: v.rows, vol: v.vol, date: 'Just now', by: 'Pranita Sapkal', validated: v.validated, errorCount: v.errorCount, errorRows: v.errorRows, uploaded: true };
-        const patch = { uploadedVol: [rec].concat(this.state.uploadedVol || []), volTypeFilter: 'All', volSearch: '' };
         if (v.validated) {
+          const rec = { name: nm, type: type, rows: v.rows, vol: v.vol, date: 'Just now', by: 'Pranita Sapkal', validated: true, errorCount: 0, errorRows: [], uploaded: true };
+          const patch = { uploadedVol: [rec].concat(this.state.uploadedVol || []), volTypeFilter: 'All', volSearch: '' };
           patch.volActive = Object.assign({}, this.state.volActive || {}, { [type]: nm });
           this.setState(patch);
           this.showToast('Validated ' + nm + ' — added to the library & set active', '#128A3E');
         } else {
-          patch.volErrModal = { name: nm, type: type, rows: v.errorRows };
-          this.setState(patch);
-          this.showToast(v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' in ' + nm + ' — fix and re-upload; the active file for this type is unchanged', '#D14B4B');
+          // 2026-07-10 — invalid files are never added to the library at all: only a file that
+          // passes validation on upload becomes a library entry. Show the errors, don't persist it.
+          this.setState({ volErrModal: { name: nm, type: type, rows: v.errorRows } });
+          this.showToast(v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' in ' + nm + ' — fix and re-upload; nothing was added to the library', '#D14B4B');
         }
       };
       inp.click();
@@ -4153,13 +4255,16 @@ class NDCApp extends React.Component {
       inp.onchange = (e) => {
         const f = e.target.files && e.target.files[0]; if (!f) return;
         const v = this.validateVolCsv(f, type);
-        const edits = Object.assign({}, this.state.volEdits || {});
-        edits[name] = { rows: v.rows, vol: v.vol, validated: v.validated, errorCount: v.errorCount, errorRows: v.errorRows, date: 'Just now', by: 'You (Planner)' };
-        const patch = { volEdits: edits };
-        if (v.validated) { patch.volActive = Object.assign({}, this.state.volActive || {}, { [type]: name }); patch.volErrModal = null; }
-        else { patch.volErrModal = { name: name, type: type, rows: v.errorRows }; }
-        this.setState(patch);
-        this.showToast(v.validated ? (name + ' re-validated — corrections accepted & set active') : (v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' still found in ' + name), v.validated ? '#128A3E' : '#D14B4B');
+        if (v.validated) {
+          const edits = Object.assign({}, this.state.volEdits || {});
+          edits[name] = { rows: v.rows, vol: v.vol, validated: true, errorCount: 0, errorRows: [], date: 'Just now', by: 'You (Planner)' };
+          this.setState({ volEdits: edits, volActive: Object.assign({}, this.state.volActive || {}, { [type]: name }), volErrModal: null });
+          this.showToast(name + ' re-validated — corrections accepted & set active', '#128A3E');
+        } else {
+          // Same rule on replace: a failed re-validation never overwrites the existing (valid) library entry.
+          this.setState({ volErrModal: { name: name, type: type, rows: v.errorRows } });
+          this.showToast(v.errorCount + ' row error' + (v.errorCount === 1 ? '' : 's') + ' still found in ' + name + ' — the existing file is unchanged', '#D14B4B');
+        }
       };
       inp.click();
     };
@@ -4190,24 +4295,15 @@ class NDCApp extends React.Component {
     const vq = (st.volSearch || '').toLowerCase().trim();
     const volumeFiles = allVol
       .filter(f => (volTypeFilter === 'All' || f.type === volTypeMap[volTypeFilter]) && (!vq || f.name.toLowerCase().indexOf(vq) >= 0 || (f.by || '').toLowerCase().indexOf(vq) >= 0))
-      .map(f => {
-        const hasErrors = !f.validated && f.errorCount > 0;
-        const valLabel = hasErrors ? ('⚠ ' + f.errorCount + ' row error' + (f.errorCount === 1 ? '' : 's')) : '✓ Validated';
-        const valBg = hasErrors ? '#FBF1DF' : '#E7F4EC';
-        const valFg = hasErrors ? '#C77B00' : '#128A3E';
-        return {
+      .map(f => ({
           name: f.name, type: f.type, rows: fmtInt(f.rows), vol: f.vol ? fmtL(f.vol) : '—', date: f.date, by: f.by || '—',
-          valLabel: valLabel, valBg: valBg, valFg: valFg, hasErrors: hasErrors, hasNoErrors: !hasErrors,
-          onViewErrors: hasErrors ? (() => this.setState({ volErrModal: { name: f.name, type: f.type, rows: f.errorRows || [] } })) : null,
           downloadCsv: () => this.downloadVolumeFile(f),
           onReplace: () => replaceVolFile(f.name, f.type),
-          onDelete: () => this.showToast(f.name + ' deleted from library', '#D14B4B'),
-        };
-      });
+        }));
     const volFilesShown = volumeFiles.length, volFilesTotal = allVol.length;
     const q = (st.inputsSearch || '').toLowerCase();
     const zf = st.inputsZone || 'All';
-    const zoneChips = ['All', 'North', 'South', 'East', 'West', 'Central'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ inputsZone: z, pgScMaster: 1, pgAvail: 1 }) }));
+    const zoneChips = ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ inputsZone: z, pgScMaster: 1, pgAvail: 1 }) }));
     const nstep = st.nodeStep || 'active';
     const nodeChangeCount = (d.nodeAdditions || []).length + (d.nodeClosures || []).length + (d.migrations || []).length;
     const nodeStepMeta = [['active', 'AutoDML node view', (d.autodmlNodes || []).length, remaining.length > 0, 'Flagged LMSC → LMDC links from AutoDML — resolve before planning.'], ['changes', 'Additions, closures & migrations', nodeChangeCount, nodeChangeCount > 0, 'Node changes this cycle vs the last finalised network.']];
@@ -4363,7 +4459,8 @@ class NDCApp extends React.Component {
     const vehMasterBase = (d.VEH || []).filter(v => !vehRemoved[v.name]).map(v => {
       const eff = Object.assign({ capacity: v.cap, dist: v.dist, tp: v.tp, localTp: v.localTp, nonLocalTp: v.nonLocalTp, feas: v.feas }, vehEdits[v.name] || {});
       const editing = evName === v.name;
-      return { name: v.name, capacity: (eff.capacity === '' || eff.capacity == null) ? '—' : String(eff.capacity), dist: (eff.dist === '' || eff.dist == null) ? '—' : Number(eff.dist).toLocaleString('en-IN'), tp: eff.tp, feas: (eff.feas && eff.feas.length ? eff.feas : ['—']),
+      const tpOverCap = (eff.feas || []).indexOf('RLH') >= 0 && Number(eff.tp) > 7;
+      return { name: v.name, capacity: (eff.capacity === '' || eff.capacity == null) ? '—' : String(eff.capacity), dist: (eff.dist === '' || eff.dist == null) ? '—' : Number(eff.dist).toLocaleString('en-IN'), tp: eff.tp, feas: (eff.feas && eff.feas.length ? eff.feas : ['—']), tpOverCap,
         editing: editing, notEditing: !editing,
         draftCap: evDraft.capacity || '', draftDist: evDraft.dist || '', draftTp: evDraft.tp || '', draftVtype: evDraft.vtype || '',
         evFeasChips: editing ? evFeasChips : [],
@@ -4387,7 +4484,8 @@ class NDCApp extends React.Component {
     const addedVehRows = (st.addedVehTypes || []).map((v, i) => {
       const eff = Object.assign({ capacity: v.capacity, dist: v.dist, tp: v.tp, localTp: v.localTp, nonLocalTp: v.nonLocalTp, feas: v.feas }, vehEdits[v.name] || {});
       const editing = evName === v.name;
-      return { name: v.name, capacity: (eff.capacity === '' || eff.capacity == null) ? '—' : String(eff.capacity), dist: (eff.dist === '' || eff.dist == null) ? '—' : Number(eff.dist).toLocaleString('en-IN'), tp: eff.tp, feas: (eff.feas && eff.feas.length ? eff.feas : ['—']),
+      const tpOverCap = (eff.feas || []).indexOf('RLH') >= 0 && Number(eff.tp) > 7;
+      return { name: v.name, capacity: (eff.capacity === '' || eff.capacity == null) ? '—' : String(eff.capacity), dist: (eff.dist === '' || eff.dist == null) ? '—' : Number(eff.dist).toLocaleString('en-IN'), tp: eff.tp, feas: (eff.feas && eff.feas.length ? eff.feas : ['—']), tpOverCap,
         editing: editing, notEditing: !editing,
         draftCap: evDraft.capacity || '', draftDist: evDraft.dist || '', draftTp: evDraft.tp || '', draftVtype: evDraft.vtype || '',
         evFeasChips: editing ? evFeasChips : [],
@@ -4479,7 +4577,7 @@ class NDCApp extends React.Component {
         const dist = ovObj.dist != null ? ovObj.dist : r.distanceLimit;
         const distNum = parseInt(String(dist).replace(/[^0-9]/g, ''), 10) || 0;
         const displayType = ovObj.type != null ? ovObj.type : r.vehicleType;
-        const vmTp = vmTpFor(displayType); const exceeds = tp > vmTp || cnt > VMMAXCOUNT;
+        const vmTp = vmTpFor(displayType); const tpExceeds = tp > vmTp; const cntExceeds = cnt > VMMAXCOUNT; const exceeds = tpExceeds || cntExceeds;
         const zfBg = zf === 'Both' ? '#EAEEFB' : zf === 'Local' ? '#E7F0F8' : '#FBEAF1';
         const zfFg = zf === 'Both' ? '#2F4FC6' : zf === 'Local' ? '#1E6FB8' : '#C03977';
         const rowEditing = eak === availKey;
@@ -4490,7 +4588,7 @@ class NDCApp extends React.Component {
         const typeOpts = VEHMA.map(x => ({ value: x.name, label: x.name, selected: x.name === (rowEditing ? (ead.type || displayType) : displayType) }));
         return {
           t: displayType, cap: cap, dist: distNum + ' km', cnt: cnt, tp: tp, zf: zf, zfBg: zfBg, zfFg: zfFg,
-          vmLabel: exceeds ? 'Exceeds limit' : 'OK', vmBg: exceeds ? '#FBEAEA' : '#E7F4EC', vmFg: exceeds ? '#D14B4B' : '#128A3E',
+          vmLabel: exceeds ? (cntExceeds ? 'Exceeds limit' : '\u26a0 TP over master') : 'OK', vmBg: exceeds ? (cntExceeds ? '#FBEAEA' : '#FBF1DF') : '#E7F4EC', vmFg: exceeds ? (cntExceeds ? '#D14B4B' : '#C77B00') : '#128A3E',
           rowEditing: rowEditing, rowNotEditing: !rowEditing,
           draftType: rowEditing ? (ead.type || displayType) : displayType,
           draftCap: rowEditing ? (ead.cap != null ? ead.cap : cap) : cap,
@@ -4826,8 +4924,10 @@ class NDCApp extends React.Component {
       const vsum = vehSummaryFor(s.code, effFar);
       const flags = [];
       if (!hasRef && (scHw > 0 || st.newNodeMode)) flags.push({ t: 'Reference plan required \u2014 pick one in the row below (needed when Historical Weight is above 0 or New-Node Addition mode is on).', sev: 'danger', dot: '#D14B4B', k: 'ref' });
-      // O.1 \u2014 TP validation (error): vehicle touchpoints can't exceed the master TP limit.
-      vsum.tpViol.forEach(t => flags.push({ t: 'Touchpoints exceed vehicle-master limit: ' + t + '. Reduce TP in Vehicle Config or the DS plan may be infeasible.', sev: 'danger', dot: '#D14B4B', k: 'tp' }));
+      // 2026-07-10 — TP exceeding the vehicle-master limit is a warning, not a blocking error: the
+      // planner can still proceed, they just need to be aware the configured TP is over what
+      // Vehicle Master allows for that type.
+      vsum.tpViol.forEach(t => flags.push({ t: 'Touchpoints exceed vehicle-master limit: ' + t + '.', sev: 'warning', dot: '#C77B00', k: 'tp' }));
       // O.2 \u2014 distance-limit violation (error): farthest DC beyond the vehicle distance limit.
       vsum.distViol.forEach(t => flags.push({ t: 'Distance limit exceeded \u2014 ' + t + '. Farthest DC is out of range; add a longer-range vehicle or drop the far node.', sev: 'danger', dot: '#D14B4B', k: 'dist' }));
       // #3 \u2014 missing SC location/dock is a blocking error (manually-added SCs lack coords/docks).
@@ -5070,7 +5170,7 @@ class NDCApp extends React.Component {
             type: v.type, count: cnt, tp: tp, vmTp: m.tp, cap: fmtInt(v.capOverride != null ? v.capOverride : m.cap), dist: (v.distOverride != null ? v.distOverride : vehDistOf(v.type)) + ' km',
             serveType: v.zoneFeas || 'Both', zfBg: zfs.zfBg, zfFg: zfs.zfFg,
             tpBd: tpOver ? '#E0B84A' : '#E6EBF2', tpBg: tpOver ? '#FBF1DF' : '#fff', tpFg: tpOver ? '#C77B00' : '#14171F',
-            vmLabel: exceeds ? 'Exceeds limit' : 'OK', vmBg: exceeds ? '#FBEAEA' : '#E7F4EC', vmFg: exceeds ? '#D14B4B' : '#128A3E',
+            vmLabel: exceeds ? (cntOver ? 'Exceeds limit' : '\u26a0 TP over master') : 'OK', vmBg: exceeds ? (cntOver ? '#FBEAEA' : '#FBF1DF') : '#E7F4EC', vmFg: exceeds ? (cntOver ? '#D14B4B' : '#C77B00') : '#128A3E',
             // inline edit
             // G5 — a row the planner ADDED in add-only mode stays editable/deletable (else a fat-finger Add is stuck).
             rowEditing: rowEditing, rowNotEditing: !rowEditing, rowShowControls: !rowEditing && (!cardAddOnly || !!v.added),
@@ -5113,12 +5213,13 @@ class NDCApp extends React.Component {
 
     return {
       isCreation: st.view === 'creation', creationStep: step, isStep1: step === 1, isStep2: step === 2, isStep3: step === 3, isStep4: step === 4, vehAddOnly: vehAddOnly, step1HasFile: step === 1 && !!st.creationVolume, step1NoFile: step === 1 && !st.creationVolume,
+      showCreationGuidelines: !!st.showCreationGuidelines, closeCreationGuidelines: () => this.setState({ showCreationGuidelines: false }),
       creationTierSeg,
       isWizardView: (st.creationView || 'wizard') === 'wizard', isQueueView: (st.creationView || 'wizard') === 'queue',
       stepper, planGroupName: planGroup.name, planGroupTriggered: planGroup.triggered, planGroupCap: planGroup.cap, planGroupPct: planGroup.pct + '%',
       scGroups, creationSelCount: sel.length, creationShown: filtered.length, creationTotal: d.scs.length, creationSearch: st.creationSearch || '',
       onCreationSearch: (e) => this.setState({ creationSearch: e.target.value }),
-      creationZoneChips: ['All', 'North', 'South', 'East', 'West', 'Central'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ creationZone: z }) })),
+      creationZoneChips: ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ creationZone: z }) })),
       // G8 — union with existing selection (never drop SCs picked under a different zone/search filter). Capped.
       selectAllSCs: () => { const cur = new Set(sel); let hit = false; filtered.forEach(s => { if (cur.has(s.code)) return; if (cur.size >= SC_CAP) { hit = true; return; } cur.add(s.code); }); if (hit) this.showToast('Plan group is capped at ' + SC_CAP + ' SCs — added up to the cap', '#C77B00'); this.setState({ selectedSCs: [...cur] }); }, clearAllSCs: () => this.setState({ selectedSCs: [] }),
       volOptions, selectedVolume: st.creationVolume,
@@ -5210,7 +5311,7 @@ class NDCApp extends React.Component {
       triggerAllBg: triggerBlocked ? '#E6EBF2' : '#003F98', triggerAllFg: triggerBlocked ? '#5A5E66' : '#fff', triggerAllCursor: triggerBlocked ? 'not-allowed' : 'pointer',
       goReview: () => this.go('review'),
       // Returns wizard to Step 1 so the planner can queue more SCs without clearing the active runQueue.
-      goCreateMore: () => this.setState({ creationStep: 1, selectedSCs: [], creationVolume: null, fixReturnStep: null, focusSC: null, creationView: 'wizard' }),
+      goCreateMore: () => this.setState({ creationStep: 1, selectedSCs: [], creationVolume: null, fixReturnStep: null, focusSC: null, creationView: 'wizard', showCreationGuidelines: true }),
       creBack: () => { const ns = Math.max(1, step - 1); this.setState({ creationStep: ns, fixReturnStep: ns === st.fixReturnStep ? null : st.fixReturnStep, focusSC: null }); }, creNext: () => { if (canNext) { const ns = Math.min(4, step + 1); this.setState({ creationStep: ns, fixReturnStep: ns === st.fixReturnStep ? null : st.fixReturnStep, focusSC: null }); } },
       canNext, nextLabel, showBack: step > 1, showNext: step < 4, nextBg: canNext ? '#003F98' : '#E6EBF2', nextFg: canNext ? '#fff' : '#5A5E66', nextCursor: canNext ? 'pointer' : 'not-allowed',
     };
@@ -5290,14 +5391,15 @@ class NDCApp extends React.Component {
     this.setState({ alignFieldDec: fd, alignDecisions: a });
   }
   // Per-DC (node-level) accept/reject within a route — the planner can accept some DC changes and reject others (2026-07-03).
-  decideDcRow(planId, idx, dcCode, val) { const a = Object.assign({}, this.state.alignDcDecisions); a[planId] = Object.assign({}, a[planId]); a[planId][idx] = Object.assign({}, a[planId][idx]); a[planId][idx][dcCode] = val; this.setState({ alignDcDecisions: a }); }
-  // "Accept all" for ONE route — accepts only the STILL-UNDECIDED changes (route-scoped + per-DC), in a single update.
-  // It must never clobber an explicit Reject the planner already made (mirrors decideAllFlagged's "fill undecided only" guard).
+  decideDcRow(planId, idx, dcCode, field, val) { const a = Object.assign({}, this.state.alignDcDecisions); a[planId] = Object.assign({}, a[planId]); a[planId][idx] = Object.assign({}, a[planId][idx]); a[planId][idx][dcCode] = Object.assign({}, a[planId][idx][dcCode]); a[planId][idx][dcCode][field] = val; this.setState({ alignDcDecisions: a }); }
+  // "Accept all" for ONE route — accepts only the STILL-UNDECIDED changes (route-scoped + per-field
+  // per-DC), in a single update. It must never clobber an explicit Reject the planner already made
+  // (mirrors decideAllFlagged's "fill undecided only" guard).
   acceptRowChanges(planId, idx, dcCodes, setRoute) {
     const upd = {};
+    const plan = (this.state.data.plans || []).find(p => p.id === planId);
+    const row = plan && plan.rows[idx];
     if (setRoute) {
-      const plan = (this.state.data.plans || []).find(p => p.id === planId);
-      const row = plan && plan.rows[idx];
       const cellKeys = (row && row.fb && row.fb.cells) ? Object.keys(row.fb.cells) : [];
       const key = planId + ':' + idx;
       // Fill only UNDECIDED per-field decisions with Accept (never clobber an explicit Reject).
@@ -5306,7 +5408,16 @@ class NDCApp extends React.Component {
       const a = Object.assign({}, this.state.alignDecisions); a[planId] = Object.assign({}, a[planId]);
       a[planId][idx] = cellKeys.length && cellKeys.some(k => fd[key][k] === 'Reject') ? 'Reject' : 'Accept'; upd.alignDecisions = a;
     }
-    if (dcCodes && dcCodes.length) { const b = Object.assign({}, this.state.alignDcDecisions); b[planId] = Object.assign({}, b[planId]); b[planId][idx] = Object.assign({}, b[planId][idx]); dcCodes.forEach(c => { if (!b[planId][idx][c]) b[planId][idx][c] = 'Accept'; }); upd.alignDcDecisions = b; }
+    if (dcCodes && dcCodes.length) {
+      const b = Object.assign({}, this.state.alignDcDecisions); b[planId] = Object.assign({}, b[planId]); b[planId][idx] = Object.assign({}, b[planId][idx]);
+      const dcCellsSrc = (row && row.fb && row.fb.dcCells) || {};
+      dcCodes.forEach(c => {
+        const fieldsProposed = Object.keys(dcCellsSrc[c] || {}).filter(f => ['lat', 'lng', 'tp', 'distance', 'routeCode'].indexOf(f) >= 0);
+        b[planId][idx][c] = Object.assign({}, b[planId][idx][c]);
+        fieldsProposed.forEach(f => { if (!b[planId][idx][c][f]) b[planId][idx][c][f] = 'Accept'; });
+      });
+      upd.alignDcDecisions = b;
+    }
     this.setState(upd);
   }
   setTpOrder(planId, idx, dcIdx, val) { const k = planId + ':' + idx; const cur = Object.assign({}, this.state.opsTpOrder); cur[k] = Object.assign({}, cur[k]); cur[k][dcIdx] = String(val).replace(/[^0-9]/g, ''); this.setState({ opsTpOrder: cur }); }
@@ -5455,7 +5566,7 @@ class NDCApp extends React.Component {
     Object.keys(newRouteVehicleConflicts).forEach((code) => {
       const vehSet = Object.keys(newRouteVehicleConflicts[code]);
       if (vehSet.length > 1) {
-        errors.push({ t: 'New route ' + code + ' has conflicting vehicle choices from different feedback (' + vehSet.join(' vs ') + ') — resolve before finalising.', sev: 'danger' });
+        errors.push({ t: 'New route ' + code + ' has conflicting vehicle choices from different feedback (' + vehSet.join(' vs ') + ') — resolve before finalising.', sev: 'danger', routeCode: code });
       }
     });
 
@@ -5467,18 +5578,18 @@ class NDCApp extends React.Component {
     const routeCodes = Object.keys(groupsMap).sort((a, b) => a.localeCompare(b)); // "sorted route wise"
 
     const routes = routeCodes.map((code) => {
-      const dcs = groupsMap[code].slice().sort((a, b) => a.tp - b.tp);
-      // TP sequence failure: within this route, effective TPs must be a clean 1..N set, no dup/gap.
-      const tps = dcs.map(x => x.tp);
-      const seen = {}; let dup = false;
-      tps.forEach(t => { if (seen[t]) dup = true; seen[t] = true; });
+      // 2026-07-10 — auto-reorder touch points rather than erroring on a "broken" sequence: a DC's
+      // tp value is treated as INSERTION INTENT (where in the route it should land), not a literal
+      // final label. Sort by that intent — ties go to whichever DC just moved/was edited here (it
+      // "wins" the slot it was dropped into, pushing the untouched occupant back) — then reassign a
+      // clean 1..N sequence over the result. This is exactly "remove TP3, TP4/5 become TP3/4" and
+      // "insert at TP2, whatever was at 2+ shifts up by one" from the product spec, applied
+      // uniformly instead of requiring the Ops Lead to hand-renumber every other affected node.
+      const dcsSorted = groupsMap[code].slice().sort((a, b) => (a.tp - b.tp) || ((b.hasOverride ? 1 : 0) - (a.hasOverride ? 1 : 0)));
+      const dcs = dcsSorted.map((dc, i) => Object.assign({}, dc, { tp: i + 1 }));
       const n = dcs.length;
-      const inRange = tps.every(t => Number.isInteger(t) && t >= 1 && t <= n);
-      if (dup || !inRange) {
-        errors.push({ t: 'Route ' + code + ' — touch-point sequence is invalid (needs a unique 1–' + n + ' order); currently ' + tps.join(', ') + '.', sev: 'danger' });
-      }
       // TP > 7 warning
-      if (n > 7) warnings.push({ t: 'Route ' + code + ' has ' + n + ' touch points (over the usual 7) — confirm this is intended.', sev: 'warning' });
+      if (n > 7) warnings.push({ t: 'Route ' + code + ' has ' + n + ' touch points (over the usual 7) — confirm this is intended.', sev: 'warning', routeCode: code });
 
       // Vehicle for this route
       const isNewRoute = !originalVehByCode.hasOwnProperty(code);
@@ -5504,7 +5615,7 @@ class NDCApp extends React.Component {
 
       // Distance vs vehicle limit warning
       if (vehRecord.dist && distance > vehRecord.dist) {
-        warnings.push({ t: 'Route ' + code + ' — round-trip distance (' + Math.round(distance) + ' km) exceeds ' + vehName + '\u2019s limit (' + vehRecord.dist + ' km).', sev: 'warning' });
+        warnings.push({ t: 'Route ' + code + ' — round-trip distance (' + Math.round(distance) + ' km) exceeds ' + vehName + '\u2019s limit (' + vehRecord.dist + ' km).', sev: 'warning', routeCode: code });
       }
 
       const volume = dcs.reduce((a, x) => a + x.vol, 0);
@@ -5549,6 +5660,10 @@ class NDCApp extends React.Component {
   // Finalise. Validate/Simulate run against every currently-PROPOSED change (nothing decided yet);
   // Finalise must only commit changes the planner actually ACCEPTED — a rejected change (including
   // a rejected split) reverts that DC/route field to its original value, per product decision.
+  // 2026-07-10 — DC-level decisions are now PER FIELD (routeCode/tp/lat/lng/distance each decided
+  // independently, not one bundled Accept/Reject per DC), so a planner can e.g. accept a distance
+  // correction while rejecting a route move on the very same DC. alignDcDecisions is now shaped
+  // { [dcCode]: { [field]: 'Accept'|'Reject' } } rather than { [dcCode]: 'Accept'|'Reject' }.
   effectiveFbForFinalise(plan) {
     const st = this.state;
     const proposed = this.effectiveFbFor(plan);
@@ -5563,7 +5678,14 @@ class NDCApp extends React.Component {
       const cells = {};
       if (fb.cells) Object.keys(fb.cells).forEach((k) => { const dec = fieldDec[k] || rowDec; if (dec === 'Accept') cells[k] = fb.cells[k]; });
       const dcCells = {};
-      if (fb.dcCells) Object.keys(fb.dcCells).forEach((code) => { if (dcDec[code] === 'Accept') dcCells[code] = fb.dcCells[code]; });
+      if (fb.dcCells) Object.keys(fb.dcCells).forEach((code) => {
+        const src = fb.dcCells[code]; const perField = dcDec[code] || {};
+        const kept = {};
+        ['lat', 'lng', 'tp', 'distance', 'routeCode'].forEach((f) => { if (src[f] != null && perField[f] === 'Accept') kept[f] = src[f]; });
+        // splitVehicle rides along with an accepted routeCode (a split route with no vehicle makes no sense)
+        if (kept.routeCode && src.splitVehicle) kept.splitVehicle = src.splitVehicle;
+        if (Object.keys(kept).length) dcCells[code] = kept;
+      });
       if (Object.keys(cells).length || Object.keys(dcCells).length) out[idx] = { cells, dcCells, remark: fb.remark, by: fb.by };
     });
     return out;
@@ -5592,6 +5714,10 @@ class NDCApp extends React.Component {
     const STPILL = { 'Pushed': { l: 'Pending Feedback', bg: '#F2F5FA', fg: '#5A5E66' }, 'In Alignment': { l: 'Feedback Received', bg: '#FBF1DF', fg: '#C77B00' }, 'Acknowledged': { l: 'Acknowledged \u00b7 locked', bg: '#E7F0F8', fg: '#1E6FB8' }, 'Finalised': { l: 'Finalised', bg: '#E7F4EC', fg: '#128A3E' } };
     const order = { 'In Alignment': 0, 'Acknowledged': 1, 'Pushed': 2, 'Finalised': 3 };
     let listPlans = plans.filter(p => { const s = eff(p); if (af === 'Feedback Received') return s === 'In Alignment' || s === 'Acknowledged'; return s === fmap[af]; }).slice().sort((a, b) => order[eff(a)] - order[eff(b)]);
+    // 2026-07-10 — zone filter, mirroring Design Review's zone-chip row, applied after the status filter.
+    const alignZone = st.alignZone || 'All';
+    listPlans = listPlans.filter(p => alignZone === 'All' || p.zone === alignZone);
+    const alignZoneChips = ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === alignZone, bg: z === alignZone ? '#003F98' : '#fff', fg: z === alignZone ? '#fff' : '#5A5E66', bd: z === alignZone ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ alignZone: z, alignPage: 0, alignPlanId: null, alignDetailOpen: false }) }));
     // Master-detail: keep the explicit selection if it is in the current filtered list,
     // otherwise auto-select the first plan so the detail pane is never blank (like Design Review).
     const curId = (st.alignPlanId && listPlans.some(p => p.id === st.alignPlanId)) ? st.alignPlanId : (listPlans.length > 0 ? listPlans[0].id : null);
@@ -5665,29 +5791,43 @@ class NDCApp extends React.Component {
         const hasRouteCells = cells.length > 0;
         const enrichedDcRows = this.genDcRows(r).map(dc => {
           const chg = dcCellsObj[dc.code] || null;
-          const dcd = dcDecMap[dc.code] || null;
+          // 2026-07-10 — decisions are now PER FIELD, not one bundled Accept/Reject per DC: the
+          // planner can accept a distance correction while rejecting a route move on the same DC.
+          // Lat/Lng are decided together as one "position" (splitting them wouldn't be meaningful —
+          // a latitude without its longitude isn't a usable correction on its own).
+          const fdec = dcDecMap[dc.code] || {};
           const pLat = (chg && chg.lat != null) ? chg.lat : dc.lat;
           const pLng = (chg && chg.lng != null) ? chg.lng : dc.lng;
           const latLngChg = !!(chg && (chg.lat != null || chg.lng != null));
           const tpChg = !!(chg && chg.tp != null);
           const routeChg = !!(chg && chg.routeCode);
           const distChg = !!(chg && chg.distance != null);
+          const mkField = (key, has) => ({
+            has, accepted: has && fdec[key] === 'Accept', rejected: has && fdec[key] === 'Reject', undecided: has && !fdec[key],
+            canDecide: ps === 'Acknowledged',
+            accBg: fdec[key] === 'Accept' ? '#128A3E' : '#fff', accFg: fdec[key] === 'Accept' ? '#fff' : '#128A3E',
+            rejBg: fdec[key] === 'Reject' ? '#D14B4B' : '#fff', rejFg: fdec[key] === 'Reject' ? '#fff' : '#D14B4B',
+            onAccept: () => this.decideDcRow(plan.id, idx, dc.code, key, 'Accept'),
+            onReject: () => this.decideDcRow(plan.id, idx, dc.code, key, 'Reject'),
+          });
+          const fRouteCode = mkField('routeCode', routeChg), fTp = mkField('tp', tpChg), fLatLng = mkField('latLng', latLngChg), fDistance = mkField('distance', distChg);
+          const allFields = [fRouteCode, fTp, fLatLng, fDistance].filter(f => f.has);
           return Object.assign({}, dc, {
             hasChange: !!chg, noChange: !chg,
             hasChgTp: tpChg, noChgTp: !tpChg, chgTp: tpChg ? String(chg.tp) : '',
-            hasLatLngChange: latLngChg, noLatLngChange: !latLngChg, proposedLatLng: pLat + ', ' + pLng,
+            hasLatLngChange: latLngChg, noLatLngChange: !latLngChg, proposedLatLng: pLat + ', ' + pLng, proposedLat: pLat, proposedLng: pLng,
             hasRouteCodeChange: routeChg, proposedRouteCode: routeChg ? chg.routeCode : '', isSplitProposal: routeChg && !!chg.splitVehicle,
             hasDistChange: distChg, proposedDist: distChg ? (chg.distance + ' km') : '',
-            dcAccepted: dcd === 'Accept', dcRejected: dcd === 'Reject', dcUndecided: !dcd,
-            dcAccBg: dcd === 'Accept' ? '#128A3E' : '#fff', dcAccFg: dcd === 'Accept' ? '#fff' : '#128A3E',
-            dcRejBg: dcd === 'Reject' ? '#D14B4B' : '#fff', dcRejFg: dcd === 'Reject' ? '#fff' : '#D14B4B',
+            fRouteCode, fTp, fLatLng, fDistance,
             dcCanDecide: ps === 'Acknowledged', dcDecideLocked: ps !== 'Acknowledged',
-            onDcAccept: () => this.decideDcRow(plan.id, idx, dc.code, 'Accept'),
-            onDcReject: () => this.decideDcRow(plan.id, idx, dc.code, 'Reject'),
+            // row-level rollups, still useful for "how many DCs still need a decision"-type counts
+            dcUndecided: allFields.length === 0 ? false : allFields.some(f => f.undecided),
+            dcFullyDecided: allFields.length > 0 && allFields.every(f => !f.undecided),
           });
         });
         const dcChangedCount = changedDcCodes.length;
-        const dcDecidedCount = changedDcCodes.filter(c => !!dcDecMap[c]).length;
+        const dcFullyDecidedMap = {}; enrichedDcRows.forEach(dc => { dcFullyDecidedMap[dc.code] = dc.dcFullyDecided; });
+        const dcDecidedCount = changedDcCodes.filter(c => !!dcFullyDecidedMap[c]).length;
         // A route owes a route-level Accept/Reject when it has route cells OR no DC-level changes
         // (a remark-only Needs-Change row is still decided at the route level). Aligned rows owe nothing.
         const needsRouteDecision = needsAttn && (hasRouteCells || dcChangedCount === 0);
@@ -5697,7 +5837,7 @@ class NDCApp extends React.Component {
         // auto-approves), falling back to the single route decision for a remark-only flag.
         const routeFieldsDecided = hasRouteCells ? (autoApprovable || (cells.length > 0 && cells.every(c => !!_fd[c.key]))) : !!dec;
         const routeDecided = !needsRouteDecision || routeFieldsDecided;
-        const dcAllDecided = changedDcCodes.every(c => !!dcDecMap[c]);
+        const dcAllDecided = changedDcCodes.every(c => !!dcFullyDecidedMap[c]);
         const rowFullyDecided = !needsAttn || (routeDecided && dcAllDecided);
         // Flat, always-visible decision list: the route-scoped change (if any) + one entry per DC-scoped change.
         // Replaces the route-button + hidden DC-table nesting so decisions never conflict or get missed, and
@@ -5734,19 +5874,20 @@ class NDCApp extends React.Component {
           }
         }
         enrichedDcRows.forEach(dc => { if (!dc.hasChange) return;
-          const parts = [], flabels = [], vals = [];
-          if (dc.hasChgTp) { parts.push('Touch-point order ' + dc.tpOrder + ' → ' + dc.chgTp); flabels.push('Touch-point order'); vals.push(dc.tpOrder + ' → ' + dc.chgTp); }
-          if (dc.hasLatLngChange) { parts.push('Lat/Long → ' + dc.proposedLatLng); flabels.push('Lat/Long'); vals.push('→ ' + dc.proposedLatLng); }
-          if (dc.hasRouteCodeChange) { parts.push((dc.isSplitProposal ? 'Split to new route ' : 'Move to route ') + dc.proposedRouteCode); flabels.push('Route'); vals.push(r.routeCode + ' → ' + dc.proposedRouteCode); }
-          if (dc.hasDistChange) { parts.push('Distance ' + dc.dist + ' → ' + dc.proposedDist); flabels.push('Distance'); vals.push(dc.dist + ' → ' + dc.proposedDist); }
-          changeList.push({ isRoute: false, isDc: true, scopeLabel: dc.code, scopeSub: dc.name,
-            changeText: parts.join(' · '), autoApproved: false,
-            whereLabel: dc.code + ' · ' + dc.name, whereBg: '#F2F5FA', whereFg: '#5A5E66', fieldLabel: flabels.join(' · '), changeVal: vals.join('   ·   '),
-            rowBg: dc.dcAccepted ? '#F5FAF6' : (dc.dcRejected ? '#FCF6F6' : '#FFFCF4'),
-            accepted: dc.dcAccepted, rejected: dc.dcRejected, undecided: dc.dcUndecided, decided: !dc.dcUndecided,
-            canDecide: dc.dcCanDecide, decideLocked: dc.dcDecideLocked,
-            accBg: dc.dcAccBg, accFg: dc.dcAccFg, rejBg: dc.dcRejBg, rejFg: dc.dcRejFg,
-            onAccept: dc.onDcAccept, onReject: dc.onDcReject });
+          const pushField = (f, label, valText) => {
+            changeList.push({ isRoute: false, isDc: true, scopeLabel: dc.code, scopeSub: dc.name,
+              changeText: label + ': ' + valText, autoApproved: false,
+              whereLabel: dc.code + ' · ' + dc.name, whereBg: '#F2F5FA', whereFg: '#5A5E66', fieldLabel: label, changeVal: valText,
+              rowBg: f.accepted ? '#F5FAF6' : (f.rejected ? '#FCF6F6' : '#FFFCF4'),
+              accepted: f.accepted, rejected: f.rejected, undecided: f.undecided, decided: !f.undecided,
+              canDecide: dc.dcCanDecide, decideLocked: dc.dcDecideLocked,
+              accBg: f.accBg, accFg: f.accFg, rejBg: f.rejBg, rejFg: f.rejFg,
+              onAccept: f.onAccept, onReject: f.onReject });
+          };
+          if (dc.hasChgTp) pushField(dc.fTp, 'Touch-point order', dc.tpOrder + ' → ' + dc.chgTp);
+          if (dc.hasLatLngChange) pushField(dc.fLatLng, 'Lat/Long', '→ ' + dc.proposedLatLng);
+          if (dc.hasRouteCodeChange) pushField(dc.fRouteCode, 'Route', r.routeCode + ' → ' + dc.proposedRouteCode);
+          if (dc.hasDistChange) pushField(dc.fDistance, 'Distance', dc.dist + ' → ' + dc.proposedDist);
         });
         const changeTotal = changeList.length;
         const changeDecidedCount = changeList.filter(c => c.decided).length;
@@ -5819,20 +5960,24 @@ class NDCApp extends React.Component {
       const aDcGroupHeaders = [];
       rows.forEach((rr, ri) => {
         const routeChange = rr.changeList.find(c => c.isRoute) || null;
+        const routeIssues = [].concat(planStateHyp.errors, planStateHyp.warnings).filter(x => x.routeCode === rr.routeCode);
         aDcGroupHeaders.push({ routeCode: rr.routeCode, hasChanges: rr.hasChanges, remark: rr.fbText, hasRemark: !!rr.fbText, needsAttn: rr.needsAttn,
           routeChange, hasRouteChange: !!routeChange, vehOrig: rr.mlVehTxt,
+          validationErrors: routeIssues.filter(x => x.sev === 'danger').map(x => x.t),
+          validationWarnings: routeIssues.filter(x => x.sev === 'warning').map(x => x.t),
+          hasValidationIssues: routeIssues.length > 0,
         });
         (rr.dcRows || []).forEach((dc, di) => {
-          const dcChange = rr.changeList.find(c => c.isDc && c.scopeLabel === dc.code) || null;
           aDcViewRows.push({
             lmdc: dc.code, designVol: fmtInt(dc.vol),
-            routeCode: rr.routeCode, routeCodeProposed: dc.hasRouteCodeChange ? dc.proposedRouteCode : '', hasRouteCodeChange: dc.hasRouteCodeChange,
-            tp: dc.tpOrder, tpProposed: dc.hasChgTp ? dc.chgTp : '', hasTpChange: dc.hasChgTp,
+            lat: dc.lat, lng: dc.lng, latProposed: dc.hasLatLngChange ? dc.proposedLat : '', lngProposed: dc.hasLatLngChange ? dc.proposedLng : '', hasLatLngChange: dc.hasLatLngChange, fLatLng: dc.fLatLng,
+            routeCode: rr.routeCode, routeCodeProposed: dc.hasRouteCodeChange ? dc.proposedRouteCode : '', hasRouteCodeChange: dc.hasRouteCodeChange, fRouteCode: dc.fRouteCode,
+            tp: dc.tpOrder, tpProposed: dc.hasChgTp ? dc.chgTp : '', hasTpChange: dc.hasChgTp, fTp: dc.fTp,
             zone: plan.zone, outCutoff: plan.rows[ri].outCutoff, tat: rr.tat, inCutoff: addHoursA(plan.rows[ri].outCutoff, plan.rows[ri].breakdownTat),
             vehType: rr.veh, vehTypeProposed: (routeChange && routeChange.changeVal) ? routeChange.changeVal.split(' → ')[1] : '', hasVehChange: !!routeChange,
-            rtDist: dc.dist, rtDistProposed: dc.hasDistChange ? dc.proposedDist : '', hasDistChange: dc.hasDistChange,
+            rtDist: dc.dist, rtDistProposed: dc.hasDistChange ? dc.proposedDist : '', hasDistChange: dc.hasDistChange, fDistance: dc.fDistance,
             isFirstInGroup: di === 0, isLastInGroup: di === (rr.dcRows || []).length - 1,
-            hasAnyChange: !!dcChange, dcChange,
+            hasAnyChange: dc.hasChange,
             routeIdx: ri,
           });
         });
@@ -5907,15 +6052,14 @@ class NDCApp extends React.Component {
         onAcceptAllFlagged: () => { const undecN = flaggedRows.filter(r => !r.rowFullyDecided).length; if (undecN === 0) { this.showToast('No undecided flagged changes remaining', '#5A5E66'); return; } this.setState({ acceptAllPlanOpen: true, acceptAllPlanId: plan.id }); },
         acceptAllBg: flaggedRows.some(r => !r.rowFullyDecided) ? '#fff' : '#E6EBF2', acceptAllFg: flaggedRows.some(r => !r.rowFullyDecided) ? '#128A3E' : '#8E96A3', acceptAllBd: flaggedRows.some(r => !r.rowFullyDecided) ? '#128A3E' : '#E6EBF2', acceptAllCursor: flaggedRows.some(r => !r.rowFullyDecided) ? 'pointer' : 'not-allowed', acceptAllTitle: flaggedRows.some(r => !r.rowFullyDecided) ? ('Accept all ' + flaggedRows.filter(r => !r.rowFullyDecided).length + ' undecided changes') : 'All changes decided',
         onPlanValidate: () => {
-          const hyp = planStateHyp; // validates the CURRENT decision state — accepted-only once any decision exists, else the raw proposal (same source Simulate and the Finalise gate read)
-          const ncN = plan.rows.filter(r => r.ops === 'Needs Change').length;
-          const parts = [];
-          if (hyp.errors.length) parts.push('✗ ' + hyp.errors.length + ' error' + (hyp.errors.length === 1 ? '' : 's') + ': ' + hyp.errors.map(e => e.t).join(' · '));
-          else parts.push('✓ No blocking errors');
-          if (hyp.warnings.length) parts.push('⚠ ' + hyp.warnings.length + ' warning' + (hyp.warnings.length === 1 ? '' : 's') + ': ' + hyp.warnings.map(w => w.t).join(' · '));
-          parts.push(ncN > 0 ? ncN + ' row' + (ncN === 1 ? '' : 's') + ' flagged for change' : 'No rows flagged');
-          this.showToast('Validate · ' + plan.scCode + ' — ' + parts.join(' · '), hyp.hasErrors ? '#D14B4B' : (hyp.warnings.length ? '#C77B00' : '#128A3E'));
+          this.setState({ alignValidateOpen: true });
+          const n = planStateHyp.errors.length + planStateHyp.warnings.length;
+          this.showToast(n === 0 ? 'Validate · ' + plan.scCode + ' — no errors or warnings' : 'Validate · ' + plan.scCode + ' — see flagged routes below', planStateHyp.hasErrors ? '#D14B4B' : (planStateHyp.warnings.length ? '#C77B00' : '#128A3E'));
         },
+        onCloseAlignValidate: () => this.setState({ alignValidateOpen: false }),
+        alignValidateOpen: !!st.alignValidateOpen,
+        alignValidateSummary: (planStateHyp.errors.length + planStateHyp.warnings.length) === 0 ? 'No errors or warnings found.' : (planStateHyp.errors.length ? planStateHyp.errors.length + ' error' + (planStateHyp.errors.length === 1 ? '' : 's') : '') + (planStateHyp.errors.length && planStateHyp.warnings.length ? ' · ' : '') + (planStateHyp.warnings.length ? planStateHyp.warnings.length + ' warning' + (planStateHyp.warnings.length === 1 ? '' : 's') : ''),
+        alignValidateClean: !planStateHyp.hasErrors && planStateHyp.warnings.length === 0,
         // Plan-level Simulate impact (planner) — real recompute (2026-07-09/10). State machine
         // (product spec, 2026-07-10):
         //  1. Feedback received (In Alignment)      -> Acknowledge & Freeze is the only action.
@@ -6075,7 +6219,45 @@ class NDCApp extends React.Component {
 
     const ackPlan = st.ackPlanId ? plans.find(p => p.id === st.ackPlanId) : null;
     const finPlan = st.finPlanId ? plans.find(p => p.id === st.finPlanId) : null;
-    const finDec = finPlan ? finPlan.rows.map((r, i) => (st.alignDecisions[finPlan.id] && st.alignDecisions[finPlan.id][i]) || r.planner) : [];
+    // 2026-07-10 — the accepted/rejected count shown before Finalise must reflect EVERY decided
+    // item — route-level (Vehicle Type) AND every individually-decided DC-level field (Route Code,
+    // Touch Point, Lat/Lng-as-one, Distance) — not just route-level rows. Undercounting here would
+    // show the planner a misleadingly small number right before an irreversible action.
+    let finAcceptedCount = 0, finRejectedCount = 0;
+    if (finPlan) {
+      const finMergedFb = this.effectiveFbFor(finPlan);
+      finPlan.rows.forEach((r, i) => {
+        const fb = finMergedFb[i]; if (!fb) return;
+        const fieldKey = finPlan.id + ':' + i;
+        const fieldDec = (st.alignFieldDec && st.alignFieldDec[fieldKey]) || {};
+        const rowDec = (st.alignDecisions[finPlan.id] && st.alignDecisions[finPlan.id][i]) || null;
+        if (fb.cells) Object.keys(fb.cells).forEach((k) => { const dec = fieldDec[k] || rowDec; if (dec === 'Accept') finAcceptedCount++; else if (dec === 'Reject') finRejectedCount++; });
+        const dcDec = (st.alignDcDecisions[finPlan.id] && st.alignDcDecisions[finPlan.id][i]) || {};
+        if (fb.dcCells) Object.keys(fb.dcCells).forEach((code) => {
+          const src = fb.dcCells[code]; const perField = dcDec[code] || {};
+          if (src.routeCode) { if (perField.routeCode === 'Accept') finAcceptedCount++; else if (perField.routeCode === 'Reject') finRejectedCount++; }
+          if (src.tp != null) { if (perField.tp === 'Accept') finAcceptedCount++; else if (perField.tp === 'Reject') finRejectedCount++; }
+          if (src.lat != null || src.lng != null) { if (perField.latLng === 'Accept') finAcceptedCount++; else if (perField.latLng === 'Reject') finRejectedCount++; }
+          if (src.distance != null) { if (perField.distance === 'Accept') finAcceptedCount++; else if (perField.distance === 'Reject') finRejectedCount++; }
+        });
+      });
+    }
+    // 2026-07-10 — Finalise preview: show the planner the ACTUAL derived structure (accepted changes
+    // only, clean re-ordered sequence, real recomputed metrics) before they commit — same engine
+    // confirmFin() itself will use, so what's previewed here is exactly what gets committed.
+    const finPreviewHyp = finPlan ? this.computeHypotheticalPlan(finPlan, this.effectiveFbForFinalise(finPlan)) : null;
+    const finPreviewRows = finPreviewHyp ? finPreviewHyp.routes.map(rt => {
+      const vehRecord = (d.VEH || []).find(v => v.name === rt.vehName) || {};
+      return { routeCode: rt.routeCode, veh: rt.vehName, tpN: rt.dcCodes.length, dist: fmtInt(Math.round(rt.distance)), vol: fmtInt(rt.volume), cps: '₹' + rt.cps.toFixed(2), cap: vehRecord.cap ? fmtInt(vehRecord.cap) : '—', isNew: rt.isNewRoute };
+    }) : [];
+    const finOrigDistance = finPlan ? finPlan.metrics.distance : 0;
+    const finNewDistance = finPreviewHyp ? Math.round(finPreviewHyp.routes.reduce((a, r) => a + r.distance, 0)) : 0;
+    const finOrigCps = finPreviewHyp ? finPreviewHyp.originalScCPS : 0;
+    const finNewCps = finPreviewHyp ? finPreviewHyp.scCPS : 0;
+    const finOrigRoutes = finPlan ? finPlan.metrics.routes : 0;
+    const finNewRoutes = finPreviewHyp ? finPreviewHyp.routes.length : 0;
+    const finDelta = (a, b, dec) => { const d2 = +(b - a).toFixed(dec); return d2 === 0 ? '—' : (d2 > 0 ? '+' : '') + d2; };
+    const finDeltaColor = (a, b) => b < a ? '#128A3E' : b > a ? '#D14B4B' : '#5A5E66';
     const ackPending = ackPlan ? ackPlan.rows.filter((r, i) => r.ops === 'Needs Change' && !((st.alignDecisions[ackPlan.id] && st.alignDecisions[ackPlan.id][i]) || r.planner)).length : 0;
 
     // Master-detail: rail (list) and detail pane both render whenever the filter has plans.
@@ -6101,9 +6283,14 @@ class NDCApp extends React.Component {
       alignPrevPage: () => this.setState({ alignPage: Math.max(0, alignPageSafe - 1) }),
       alignNextPage: () => this.setState({ alignPage: Math.min(alignTotalPages - 1, alignPageSafe + 1) }),
       alignBackToList: () => this.setState({ alignPlanId: null }),
-      planList: planList, alignFilterSeg, planCount: listPlans.length, aSel, alignClearFilter: () => this.setState({ alignFilter: 'Pending Feedback', alignPage: 0 }),
+      planList: planList, alignFilterSeg, alignZoneChips, planCount: listPlans.length, aSel, alignClearFilter: () => this.setState({ alignFilter: 'Pending Feedback', alignZone: 'All', alignPage: 0 }),
       ackOpen: st.ackOpen, ackPlanName: ackPlan ? (ackPlan.scCode + ' \u00b7 ' + ackPlan.scName) : '', ackReviewers: ackPlan ? ackPlan.reviewerNames.join(', ') : '', ackPendingCount: ackPending, ackHasPending: ackPending > 0, ackPendingLabel: ackPending + ' row' + (ackPending === 1 ? '' : 's') + ' still pending \u2014 they will be frozen as-is', confirmAck: () => this.confirmAck(), closeAck: () => this.setState({ ackOpen: false }),
-      finOpen: st.finOpen, finPlanName: finPlan ? (finPlan.scCode + ' \u00b7 ' + finPlan.scName) : '', finAccepted: finDec.filter(x => x === 'Accept').length, finRejected: finDec.filter(x => x === 'Reject').length, confirmFin: () => this.confirmFin(), closeFin: () => this.setState({ finOpen: false }),
+      finOpen: st.finOpen, finPlanName: finPlan ? (finPlan.scCode + ' \u00b7 ' + finPlan.scName) : '', finAccepted: finAcceptedCount, finRejected: finRejectedCount, confirmFin: () => this.confirmFin(), closeFin: () => this.setState({ finOpen: false }),
+      finPreviewRows, finPreviewWarnings: finPreviewHyp ? finPreviewHyp.warnings.map(w => w.t) : [], finOrigRoutes, finNewRoutes, finOrigDistance: fmtInt(finOrigDistance), finNewDistance: fmtInt(finNewDistance),
+      finRoutesDelta: finDelta(finOrigRoutes, finNewRoutes, 0), finRoutesDeltaColor: finDeltaColor(finOrigRoutes, finNewRoutes),
+      finDistDelta: finDelta(finOrigDistance, finNewDistance, 0), finDistDeltaColor: finDeltaColor(finOrigDistance, finNewDistance),
+      finOrigCpsF: '\u20b9' + finOrigCps.toFixed(2), finNewCpsF: '\u20b9' + finNewCps.toFixed(2),
+      finCpsDelta: finDelta(finOrigCps, finNewCps, 2), finCpsDeltaColor: finDeltaColor(finOrigCps, finNewCps),
       // Accept-all-flagged modal bindings
       acceptAllPlanOpen: st.acceptAllPlanOpen,
       acceptAllPlanId: st.acceptAllPlanId,
@@ -6126,7 +6313,18 @@ class NDCApp extends React.Component {
     plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change') { const cur = a[planId][i] || r.planner; if (!cur) a[planId][i] = 'Accept'; } });
     // also accept every flagged DC-level change so "Accept all changes" clears the full gate
     const dd = Object.assign({}, this.state.alignDcDecisions); dd[planId] = Object.assign({}, dd[planId]);
-    plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change' && r.fb && r.fb.dcCells) { dd[planId][i] = Object.assign({}, dd[planId][i]); Object.keys(r.fb.dcCells).forEach(code => { if (!dd[planId][i][code]) dd[planId][i][code] = 'Accept'; }); } });
+    plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change' && r.fb && r.fb.dcCells) {
+      dd[planId][i] = Object.assign({}, dd[planId][i]);
+      Object.keys(r.fb.dcCells).forEach(code => {
+        dd[planId][i][code] = Object.assign({}, dd[planId][i][code]);
+        const src = r.fb.dcCells[code];
+        ['lat', 'lng', 'tp', 'distance', 'routeCode'].forEach(f => {
+          const hasField = f === 'lat' || f === 'lng' ? (src.lat != null || src.lng != null) : src[f] != null;
+          const key = (f === 'lat' || f === 'lng') ? 'latLng' : f;
+          if (hasField && !dd[planId][i][code][key]) dd[planId][i][code][key] = 'Accept';
+        });
+      });
+    } });
     // also fill per-field route-level decisions (Accept, undecided only) so the card reflects the accept-all
     const fd = Object.assign({}, this.state.alignFieldDec);
     plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change' && r.fb && r.fb.cells) { const key = planId + ':' + i; fd[key] = Object.assign({}, fd[key]); Object.keys(r.fb.cells).forEach(k => { if (!fd[key][k]) fd[key][k] = 'Accept'; }); } });
@@ -6137,7 +6335,29 @@ class NDCApp extends React.Component {
     this.setState({ acceptAllPlanOpen: false, acceptAllPlanId: null });
   }
   // E2 — opens the "Flag changes" modal. Only flagged cells become feedback.
-  openNc(planId, idx) { const r = this.state.data.plans.find(p => p.id === planId).rows[idx]; this.setState({ ncOpen: true, ncDecision: 'Needs Change', ncRow: { planId: planId, idx: idx }, ncCells: { vehicleType: r.veh }, ncFlags: {}, ncDcCells: {}, ncSplitCode: null, ncSplitVehicle: '', ncRemark: '' }); }
+  openNc(planId, idx) {
+    const plan = this.state.data.plans.find(p => p.id === planId);
+    const r = plan.rows[idx];
+    // 2026-07-10 — re-opening "Needs Change" on a route that already has proposed changes now
+    // pre-populates from them instead of resetting to a blank form, so the Ops Lead can keep
+    // editing or reverse individual changes rather than starting over. Available any time the
+    // review is still open (openNc itself is only reachable while !planLocked, same gate as before).
+    const fb = (this.effectiveFbFor(plan) || {})[idx];
+    if (fb) {
+      const ncCells = { vehicleType: (fb.cells && fb.cells.vehicleType) ? fb.cells.vehicleType.to : r.veh };
+      const ncFlags = {}; if (fb.cells && fb.cells.vehicleType) ncFlags.vehicleType = true;
+      const ncDcCells = {};
+      let ncSplitCode = null, ncSplitVehicle = '';
+      Object.keys(fb.dcCells || {}).forEach((code) => {
+        const e = fb.dcCells[code];
+        ncDcCells[code] = { lat: e.lat != null ? String(e.lat) : '', lng: e.lng != null ? String(e.lng) : '', tp: e.tp != null ? String(e.tp) : '', distance: e.distance != null ? String(e.distance) : '', routeCode: e.routeCode || '' };
+        if (e.splitVehicle) { ncSplitCode = e.routeCode; ncSplitVehicle = e.splitVehicle; }
+      });
+      this.setState({ ncOpen: true, ncDecision: 'Needs Change', ncRow: { planId: planId, idx: idx }, ncCells, ncFlags, ncDcCells, ncSplitCode, ncSplitVehicle, ncRemark: fb.remark || '' });
+      return;
+    }
+    this.setState({ ncOpen: true, ncDecision: 'Needs Change', ncRow: { planId: planId, idx: idx }, ncCells: { vehicleType: r.veh }, ncFlags: {}, ncDcCells: {}, ncSplitCode: null, ncSplitVehicle: '', ncRemark: '' });
+  }
   closeNc() { this.setState({ ncOpen: false }); }
   setNc(field, val) { const c = Object.assign({}, this.state.ncCells); c[field] = val; this.setState({ ncCells: c }); }
   // E2 \u2014 toggle whether a cell is flagged. Only flagged cells reveal their input + become feedback.
@@ -6246,7 +6466,11 @@ class NDCApp extends React.Component {
       return sub ? 'Submitted' : 'To Review';
     };
     const opsFilter = st.opsFilter || 'To Review';
-    const filteredAssigned = assigned.filter(p => opsStatusOf(p) === opsFilter);
+    let filteredAssigned = assigned.filter(p => opsStatusOf(p) === opsFilter);
+    // 2026-07-10 — zone filter, mirroring Design Review's zone-chip row, applied after the status filter.
+    const opsZone = st.opsZone || 'All';
+    filteredAssigned = filteredAssigned.filter(p => opsZone === 'All' || p.zone === opsZone);
+    const opsZoneChips = ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === opsZone, bg: z === opsZone ? '#003F98' : '#fff', fg: z === opsZone ? '#fff' : '#5A5E66', bd: z === opsZone ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ opsZone: z, opsPage: 0, opsPlanId: null, opsDetailOpen: false }) }));
     // Master-detail: keep the explicit selection if it's in the filtered list, else auto-select the first
     // so the detail pane is never blank (mirrors Design Review + the planner side).
     const curId = (st.opsPlanId && filteredAssigned.some(p => p.id === st.opsPlanId)) ? st.opsPlanId : (filteredAssigned.length > 0 ? filteredAssigned[0].id : null);
@@ -6271,7 +6495,7 @@ class NDCApp extends React.Component {
     // Reviewer states — To Review / Submitted / Acknowledged / Finalised (plan-lifecycle-tied, see opsStatusOf).
     const opsCnt = (s) => allOpsPlans.filter(p => p.status === s).length;
     const OPSFILTERS = ['To Review', 'Submitted', 'Acknowledged', 'Finalised'];
-    const opsPlans = allOpsPlans.filter(p => p.status === opsFilter);
+    const opsPlans = allOpsPlans.filter(p => p.status === opsFilter && (opsZone === 'All' || p.zone === opsZone));
 
     const plan = d.plans.find(p => p.id === curId);
     const sec = st.opsSection || 'details';
@@ -6290,6 +6514,12 @@ class NDCApp extends React.Component {
       // KRD §11 — editing locks only when the planner acknowledges; submitted-but-not-acknowledged rows stay editable.
       const planStatus = st.alignStatus[plan.id] || plan.status;
       const planLocked = planStatus === 'Acknowledged' || planStatus === 'Finalised';
+      // 2026-07-10 — computed ONCE here, reused for Submit gating, Validate's inline results, and
+      // Simulate below, so there's a single source of truth for "what does the current proposed
+      // state look like" rather than several independent recomputations that could drift.
+      const opsMergedFbTop = this.effectiveFbFor(plan);
+      const opsHypTop = this.computeHypotheticalPlan(plan, opsMergedFbTop);
+      const opsNcRowsTop = plan.rows.filter((r, i) => dec[i] === 'Needs Change' || r.ops === 'Needs Change');
       const rows = plan.rows.map((r, idx) => { const dv = dec[idx] || 'Pending'; const op = OP[dv];
         // §10 O2 — show a co-reviewer's already-proposed change to THIS (second) reviewer, so opening
         // the plan never shows a blank slate. Prefer live submitted feedback, else the seeded row.
@@ -6346,23 +6576,49 @@ class NDCApp extends React.Component {
         const baseDcs = this.genDcRows(r);
         const liveFbR = (st.opsRowFb[plan.id] || {})[ri] || r.fb;
         const dcCellsR = (liveFbR && liveFbR.dcCells) || {};
+        const routeVehChanged = !!(liveFbR && liveFbR.cells && liveFbR.cells.vehicleType);
+        const routeVehProposed = routeVehChanged ? liveFbR.cells.vehicleType.to : '';
         baseDcs.forEach((dc, di) => {
           const ov = dcCellsR[dc.code] || {};
           const editable = !planLocked;
+          const hasRouteCodeChange = !!ov.routeCode, hasTpChange = ov.tp != null && ov.tp !== '', hasDistChange = ov.distance != null && ov.distance !== '';
+          const hasLatLngChange = (ov.lat != null && ov.lat !== '') || (ov.lng != null && ov.lng !== '');
           oDcViewRows.push({
-            lmdc: dc.code, designVol: fmtInt(dc.vol), routeCode: ov.routeCode || r.routeCode,
-            tp: (ov.tp != null && ov.tp !== '') ? ov.tp : dc.tpOrder, zone: plan.zone,
-            outCutoff: r.outCutoff, tat: r.breakdownTat + 'h', inCutoff: addHours(r.outCutoff, r.breakdownTat),
-            vehType: r.veh, rtDist: (ov.distance != null && ov.distance !== '') ? (ov.distance + ' km') : dc.dist,
+            lmdc: dc.code, designVol: fmtInt(dc.vol),
+            lat: dc.lat, lng: dc.lng, latProposed: hasLatLngChange && ov.lat != null && ov.lat !== '' ? ov.lat : '', lngProposed: hasLatLngChange && ov.lng != null && ov.lng !== '' ? ov.lng : '', hasLatLngChange,
+            routeCode: r.routeCode, routeCodeProposed: hasRouteCodeChange ? ov.routeCode : '', hasRouteCodeChange,
+            tp: dc.tpOrder, tpProposed: hasTpChange ? ov.tp : '', hasTpChange,
+            zone: plan.zone, outCutoff: r.outCutoff, tat: r.breakdownTat + 'h', inCutoff: addHours(r.outCutoff, r.breakdownTat),
+            vehType: r.veh, vehTypeProposed: routeVehProposed, hasVehChange: routeVehChanged,
+            rtDist: dc.dist, rtDistProposed: hasDistChange ? (ov.distance + ' km') : '', hasDistChange,
             isFirstInGroup: di === 0, isLastInGroup: di === baseDcs.length - 1,
-            editable, hasChange: !!ov.routeCode || ov.tp != null || ov.distance != null,
+            editable, hasChange: hasRouteCodeChange || hasTpChange || hasDistChange || hasLatLngChange,
             routeIdx: ri, dcCode: dc.code,
+            // per-field revert — removes just this one proposed DC-level change, available while editable
+            onRevertField: (field) => {
+              const a = Object.assign({}, st.opsRowFb); a[plan.id] = Object.assign({}, a[plan.id]);
+              const curFb = a[plan.id][ri] || Object.assign({}, liveFbR || { cells: {}, dcCells: {} });
+              const newFb = Object.assign({}, curFb, { dcCells: Object.assign({}, curFb.dcCells) });
+              newFb.dcCells[dc.code] = Object.assign({}, newFb.dcCells[dc.code]);
+              if (field === 'latLng') { delete newFb.dcCells[dc.code].lat; delete newFb.dcCells[dc.code].lng; }
+              else delete newFb.dcCells[dc.code][field];
+              if (Object.keys(newFb.dcCells[dc.code]).length === 0) delete newFb.dcCells[dc.code];
+              a[plan.id][ri] = newFb;
+              this.setState({ opsRowFb: a });
+              this.showToast('Reverted ' + (field === 'latLng' ? 'position' : field) + ' for ' + dc.code, '#5A5E66');
+            },
           });
         });
       });
       // route-group header actions (Aligned / Needs-Change) surfaced inline in the Details table —
       // reuses the SAME per-route decision handlers as the Route View pivot's row data (`rows` above).
-      const oDcGroupHeaders = plan.rows.map((r, ri) => rows[ri]);
+      const oDcGroupHeaders = plan.rows.map((r, ri) => {
+        const base = rows[ri];
+        const routeIssues = [].concat(opsHypTop.errors, opsHypTop.warnings).filter(x => x.routeCode === r.routeCode);
+        const validationErrors = routeIssues.filter(x => x.sev === 'danger').map(x => x.t);
+        const validationWarnings = routeIssues.filter(x => x.sev === 'warning').map(x => x.t);
+        return Object.assign({}, base, { validationErrors, validationWarnings, hasValidationIssues: routeIssues.length > 0 });
+      });
       // (per-route "Node Details" list removed with the Node Details tab)
       // §10 O2 — plan-level co-reviewer summary + roster (awareness "the same way" the planner sees feedback received).
       const propRows = rows.filter(r => r.hasProposed && r.proposedBy !== 'Rahul Sharma');
@@ -6384,17 +6640,20 @@ class NDCApp extends React.Component {
         sections: SECS.map(s => ({ label: s[1], active: sec === s[0], color: sec === s[0] ? '#003F98' : '#5A5E66', weight: sec === s[0] ? '700' : '600', onClick: () => this.setState({ opsSection: s[0] }) })),
         onAcceptAll: () => { if (pendN > 0) this.setState({ alignAllOpen: true, alignAllPlanId: plan.id }); }, acceptAllDisabled: pendN === 0, onReset: () => this.resetOps(plan.id), onMapView: () => this.openStandaloneMap(plan.scCode, 'Ops Alignment · Ops Lead'),
         onOpsValidate: () => {
-          const hyp = this.computeHypotheticalPlan(plan, this.effectiveFbFor(plan));
-          const ncRows = plan.rows.filter((r, i) => (st.opsRowDec[plan.id] || {})[i] === 'Needs Change' || r.ops === 'Needs Change').length;
-          const parts = [];
-          if (hyp.errors.length) parts.push('✗ ' + hyp.errors.length + ' error' + (hyp.errors.length === 1 ? '' : 's') + ': ' + hyp.errors.map(e => e.t).join(' · '));
-          else parts.push('✓ No blocking errors');
-          if (hyp.warnings.length) parts.push('⚠ ' + hyp.warnings.length + ' warning' + (hyp.warnings.length === 1 ? '' : 's') + ': ' + hyp.warnings.map(w => w.t).join(' · '));
-          parts.push(ncRows > 0 ? ncRows + ' row' + (ncRows === 1 ? '' : 's') + ' need change' : 'No changes flagged');
-          this.showToast('Validate · ' + plan.scCode + ' — ' + parts.join(' · '), hyp.hasErrors ? '#D14B4B' : (hyp.warnings.length ? '#C77B00' : '#128A3E'));
+          this.setState({ opsValidateOpen: true });
+          const n = opsHypTop.errors.length + opsHypTop.warnings.length;
+          this.showToast(n === 0 ? 'Validate · ' + plan.scCode + ' — no errors or warnings' : 'Validate · ' + plan.scCode + ' — see flagged routes below', opsHypTop.hasErrors ? '#D14B4B' : (opsHypTop.warnings.length ? '#C77B00' : '#128A3E'));
         },
-        // Submit remains available until the planner acknowledges; re-submit overwrites the previous stamp (idempotent).
-        canSubmit: !planLocked,
+        onCloseOpsValidate: () => this.setState({ opsValidateOpen: false }),
+        opsValidateOpen: !!st.opsValidateOpen,
+        opsValidateSummary: (opsHypTop.errors.length + opsHypTop.warnings.length) === 0 ? 'No errors or warnings found.' : (opsHypTop.errors.length ? opsHypTop.errors.length + ' error' + (opsHypTop.errors.length === 1 ? '' : 's') : '') + (opsHypTop.errors.length && opsHypTop.warnings.length ? ' · ' : '') + (opsHypTop.warnings.length ? opsHypTop.warnings.length + ' warning' + (opsHypTop.warnings.length === 1 ? '' : 's') : ''),
+        opsValidateClean: !opsHypTop.hasErrors && opsHypTop.warnings.length === 0,
+        // 2026-07-10 — Submit is only gated on validation when there's actually something proposed:
+        // no Needs-Change rows means nothing to validate, so Submit stays available immediately.
+        // Once anything is flagged, the CURRENT proposed state must validate clean (zero errors —
+        // warnings are fine) before Submit becomes available, derived fresh each render rather than
+        // a stale "did they click Validate" flag.
+        canSubmit: !planLocked && (opsNcRowsTop.length === 0 || !opsHypTop.hasErrors),
         onSubmit: () => { if (pendN > 0) { this.setState({ opsPartialOpen: true, opsPartialPlanId: plan.id }); } else { this.submitOpsPlan(plan.id); } },
         submitLabel: submitted ? 'Update feedback' : 'Submit feedback',
         submitBg: '#003F98', submitFg: '#fff', submitCursor: 'pointer' };
@@ -6421,7 +6680,25 @@ class NDCApp extends React.Component {
     const ncIsBlocker = false; // Blocker removed; always Needs Change
     const ncPlan = st.ncRow ? d.plans.find(p => p.id === st.ncRow.planId) : null;
     const ncRowObj = (ncPlan && st.ncRow) ? ncPlan.rows[st.ncRow.idx] : null;
-    const ncOtherCodes = (ncPlan && st.ncRow) ? ncPlan.rows.filter((r, i) => i !== st.ncRow.idx).map(r => r.routeCode) : [];
+    // 2026-07-10 — a split route created earlier (e.g. RT-02_A) only exists inside proposed feedback
+    // until Finalise, so it wouldn't show up here for a DIFFERENT DC without this: scan every route's
+    // current effective feedback (submitted + in-progress, same merge Validate/Simulate read) for any
+    // routeCode that isn't an existing plan.rows code, and offer those as regular options too.
+    const ncOtherCodes = (() => {
+      if (!ncPlan || !st.ncRow) return [];
+      const existing = ncPlan.rows.filter((r, i) => i !== st.ncRow.idx).map(r => r.routeCode);
+      const known = {}; ncPlan.rows.forEach(r => { known[r.routeCode] = true; });
+      const virtual = {};
+      const mergedFb = this.effectiveFbFor(ncPlan);
+      Object.keys(mergedFb).forEach((idx) => {
+        const fb = mergedFb[idx]; if (!fb || !fb.dcCells) return;
+        Object.keys(fb.dcCells).forEach((code) => {
+          const rc = fb.dcCells[code].routeCode;
+          if (rc && !known[rc]) virtual[rc] = true;
+        });
+      });
+      return existing.concat(Object.keys(virtual).filter(v => existing.indexOf(v) < 0));
+    })();
     const ncDcMap = st.ncDcCells || {};
     const ncRouteCodeOptions = [{ value: '', label: 'Keep on this route' }]
       .concat(ncOtherCodes.map(code => ({ value: code, label: 'Move to ' + code })))
@@ -6561,7 +6838,7 @@ class NDCApp extends React.Component {
     const opsHasNext = opsPageSafeFiltered < opsTotalPagesFiltered - 1;
 
     return { opsPlans: opsPlans, opsFilterSeg, opsPlanCount: assigned.length, opsIsL1, opsIsL2,
-      opsFilterLabel: opsFilter, opsClearFilter: () => this.setState({ opsFilter: 'To Review', opsPage: 0, opsPlanId: null }),
+      opsFilterLabel: opsFilter, opsZoneChips, opsClearFilter: () => this.setState({ opsFilter: 'To Review', opsZone: 'All', opsPage: 0, opsPlanId: null }),
       opsPage: opsPageSafeFiltered, opsTotalPages: opsTotalPagesFiltered, opsShowPager,
       opsShowingLabel, opsHasPrev, opsHasNext,
       opsPrevPage: () => this.setState({ opsPage: Math.max(0, opsPageSafeFiltered - 1) }),
@@ -6878,7 +7155,7 @@ class NDCApp extends React.Component {
     const gen = st.mapDataSource === 'generated';
 
     return { isMap, mapScList: scList, mapSC: curCode, mapSCname: sc.name, mapSCzone: sc.zone,
-      mapZoneChips: ['All', 'North', 'South', 'East', 'West', 'Central'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ mapZone: z }) })),
+      mapZoneChips: ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ mapZone: z }) })),
       mapGen: gen, mapIngested: !gen, mapSrcGenBg: gen ? '#003F98' : '#fff', mapSrcGenFg: gen ? '#fff' : '#5A5E66', mapSrcIngBg: !gen ? '#003F98' : '#fff', mapSrcIngFg: !gen ? '#fff' : '#5A5E66', setMapGen: () => this.setState({ mapDataSource: 'generated' }), setMapIng: () => this.setState({ mapDataSource: 'ingested' }),
       mapW: W, mapH: H, scX: scPt.x, scY: scPt.y, arcs, arcLabels, dcMarkers, dcLabels, legend, mapRows: rows, rowsShown: rows.length, routeTotal: routes.length, mapNoResults: rows.length === 0, mapHasResults: rows.length > 0,
       routeOptions, vehOptions, mapRoute: fRoute, mapVeh: fVeh, mapSearch: st.mapSearch || '',
@@ -6924,14 +7201,14 @@ class NDCApp extends React.Component {
         rollup: [ { label: 'SCs planned', value: '78' }, { label: 'Plans finalised', value: '78' }, { label: 'Runs generated', value: '231' }, { label: 'Network CPS', value: R + '2.68' }, { label: 'Coverage', value: '99.2%' }, { label: 'Total distance', value: '6.42L km' }, { label: 'Vehicles', value: '3,142' }, { label: 'Est. cost / month', value: R + '18.4 Cr' } ],
         align: { flagged: 512, accepted: 468, rejected: 44, auto: 1890, avgDays: '3.2' },
         cpsNote: 'Network CPS landed 4.6% below the published baseline',
-        zones: [ { zone: 'North', plans: 14, avgCps: R + '2.63', cov: '99%', routes: 612, veh: 641, dist: '1.18L km' }, { zone: 'South', plans: 22, avgCps: R + '2.71', cov: '99%', routes: 903, veh: 812, dist: '1.62L km' }, { zone: 'West', plans: 19, avgCps: R + '2.66', cov: '99%', routes: 788, veh: 704, dist: '1.44L km' }, { zone: 'East', plans: 11, avgCps: R + '2.74', cov: '98%', routes: 471, veh: 498, dist: '0.94L km' }, { zone: 'Central', plans: 12, avgCps: R + '2.69', cov: '99%', routes: 502, veh: 487, dist: '1.24L km' } ] },
+        zones: [ { zone: 'North', plans: 14, avgCps: R + '2.63', cov: '99%', routes: 612, veh: 641, dist: '1.18L km' }, { zone: 'South', plans: 22, avgCps: R + '2.71', cov: '99%', routes: 903, veh: 812, dist: '1.62L km' }, { zone: 'West', plans: 19, avgCps: R + '2.66', cov: '99%', routes: 788, veh: 704, dist: '1.44L km' }, { zone: 'East', plans: 11, avgCps: R + '2.74', cov: '98%', routes: 471, veh: 498, dist: '0.94L km' } ] },
       'May 2026': {
         status: 'Archived', handoffDate: '15 May 2026', window: '10 Apr – 15 May 2026',
         milestones: [ { label: 'Volume published', date: '08 Apr' }, { label: 'Designs created', date: '04 May' }, { label: 'Feedback window', date: '04–11 May' }, { label: 'Freeze · Acknowledge', date: '11 May' }, { label: 'Finalised · RFQ', date: '14 May' } ],
         rollup: [ { label: 'SCs planned', value: '74' }, { label: 'Plans finalised', value: '74' }, { label: 'Runs generated', value: '219' }, { label: 'Network CPS', value: R + '2.74' }, { label: 'Coverage', value: '98.8%' }, { label: 'Total distance', value: '6.18L km' }, { label: 'Vehicles', value: '2,981' }, { label: 'Est. cost / month', value: R + '17.9 Cr' } ],
         align: { flagged: 486, accepted: 421, rejected: 65, auto: 1774, avgDays: '3.8' },
         cpsNote: 'Network CPS landed 3.1% below the published baseline',
-        zones: [ { zone: 'North', plans: 13, avgCps: R + '2.70', cov: '99%', routes: 588, veh: 612, dist: '1.14L km' }, { zone: 'South', plans: 21, avgCps: R + '2.77', cov: '98%', routes: 866, veh: 771, dist: '1.55L km' }, { zone: 'West', plans: 18, avgCps: R + '2.72', cov: '99%', routes: 742, veh: 668, dist: '1.38L km' }, { zone: 'East', plans: 10, avgCps: R + '2.81', cov: '98%', routes: 438, veh: 466, dist: '0.89L km' }, { zone: 'Central', plans: 12, avgCps: R + '2.75', cov: '98%', routes: 489, veh: 464, dist: '1.22L km' } ] } };
+        zones: [ { zone: 'North', plans: 13, avgCps: R + '2.70', cov: '99%', routes: 588, veh: 612, dist: '1.14L km' }, { zone: 'South', plans: 21, avgCps: R + '2.77', cov: '98%', routes: 866, veh: 771, dist: '1.55L km' }, { zone: 'West', plans: 18, avgCps: R + '2.72', cov: '99%', routes: 742, veh: 668, dist: '1.38L km' }, { zone: 'East', plans: 10, avgCps: R + '2.81', cov: '98%', routes: 438, veh: 466, dist: '0.89L km' } ] } };
     const data = CS[cyc] || CS['June 2026'];
     const isArch = data.status === 'Archived';
     const a = data.align;
@@ -7128,6 +7405,7 @@ class NDCApp extends React.Component {
           dcRows.push({
             lmdc: cc + '-DC-' + String(201 + _di * 5 + _dj),
             designVol: fmtInt(Math.max(40, Math.round((detailRun.volume / (dRouteRows.length * _ndc)) * (0.6 + RR() * 0.8)))),
+            lat: (baseLat + (RR() - 0.5) * 0.5).toFixed(4), lng: (baseLng + (RR() - 0.5) * 0.5).toFixed(4),
             routeCode: _drt.segment,
             tp: _drt.tps,
             zone: DCZN_V[Math.round(RR()) % 2],
@@ -7183,7 +7461,7 @@ class NDCApp extends React.Component {
       hasCurSC: !!curSC, noCurSC: !curSC, reviewListEmpty: reviewList.length === 0, hasReviewList: reviewList.length > 0,
       reviewClearSearch: () => this.setState({ reviewSearch: '', reviewZone: 'All' }),
       reviewList, reviewSearch: st.reviewSearch || '', onReviewSearch: (e) => this.setState({ reviewSearch: e.target.value }),
-      reviewZoneChips: ['All', 'North', 'South', 'East', 'West', 'Central'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ reviewZone: z }) })),
+      reviewZoneChips: ['All', 'North', 'South', 'East', 'West'].map(z => ({ label: z, active: z === zf, bg: z === zf ? '#003F98' : '#fff', fg: z === zf ? '#fff' : '#5A5E66', bd: z === zf ? '#003F98' : '#E6EBF2', onClick: () => this.setState({ reviewZone: z }) })),
       reviewShown: listSCs.length, reviewTotal: completedSCs.length,
       rqProgN, rqDoneN, rqHasQueue, rqNoQueue, rqShowProg,
       curCode, curName: curSC ? curSC.name : '', curZone: curSC ? curSC.zone : '', curDcCount: curSC ? curSC.dcCount : 0,
