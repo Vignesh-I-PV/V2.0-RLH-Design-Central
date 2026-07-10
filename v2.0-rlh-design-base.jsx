@@ -1790,6 +1790,49 @@ function View(B, self) {
 </>) : null}
 </main>
 </div>
+{/* REVIEW CHANGES POPUP (planner) — opened by clicking a route with changes in the Details tab.
+    Shows the full per-field diff + accept/reject, scoped to one route, in a focused modal instead
+    of cluttering the flat table with icons for every route at once (2026-07-10). */}
+{(aSel.alignReviewRoute) ? (<>
+<div style={css(`position:fixed; inset:0; z-index:95; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
+<div style={css(`width:640px; max-width:100%; max-height:88vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid #E6EBF2;`)}>
+<div>
+<div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>{aSel.alignReviewRoute.routeCode}</div>
+<div style={css(`font-size:12px; color:#5A5E66; margin-top:3px;`)}>{aSel.alignReviewRoute.changeDecidedCount} of {aSel.alignReviewRoute.changeTotal} changes decided</div>
+</div>
+<button onClick={aSel.closeAlignReview} aria-label={"Close dialog"} style={css(`border:none; background:transparent; cursor:pointer; padding:6px; color:#5A5E66; display:flex;`)}><svg aria-hidden={"true"} width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+</div>
+{(aSel.alignReviewRoute.fbText) ? (<>
+<div style={css(`margin:16px 22px 0; padding:9px 13px; background:#FFF9EC; border:1px solid #F3E2BC; border-left:3px solid #C77B00; border-radius:8px; font-size:12.5px; color:#14171F; font-style:italic;`)}>"{aSel.alignReviewRoute.fbText}"</div>
+</>) : null}
+{(aSel.alignReviewRoute.acceptAllRowShow) ? (<>
+<div style={css(`display:flex; gap:8px; margin:14px 22px 0;`)}>
+<button onClick={aSel.alignReviewRoute.onAcceptAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Accept all remaining</button>
+<button onClick={aSel.alignReviewRoute.onRejectAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #D14B4B; background:#fff; color:#D14B4B; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Reject all remaining</button>
+</div>
+</>) : null}
+<div style={css(`padding:16px 22px 20px; display:flex; flex-direction:column; gap:10px;`)}>
+{((aSel.alignReviewRoute.scChanges || []).concat(aSel.alignReviewRoute.dcChanges || [])).map((c, __iRC) => (<React.Fragment key={__iRC}>
+<div style={css(`display:flex; align-items:center; gap:12px; padding:11px 13px; background:${c.rowBg}; border:1px solid #EEF1F6; border-radius:8px;`)}>
+<div style={css(`flex:1; min-width:0;`)}>
+<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:2px;`)}>{c.whereLabel} · {c.fieldLabel}</div>
+<div style={css(`font-size:12.5px; color:#14171F;`)}>{c.changeVal}</div>
+</div>
+{(c.canDecide) ? (<>
+<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
+<button onClick={c.onAccept} aria-label={"Accept"} title={"Accept"} style={css(`width:26px; height:26px; padding:0; border:1px solid #128A3E; background:${c.accBg}; color:${c.accFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={c.onReject} aria-label={"Reject"} title={"Reject"} style={css(`width:26px; height:26px; padding:0; border:1px solid #D14B4B; background:${c.rejBg}; color:${c.rejFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+</div>
+</>) : (<>
+<span style={css(`font-size:11px; font-weight:700; color:${c.accepted ? '#128A3E' : (c.rejected ? '#D14B4B' : '#8E96A3')}; flex-shrink:0;`)}>{c.accepted ? '✓ Accepted' : (c.rejected ? '✕ Rejected' : 'Pending')}</span>
+</>)}
+</div>
+</React.Fragment>))}
+</div>
+</div>
+</div>
+</>) : null}
 {/* PUSH MODAL */}
 {(pushOpen) ? (<>
 <div style={css(`position:fixed; inset:0; z-index:80; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
@@ -2179,17 +2222,19 @@ function View(B, self) {
 </div>
 {(aSel.dcViewRows || []).map((dv, __i100) => (<React.Fragment key={__i100}>
 {(dv.isFirstInGroup) ? (<>
-<div style={css(`display:flex; flex-direction:column; gap:6px; padding:8px 12px; margin-top:6px; background:#F7F8FB; border:2px solid #8E96A3; border-bottom:none;`)}>
-<div style={css(`display:flex; align-items:center; gap:10px;`)}>
-<span style={css(`font-size:11.5px; font-weight:700; color:#003F98;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).routeCode}</span>
-{((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasRouteChange) ? (<>
-<span style={css(`font-size:11px; color:#5A5E66;`)}>Vehicle: <span style={css(`text-decoration:line-through; color:#8E96A3;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).vehOrig}</span> <span style={css(`color:#C77B00; font-weight:600;`)}>{((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).changeVal}</span></span>
-{(((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).canDecide) ? (<>
-<div style={css(`display:flex; gap:5px; margin-left:auto;`)}>
-<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onAccept} aria-label={"Accept"} title={"Accept"} style={css(`width:21px; height:21px; padding:0; border:1px solid #128A3E; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).accFg}; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).onReject} aria-label={"Reject"} title={"Reject"} style={css(`width:21px; height:21px; padding:0; border:1px solid #D14B4B; background:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejBg}; color:${((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeChange || {}).rejFg}; border-radius:5px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"12"} height={"12"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+<div style={css(`display:flex; flex-direction:column; gap:7px; padding:10px 12px; margin-top:6px; border:2px solid #8E96A3; border-bottom:none; background:${(aSel.dcGroupHeaders[dv.routeIdx] || {}).hasChanges ? '#FBF1DF' : '#F7F8FB'};`)}>
+<div style={css(`display:flex; align-items:center; gap:10px; flex-wrap:wrap;`)}>
+<button onClick={(aSel.dcGroupHeaders[dv.routeIdx] || {}).onOpenReview} style={css(`font-size:12.5px; font-weight:700; color:#003F98; background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:2px;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).routeCode}</button>
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasChanges) ? (<>
+<span style={css(`font-size:11.5px; color:#9A5E00; flex:1; min-width:0;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeSummary}</span>
+<span style={css(`font-size:10.5px; font-weight:700; color:#9A5E00; white-space:nowrap;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeDecidedCount}/{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeTotal} decided</span>
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).acceptAllRouteShow) ? (<>
+<div style={css(`display:flex; gap:6px;`)}>
+<button onClick={(aSel.dcGroupHeaders[dv.routeIdx] || {}).onAcceptAllRoute} style={css(`height:26px; padding:0 10px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:11px; font-weight:600; border-radius:6px; cursor:pointer; white-space:nowrap;`)}>Accept all</button>
+<button onClick={(aSel.dcGroupHeaders[dv.routeIdx] || {}).onRejectAllRoute} style={css(`height:26px; padding:0 10px; border:1px solid #D14B4B; background:#fff; color:#D14B4B; font-family:inherit; font-size:11px; font-weight:600; border-radius:6px; cursor:pointer; white-space:nowrap;`)}>Reject all</button>
 </div>
 </>) : null}
+<button onClick={(aSel.dcGroupHeaders[dv.routeIdx] || {}).onOpenReview} style={css(`height:26px; padding:0 12px; border:none; background:#003F98; color:#fff; font-family:inherit; font-size:11px; font-weight:600; border-radius:6px; cursor:pointer; white-space:nowrap;`)}>Review changes</button>
 </>) : null}
 </div>
 {((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasRemark && !aSel.isFinal) ? (<><div style={css(`font-size:11px; color:#9A5E00; font-style:italic;`)}>"{(aSel.dcGroupHeaders[dv.routeIdx] || {}).remark}"</div></>) : null}
@@ -2202,28 +2247,18 @@ function View(B, self) {
 </div>
 </>) : null}
 <div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasAnyChange ? '#FFFCF6' : '#fff'};`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{dv.lmdc}</div>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{(dv.hasAnyChange) ? (<><span style={css(`width:6px; height:6px; border-radius:50%; background:#C77B00; flex-shrink:0;`)} /></>) : null}{dv.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
-<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>
-{(dv.hasLatLngChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lat}</span><span style={css(`color:#C77B00; font-weight:600; font-size:10.5px;`)}>{dv.latProposed}</span>{(dv.fLatLng.has && dv.fLatLng.canDecide) ? (<><button onClick={dv.fLatLng.onAccept} aria-label={"Accept position"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fLatLng.accBg}; color:${dv.fLatLng.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fLatLng.onReject} aria-label={"Reject position"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fLatLng.rejBg}; color:${dv.fLatLng.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.lat}</span></>)}
-</div>
-<div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>
-{(dv.hasLatLngChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lng}</span><span style={css(`color:#C77B00; font-weight:600; font-size:10.5px;`)}>{dv.lngProposed}</span>{(dv.fLatLng.has && dv.fLatLng.canDecide) ? (<><button onClick={dv.fLatLng.onAccept} aria-label={"Accept position"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fLatLng.accBg}; color:${dv.fLatLng.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fLatLng.onReject} aria-label={"Reject position"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fLatLng.rejBg}; color:${dv.fLatLng.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.lng}</span></>)}
-</div>
-<div style={css(`padding:11px 12px; font-size:12px;`)}>
-{(dv.hasRouteCodeChange) ? (<><div style={css(`display:flex; align-items:center; gap:4px; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.routeCode}</span><span style={css(`color:#C77B00; font-weight:600;`)}>→{dv.routeCodeProposed}</span>{(dv.fRouteCode.has && dv.fRouteCode.canDecide) ? (<><button onClick={dv.fRouteCode.onAccept} aria-label={"Accept route code"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fRouteCode.accBg}; color:${dv.fRouteCode.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fRouteCode.onReject} aria-label={"Reject route code"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fRouteCode.rejBg}; color:${dv.fRouteCode.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.routeCode}</span></>)}
-</div>
-<div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums;`)}>
-{(dv.hasTpChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:center; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.tp}</span><span style={css(`color:#C77B00; font-weight:700;`)}>{dv.tpProposed}</span>{(dv.fTp.has && dv.fTp.canDecide) ? (<><button onClick={dv.fTp.onAccept} aria-label={"Accept touch point"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fTp.accBg}; color:${dv.fTp.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fTp.onReject} aria-label={"Reject touch point"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fTp.rejBg}; color:${dv.fTp.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.tp}</span></>)}
-</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums; color:${dv.hasLatLngChange ? '#9A5E00' : '#14171F'};`)}>{dv.lat}</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums; color:${dv.hasLatLngChange ? '#9A5E00' : '#14171F'};`)}>{dv.lng}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:${dv.hasRouteCodeChange ? '#9A5E00' : '#14171F'};`)}>{dv.routeCode}</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums; color:${dv.hasTpChange ? '#9A5E00' : '#14171F'};`)}>{dv.tp}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
-<div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasVehChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.vehTypeProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.vehType}</span></>)}</div>
-<div style={css(`padding:11px 12px; font-size:12px; text-align:right;`)}>
-{(dv.hasDistChange) ? (<><div style={css(`display:flex; align-items:center; gap:3px; justify-content:flex-end; flex-wrap:wrap;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.rtDist}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.rtDistProposed}</span>{(dv.fDistance.has && dv.fDistance.canDecide) ? (<><button onClick={dv.fDistance.onAccept} aria-label={"Accept distance"} title={"Accept"} style={css(`width:16px; height:16px; padding:0; border:1px solid #128A3E; background:${dv.fDistance.accBg}; color:${dv.fDistance.accFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button><button onClick={dv.fDistance.onReject} aria-label={"Reject distance"} title={"Reject"} style={css(`width:16px; height:16px; padding:0; border:1px solid #D14B4B; background:${dv.fDistance.rejBg}; color:${dv.fDistance.rejFg}; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"9"} height={"9"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3.4"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button></>) : null}</div></>) : (<><span style={css(`color:#14171F;`)}>{dv.rtDist}</span></>)}
-</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:${dv.hasVehChange ? '#9A5E00' : '#14171F'};`)}>{dv.hasVehChange ? dv.vehTypeProposed : dv.vehType}</div>
+<div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums; color:${dv.hasDistChange ? '#9A5E00' : '#14171F'};`)}>{dv.hasDistChange ? dv.rtDistProposed : dv.rtDist}</div>
 </div>
 </React.Fragment>))}
 </div>
@@ -5392,29 +5427,35 @@ class NDCApp extends React.Component {
   }
   // Per-DC (node-level) accept/reject within a route — the planner can accept some DC changes and reject others (2026-07-03).
   decideDcRow(planId, idx, dcCode, field, val) { const a = Object.assign({}, this.state.alignDcDecisions); a[planId] = Object.assign({}, a[planId]); a[planId][idx] = Object.assign({}, a[planId][idx]); a[planId][idx][dcCode] = Object.assign({}, a[planId][idx][dcCode]); a[planId][idx][dcCode][field] = val; this.setState({ alignDcDecisions: a }); }
-  // "Accept all" for ONE route — accepts only the STILL-UNDECIDED changes (route-scoped + per-field
-  // per-DC), in a single update. It must never clobber an explicit Reject the planner already made
-  // (mirrors decideAllFlagged's "fill undecided only" guard).
-  acceptRowChanges(planId, idx, dcCodes, setRoute) {
+  // "Accept all" / "Reject all" for ONE route — decides only the STILL-UNDECIDED changes
+  // (route-scoped + per-field per-DC) in a single update. Never clobbers an explicit opposite
+  // decision the planner already made on an individual field (same "fill undecided only" guard
+  // for both directions). Fixed 2026-07-10: previously wrote 'lat'/'lng' as two separate decision
+  // keys, but every read site (enrichedDcRows, effectiveFbForFinalise) expects ONE combined
+  // 'latLng' key (lat/lng are decided together as one "position") — Accept All silently failed to
+  // register lat/lng changes as decided until now.
+  decideRouteChanges(planId, idx, dcCodes, setRoute, decision) {
     const upd = {};
     const plan = (this.state.data.plans || []).find(p => p.id === planId);
     const row = plan && plan.rows[idx];
     if (setRoute) {
       const cellKeys = (row && row.fb && row.fb.cells) ? Object.keys(row.fb.cells) : [];
       const key = planId + ':' + idx;
-      // Fill only UNDECIDED per-field decisions with Accept (never clobber an explicit Reject).
       const fd = Object.assign({}, this.state.alignFieldDec); fd[key] = Object.assign({}, fd[key]);
-      cellKeys.forEach(k => { if (!fd[key][k]) fd[key][k] = 'Accept'; }); upd.alignFieldDec = fd;
+      cellKeys.forEach(k => { if (!fd[key][k]) fd[key][k] = decision; }); upd.alignFieldDec = fd;
       const a = Object.assign({}, this.state.alignDecisions); a[planId] = Object.assign({}, a[planId]);
-      a[planId][idx] = cellKeys.length && cellKeys.some(k => fd[key][k] === 'Reject') ? 'Reject' : 'Accept'; upd.alignDecisions = a;
+      a[planId][idx] = cellKeys.length && cellKeys.some(k => fd[key][k] === 'Reject') ? 'Reject' : (cellKeys.length && cellKeys.every(k => fd[key][k] === 'Accept') ? 'Accept' : a[planId][idx]); upd.alignDecisions = a;
     }
     if (dcCodes && dcCodes.length) {
       const b = Object.assign({}, this.state.alignDcDecisions); b[planId] = Object.assign({}, b[planId]); b[planId][idx] = Object.assign({}, b[planId][idx]);
       const dcCellsSrc = (row && row.fb && row.fb.dcCells) || {};
       dcCodes.forEach(c => {
-        const fieldsProposed = Object.keys(dcCellsSrc[c] || {}).filter(f => ['lat', 'lng', 'tp', 'distance', 'routeCode'].indexOf(f) >= 0);
+        const raw = dcCellsSrc[c] || {};
         b[planId][idx][c] = Object.assign({}, b[planId][idx][c]);
-        fieldsProposed.forEach(f => { if (!b[planId][idx][c][f]) b[planId][idx][c][f] = 'Accept'; });
+        if (raw.routeCode) { if (!b[planId][idx][c].routeCode) b[planId][idx][c].routeCode = decision; }
+        if (raw.tp != null) { if (!b[planId][idx][c].tp) b[planId][idx][c].tp = decision; }
+        if (raw.distance != null) { if (!b[planId][idx][c].distance) b[planId][idx][c].distance = decision; }
+        if (raw.lat != null || raw.lng != null) { if (!b[planId][idx][c].latLng) b[planId][idx][c].latLng = decision; }
       });
       upd.alignDcDecisions = b;
     }
@@ -5914,7 +5955,8 @@ class NDCApp extends React.Component {
           scChanges: changeList.filter(c => c.isRoute), dcChanges: changeList.filter(c => c.isDc), hasSc: changeList.some(c => c.isRoute), noSc: needsAttn && !changeList.some(c => c.isRoute), hasDc: changeList.some(c => c.isDc), dcChangeCount: changeList.filter(c => c.isDc).length,
           changeProgressLabel: changeDecidedCount + ' of ' + changeTotal + ' decided', allChangesDecided,
           acceptAllRowShow: (ps === 'Acknowledged') && changeDecidedCount < changeTotal,
-          onAcceptAllRow: () => this.acceptRowChanges(plan.id, idx, changedDcCodes, needsRouteDecision),
+          onAcceptAllRow: () => this.decideRouteChanges(plan.id, idx, changedDcCodes, needsRouteDecision, 'Accept'),
+          onRejectAllRow: () => this.decideRouteChanges(plan.id, idx, changedDcCodes, needsRouteDecision, 'Reject'),
           actionLabel: allChangesDecided ? '✓ All decided' : (changeDecidedCount + '/' + changeTotal + ' decided'),
           actionBg: allChangesDecided ? '#E7F4EC' : '#FBF1DF', actionFg: allChangesDecided ? '#128A3E' : '#C77B00' };
       });
@@ -5961,11 +6003,24 @@ class NDCApp extends React.Component {
       rows.forEach((rr, ri) => {
         const routeChange = rr.changeList.find(c => c.isRoute) || null;
         const routeIssues = [].concat(planStateHyp.errors, planStateHyp.warnings).filter(x => x.routeCode === rr.routeCode);
+        // 2026-07-10 — quick description of changes for the amber summary bar: group changeList
+        // entries by field type and count how many DCs/routes each touches, e.g.
+        // "Vehicle Type · Route Code (2 DCs) · Distance (1 DC)".
+        const fieldCounts = {};
+        rr.changeList.forEach(c => { fieldCounts[c.fieldLabel] = (fieldCounts[c.fieldLabel] || 0) + 1; });
+        const changeSummary = Object.keys(fieldCounts).map(label => {
+          const n = fieldCounts[label];
+          const isRouteLevelField = rr.changeList.some(c => c.fieldLabel === label && c.isRoute);
+          return isRouteLevelField ? label : (label + ' (' + n + ' DC' + (n === 1 ? '' : 's') + ')');
+        }).join(' · ');
         aDcGroupHeaders.push({ routeCode: rr.routeCode, hasChanges: rr.hasChanges, remark: rr.fbText, hasRemark: !!rr.fbText, needsAttn: rr.needsAttn,
           routeChange, hasRouteChange: !!routeChange, vehOrig: rr.mlVehTxt,
           validationErrors: routeIssues.filter(x => x.sev === 'danger').map(x => x.t),
           validationWarnings: routeIssues.filter(x => x.sev === 'warning').map(x => x.t),
           hasValidationIssues: routeIssues.length > 0,
+          changeSummary, changeTotal: rr.changeTotal, changeDecidedCount: rr.changeDecidedCount, allChangesDecided: rr.allChangesDecided,
+          acceptAllRouteShow: rr.acceptAllRowShow, onAcceptAllRoute: rr.onAcceptAllRow, onRejectAllRoute: rr.onRejectAllRow,
+          onOpenReview: () => this.setState({ alignReviewRouteIdx: ri }),
         });
         (rr.dcRows || []).forEach((dc, di) => {
           aDcViewRows.push({
@@ -6045,6 +6100,14 @@ class NDCApp extends React.Component {
         metrics: [{ label: 'Routes', value: plan.metrics.routes }, { label: 'Vehicles', value: plan.metrics.vehicles }, { label: 'CPS', value: '\u20b9' + plan.metrics.cps.toFixed(2) }, { label: 'Coverage', value: pct(plan.metrics.coverage) }, { label: 'Distance', value: plan.metrics.distance.toLocaleString('en-IN') + ' km' }, { label: 'Avg TAT', value: plan.metrics.avgTat + 'h' }],
         rows: rows, rowCount: rows.length, flaggedCount: flaggedRows.length, alignedCount: autoAligned, hasFlagged: flaggedRows.length > 0, noFlagged: flaggedRows.length === 0, hasAligned: autoAligned > 0, routeList: routeList, selRoute: selRoute, hasSelRoute: !!selRoute, routeCards: flaggedRows, reviewHeadline: flaggedRows.length + ' route' + (flaggedRows.length === 1 ? '' : 's') + ' need a decision', alignedNote: autoAligned + ' of ' + rows.length + ' routes already aligned — no action needed', decidedCount, acceptedCount: rows.filter(r => r.decision === 'Accept').length, rejectedCount: rows.filter(r => r.decision === 'Reject').length, allDecided,
         routeViewRows: aRouteViewRows, dcViewRows: aDcViewRows, dcGroupHeaders: aDcGroupHeaders,
+        // 2026-07-10 — detailed per-field review popup, opened by clicking a route with changes.
+        // Reuses the exact same rows[idx] change data (changeList/scChanges/dcChanges/accept-all)
+        // the old fully-inline view read — just scoped to one route in a focused modal now.
+        alignReviewRoute: (st.alignReviewRouteIdx != null && rows[st.alignReviewRouteIdx]) ? Object.assign({}, rows[st.alignReviewRouteIdx], {
+          scChanges: rows[st.alignReviewRouteIdx].changeList.filter(c => c.isRoute),
+          dcChanges: rows[st.alignReviewRouteIdx].changeList.filter(c => c.isDc),
+        }) : null,
+        closeAlignReview: () => this.setState({ alignReviewRouteIdx: null }),
         undecidedFlaggedCount: flaggedRows.filter(r => !r.decision).length,
         canAck: ps === 'In Alignment' && (!!st.opsSubmitted[plan.id] || !!plan.feedbackReceived), canFinalise: ps === 'Acknowledged' && allDecided && validatedClean, finBlocked: ps === 'Acknowledged' && !(allDecided && validatedClean),
         finBtnBg: (ps === 'Acknowledged' && allDecided && validatedClean) ? '#128A3E' : '#E6EBF2', finBtnFg: (ps === 'Acknowledged' && allDecided && validatedClean) ? '#fff' : '#5A5E66', finCursor: (ps === 'Acknowledged' && allDecided && validatedClean) ? 'pointer' : 'not-allowed',
