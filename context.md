@@ -800,3 +800,31 @@ RNG-based approximation. Read the method's own comment block first; the short ve
       go unseen at the one point it matters most. Added a warnings panel
       reading `computeHypotheticalPlan`'s own `warnings` array for the
       preview, shown directly in the modal.
+- **2026-07-10, seventh pass** — the fully-inline per-field view (every
+  route, every DC, every tick/cross icon visible at once) read as too
+  light/cluttered in practice — icons got lost. Restructured into a
+  summary-plus-popup pattern:
+  1. **Amber summary bar** on any route with a change, in the Details
+     table's route-group header — background now genuinely amber (not
+     just italic text), with a quick description built by grouping that
+     route's `changeList` by field type and counting affected DCs, e.g.
+     "Vehicle Type · Route Code (2 DCs) · Distance (1 DC)", plus an X/Y
+     decided count.
+  2. **Accept All / Reject All at route level.** Found and fixed a real
+     bug while extending the existing accept-all: it wrote `lat`/`lng` as
+     two separate decision keys, but every read site (`enrichedDcRows`,
+     `effectiveFbForFinalise`) expects one combined `latLng` key (lat/lng
+     are decided together as one "position") — Accept All was silently
+     failing to register position changes as decided. Replaced
+     `acceptRowChanges` with a generalized `decideRouteChanges(...,
+     decision)` used for both directions, fixed the key, kept the
+     existing "fill undecided only, never clobber an explicit opposite
+     decision" guard for both Accept All and Reject All.
+  3. **Click-to-review popup.** The Details table's per-row inline
+     diff+icons (the cluttered part) are gone — cells now just show the
+     effective value with a subtle amber tint on changed ones. Clicking
+     the route code (or a "Review changes" button, same action) opens a
+     focused modal listing every route- and DC-level change for that one
+     route with full tick/cross controls — reusing the exact same
+     `changeList` entries the old inline view read, just relocated and
+     scoped to one route at a time instead of all of them simultaneously.
