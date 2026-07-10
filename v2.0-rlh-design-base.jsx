@@ -1790,49 +1790,6 @@ function View(B, self) {
 </>) : null}
 </main>
 </div>
-{/* REVIEW CHANGES POPUP (planner) — opened by clicking a route with changes in the Details tab.
-    Shows the full per-field diff + accept/reject, scoped to one route, in a focused modal instead
-    of cluttering the flat table with icons for every route at once (2026-07-10). */}
-{(aSel.alignReviewRoute) ? (<>
-<div style={css(`position:fixed; inset:0; z-index:95; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
-<div style={css(`width:640px; max-width:100%; max-height:88vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
-<div style={css(`display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid #E6EBF2;`)}>
-<div>
-<div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>{aSel.alignReviewRoute.routeCode}</div>
-<div style={css(`font-size:12px; color:#5A5E66; margin-top:3px;`)}>{aSel.alignReviewRoute.changeDecidedCount} of {aSel.alignReviewRoute.changeTotal} changes decided</div>
-</div>
-<button onClick={aSel.closeAlignReview} aria-label={"Close dialog"} style={css(`border:none; background:transparent; cursor:pointer; padding:6px; color:#5A5E66; display:flex;`)}><svg aria-hidden={"true"} width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
-</div>
-{(aSel.alignReviewRoute.fbText) ? (<>
-<div style={css(`margin:16px 22px 0; padding:9px 13px; background:#FFF9EC; border:1px solid #F3E2BC; border-left:3px solid #C77B00; border-radius:8px; font-size:12.5px; color:#14171F; font-style:italic;`)}>"{aSel.alignReviewRoute.fbText}"</div>
-</>) : null}
-{(aSel.alignReviewRoute.acceptAllRowShow) ? (<>
-<div style={css(`display:flex; gap:8px; margin:14px 22px 0;`)}>
-<button onClick={aSel.alignReviewRoute.onAcceptAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Accept all remaining</button>
-<button onClick={aSel.alignReviewRoute.onRejectAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #D14B4B; background:#fff; color:#D14B4B; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Reject all remaining</button>
-</div>
-</>) : null}
-<div style={css(`padding:16px 22px 20px; display:flex; flex-direction:column; gap:10px;`)}>
-{((aSel.alignReviewRoute.scChanges || []).concat(aSel.alignReviewRoute.dcChanges || [])).map((c, __iRC) => (<React.Fragment key={__iRC}>
-<div style={css(`display:flex; align-items:center; gap:12px; padding:11px 13px; background:${c.rowBg}; border:1px solid #EEF1F6; border-radius:8px;`)}>
-<div style={css(`flex:1; min-width:0;`)}>
-<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:2px;`)}>{c.whereLabel} · {c.fieldLabel}</div>
-<div style={css(`font-size:12.5px; color:#14171F;`)}>{c.changeVal}</div>
-</div>
-{(c.canDecide) ? (<>
-<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
-<button onClick={c.onAccept} aria-label={"Accept"} title={"Accept"} style={css(`width:26px; height:26px; padding:0; border:1px solid #128A3E; background:${c.accBg}; color:${c.accFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
-<button onClick={c.onReject} aria-label={"Reject"} title={"Reject"} style={css(`width:26px; height:26px; padding:0; border:1px solid #D14B4B; background:${c.rejBg}; color:${c.rejFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
-</div>
-</>) : (<>
-<span style={css(`font-size:11px; font-weight:700; color:${c.accepted ? '#128A3E' : (c.rejected ? '#D14B4B' : '#8E96A3')}; flex-shrink:0;`)}>{c.accepted ? '✓ Accepted' : (c.rejected ? '✕ Rejected' : 'Pending')}</span>
-</>)}
-</div>
-</React.Fragment>))}
-</div>
-</div>
-</div>
-</>) : null}
 {/* PUSH MODAL */}
 {(pushOpen) ? (<>
 <div style={css(`position:fixed; inset:0; z-index:80; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
@@ -1976,8 +1933,8 @@ function View(B, self) {
 {/* Detail View (DC × Route) — §P3.2 */}
 {(reviewDetail.isDcView) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1300px;`)}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; background:#E6EBF2;`)}>
+<div style={css(`min-width:980px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 0.7fr 0.7fr 1fr 0.45fr 0.7fr 0.9fr 0.7fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
@@ -1985,14 +1942,11 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>OUT CUTOFF</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TAT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>IN CUTOFF</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
 </div>
 {(reviewDetail.dcRows || []).map((d, __i68) => (<React.Fragment key={__i68}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 0.7fr 0.7fr 1fr 0.45fr 0.7fr 0.65fr 0.55fr 0.65fr 0.9fr 0.7fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${d.isFirstInGroup ? '2px solid #8E96A3' : '1px solid #F4F5F8'}; border-bottom:${d.isLastInGroup ? '2px solid #8E96A3' : 'none'}; margin-top:${d.isFirstInGroup ? '6px' : '0'};`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `background:transparent;`, `background:#FAFBFD;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 0.7fr 0.7fr 1fr 0.45fr 0.7fr 0.9fr 0.7fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${d.isFirstInGroup ? '2px solid #8E96A3' : '1px solid #F4F5F8'}; border-bottom:${d.isLastInGroup ? '2px solid #8E96A3' : 'none'}; margin-top:${d.isFirstInGroup ? '6px' : '0'};`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `background:transparent;`, `background:#FAFBFD;`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{d.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.designVol}</div>
 <div style={css(`padding:11px 12px; font-size:11.5px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.lat}</div>
@@ -2000,9 +1954,6 @@ function View(B, self) {
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{d.routeCode}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center; font-variant-numeric:tabular-nums;`)}>{d.tp}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{d.zone}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.outCutoff}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{d.tat}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.inCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{d.vehType}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{d.rtDist}</div>
 </div>
@@ -2205,8 +2156,8 @@ function View(B, self) {
     changes (if any, and if this plan isn't Finalised) are overlaid inline with Accept/Reject. */}
 {(aSel.secDetails) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1380px;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr; background:#E6EBF2;`)}>
+<div style={css(`min-width:1020px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.8fr 0.85fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
@@ -2214,9 +2165,6 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>OUT CUTOFF</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TAT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>IN CUTOFF</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
 </div>
@@ -2246,7 +2194,7 @@ function View(B, self) {
 </>) : null}
 </div>
 </>) : null}
-<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasAnyChange ? '#FFFCF6' : '#fff'};`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.8fr 0.85fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasAnyChange ? '#FFFCF6' : '#fff'};`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{(dv.hasAnyChange) ? (<><span style={css(`width:6px; height:6px; border-radius:50%; background:#C77B00; flex-shrink:0;`)} /></>) : null}{dv.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
 <div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums; color:${dv.hasLatLngChange ? '#9A5E00' : '#14171F'};`)}>{dv.lat}</div>
@@ -2254,9 +2202,6 @@ function View(B, self) {
 <div style={css(`padding:11px 12px; font-size:12px; color:${dv.hasRouteCodeChange ? '#9A5E00' : '#14171F'};`)}>{dv.routeCode}</div>
 <div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums; color:${dv.hasTpChange ? '#9A5E00' : '#14171F'};`)}>{dv.tp}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:${dv.hasVehChange ? '#9A5E00' : '#14171F'};`)}>{dv.hasVehChange ? dv.vehTypeProposed : dv.vehType}</div>
 <div style={css(`padding:11px 12px; font-size:12px; text-align:right; font-variant-numeric:tabular-nums; color:${dv.hasDistChange ? '#9A5E00' : '#14171F'};`)}>{dv.hasDistChange ? dv.rtDistProposed : dv.rtDist}</div>
 </div>
@@ -2540,6 +2485,51 @@ function View(B, self) {
 </div>
 </>) : null}
 {/* FIN MODAL */}
+{/* REVIEW CHANGES POPUP (planner) — opened by clicking a route with changes in the Details tab.
+    Shows the full per-field diff + accept/reject, scoped to one route, in a focused modal instead
+    of cluttering the flat table with icons for every route at once (2026-07-10). Fixed 2026-07-10:
+    this was originally placed inside Design Review's exclusive block by mistake, so it could never
+    render while on the Ops Alignment screen — moved inside isAlignPlanner where it belongs. */}
+{(aSel.alignReviewRoute) ? (<>
+<div style={css(`position:fixed; inset:0; z-index:95; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
+<div style={css(`width:640px; max-width:100%; max-height:88vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid #E6EBF2;`)}>
+<div>
+<div style={css(`font-size:16px; font-weight:700; color:#14171F;`)}>{aSel.alignReviewRoute.routeCode}</div>
+<div style={css(`font-size:12px; color:#5A5E66; margin-top:3px;`)}>{aSel.alignReviewRoute.changeDecidedCount} of {aSel.alignReviewRoute.changeTotal} changes decided</div>
+</div>
+<button onClick={aSel.closeAlignReview} aria-label={"Close dialog"} style={css(`border:none; background:transparent; cursor:pointer; padding:6px; color:#5A5E66; display:flex;`)}><svg aria-hidden={"true"} width={"18"} height={"18"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+</div>
+{(aSel.alignReviewRoute.fbText) ? (<>
+<div style={css(`margin:16px 22px 0; padding:9px 13px; background:#FFF9EC; border:1px solid #F3E2BC; border-left:3px solid #C77B00; border-radius:8px; font-size:12.5px; color:#14171F; font-style:italic;`)}>"{aSel.alignReviewRoute.fbText}"</div>
+</>) : null}
+{(aSel.alignReviewRoute.acceptAllRowShow) ? (<>
+<div style={css(`display:flex; gap:8px; margin:14px 22px 0;`)}>
+<button onClick={aSel.alignReviewRoute.onAcceptAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #128A3E; background:#fff; color:#128A3E; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Accept all remaining</button>
+<button onClick={aSel.alignReviewRoute.onRejectAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #D14B4B; background:#fff; color:#D14B4B; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Reject all remaining</button>
+</div>
+</>) : null}
+<div style={css(`padding:16px 22px 20px; display:flex; flex-direction:column; gap:10px;`)}>
+{((aSel.alignReviewRoute.scChanges || []).concat(aSel.alignReviewRoute.dcChanges || [])).map((c, __iRC) => (<React.Fragment key={__iRC}>
+<div style={css(`display:flex; align-items:center; gap:12px; padding:11px 13px; background:${c.rowBg}; border:1px solid #EEF1F6; border-radius:8px;`)}>
+<div style={css(`flex:1; min-width:0;`)}>
+<div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:2px;`)}>{c.whereLabel} · {c.fieldLabel}</div>
+<div style={css(`font-size:12.5px; color:#14171F;`)}>{c.changeVal}</div>
+</div>
+{(c.canDecide) ? (<>
+<div style={css(`display:flex; gap:6px; flex-shrink:0;`)}>
+<button onClick={c.onAccept} aria-label={"Accept"} title={"Accept"} style={css(`width:26px; height:26px; padding:0; border:1px solid #128A3E; background:${c.accBg}; color:${c.accFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M5 13l4 4L19 7"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button>
+<button onClick={c.onReject} aria-label={"Reject"} title={"Reject"} style={css(`width:26px; height:26px; padding:0; border:1px solid #D14B4B; background:${c.rejBg}; color:${c.rejFg}; border-radius:6px; cursor:pointer; display:flex; align-items:center; justify-content:center;`)}><svg width={"14"} height={"14"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"3"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
+</div>
+</>) : (<>
+<span style={css(`font-size:11px; font-weight:700; color:${c.accepted ? '#128A3E' : (c.rejected ? '#D14B4B' : '#8E96A3')}; flex-shrink:0;`)}>{c.accepted ? '✓ Accepted' : (c.rejected ? '✕ Rejected' : 'Pending')}</span>
+</>)}
+</div>
+</React.Fragment>))}
+</div>
+</div>
+</div>
+</>) : null}
 {(finOpen) ? (<>
 <div style={css(`position:fixed; inset:0; z-index:95; background:rgba(11,20,48,0.45); display:flex; align-items:center; justify-content:center; padding:24px;`)}>
 <div style={css(`width:720px; max-width:100%; max-height:88vh; overflow:auto; background:#fff; border-radius:15px; box-shadow:0 24px 60px rgba(0,0,0,0.3);`)}>
@@ -2709,8 +2699,8 @@ function View(B, self) {
     (route-group Aligned / Needs-Change actions) whenever the plan isn't locked yet. */}
 {(oSel.secDetails) ? (<>
 <div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:1380px;`)}>
-<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr 0.6fr; background:#E6EBF2;`)}>
+<div style={css(`min-width:1020px;`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.8fr 0.85fr 0.6fr; background:#E6EBF2;`)}>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>LMDC</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>DESIGN VOL</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>LAT</div>
@@ -2718,9 +2708,6 @@ function View(B, self) {
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>TP</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ZONE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>OUT CUTOFF</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TAT</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>IN CUTOFF</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>RT DIST (KM)</div>
 <div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>REVIEW</div>
@@ -2745,7 +2732,7 @@ function View(B, self) {
 </>) : null}
 </div>
 </>) : null}
-<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.6fr 0.45fr 0.55fr 0.8fr 0.85fr 0.6fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasChange ? '#FFFCF6' : '#fff'};`)}>
+<div style={css(`display:grid; grid-template-columns:1fr 0.7fr 0.75fr 0.75fr 0.9fr 0.55fr 0.5fr 0.8fr 0.85fr 0.6fr; align-items:center; border-left:2px solid #8E96A3; border-right:2px solid #8E96A3; border-top:${dv.isFirstInGroup ? 'none' : '1px solid #F4F5F8'}; border-bottom:${dv.isLastInGroup ? '2px solid #8E96A3' : 'none'}; background:${dv.hasChange ? '#FFFCF6' : '#fff'};`)}>
 <div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{dv.lmdc}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.designVol}</div>
 <div style={css(`padding:11px 12px; font-size:11.5px; text-align:right; font-variant-numeric:tabular-nums;`)}>{(dv.hasLatLngChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:10.5px;`)}>{dv.lat}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.latProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('latLng')} aria-label={"Revert position"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.lat}</span></>)}</div>
@@ -2753,9 +2740,6 @@ function View(B, self) {
 <div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasRouteCodeChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.routeCode}</span><span style={css(`color:#C77B00; font-weight:600;`)}>→{dv.routeCodeProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('routeCode')} aria-label={"Revert route code"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.routeCode}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:12px; text-align:center; font-variant-numeric:tabular-nums;`)}>{(dv.hasTpChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.tp}</span><span style={css(`color:#C77B00; font-weight:700;`)}>{dv.tpProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('tp')} aria-label={"Revert touch point"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.tp}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66;`)}>{dv.zone}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.outCutoff}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right;`)}>{dv.tat}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{dv.inCutoff}</div>
 <div style={css(`padding:11px 12px; font-size:12px;`)}>{(dv.hasVehChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.vehTypeProposed}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.vehType}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:12px; text-align:right;`)}>{(dv.hasDistChange) ? (<><span style={css(`display:inline-flex; align-items:center; gap:4px; justify-content:flex-end;`)}><span style={css(`text-decoration:line-through; color:#8E96A3; font-size:11px;`)}>{dv.rtDist}</span><span style={css(`color:#C77B00; font-weight:600;`)}>{dv.rtDistProposed}</span>{(dv.editable) ? (<><button onClick={() => dv.onRevertField('distance')} aria-label={"Revert distance"} title={"Revert"} style={css(`border:none; background:transparent; cursor:pointer; padding:1px; color:#8E96A3; display:flex;`)}><svg width={"11"} height={"11"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M3 12a9 9 0 0115-6.7L21 8M21 3v5h-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg></button></>) : null}</span></>) : (<><span style={css(`color:#14171F;`)}>{dv.rtDist}</span></>)}</div>
 <div style={css(`padding:11px 12px; font-size:11px; color:#8E96A3; text-align:right;`)}>{(dv.hasChange) ? (<><span style={css(`color:#C77B00; font-weight:600;`)}>Feedback pending</span></>) : null}</div>
@@ -5437,9 +5421,15 @@ class NDCApp extends React.Component {
   decideRouteChanges(planId, idx, dcCodes, setRoute, decision) {
     const upd = {};
     const plan = (this.state.data.plans || []).find(p => p.id === planId);
-    const row = plan && plan.rows[idx];
+    // 2026-07-10 — bug fix: this previously read raw row.fb, which is just the seeded/single-
+    // submission record — NOT the merged, session-aware feedback (effectiveFbFor) that
+    // enrichedDcRows/changeList actually display and decide against. When the real proposed
+    // changes only existed in the merged view (e.g. from a different reviewer, or an in-progress
+    // session edit), row.fb was empty, so this silently decided nothing — Accept All/Reject All
+    // looked like they did nothing because they, in fact, did nothing.
+    const fb = plan ? (this.effectiveFbFor(plan)[idx] || null) : null;
     if (setRoute) {
-      const cellKeys = (row && row.fb && row.fb.cells) ? Object.keys(row.fb.cells) : [];
+      const cellKeys = (fb && fb.cells) ? Object.keys(fb.cells) : [];
       const key = planId + ':' + idx;
       const fd = Object.assign({}, this.state.alignFieldDec); fd[key] = Object.assign({}, fd[key]);
       cellKeys.forEach(k => { if (!fd[key][k]) fd[key][k] = decision; }); upd.alignFieldDec = fd;
@@ -5448,7 +5438,7 @@ class NDCApp extends React.Component {
     }
     if (dcCodes && dcCodes.length) {
       const b = Object.assign({}, this.state.alignDcDecisions); b[planId] = Object.assign({}, b[planId]); b[planId][idx] = Object.assign({}, b[planId][idx]);
-      const dcCellsSrc = (row && row.fb && row.fb.dcCells) || {};
+      const dcCellsSrc = (fb && fb.dcCells) || {};
       dcCodes.forEach(c => {
         const raw = dcCellsSrc[c] || {};
         b[planId][idx][c] = Object.assign({}, b[planId][idx][c]);
@@ -6372,15 +6362,19 @@ class NDCApp extends React.Component {
   // Planner bulk-accept all undecided flagged (Needs Change) rows for a plan.
   decideAllFlagged(planId) {
     const plan = this.state.data.plans.find(p => p.id === planId); if (!plan) return;
+    // 2026-07-10 — same fix as decideRouteChanges: read the MERGED, session-aware feedback
+    // (effectiveFbFor), not raw r.fb, or DC-level changes visible only via the merge (a co-reviewer's
+    // submission, or an in-progress session edit) would silently not get accepted here.
+    const mergedFb = this.effectiveFbFor(plan);
     const a = Object.assign({}, this.state.alignDecisions); a[planId] = Object.assign({}, a[planId]);
     plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change') { const cur = a[planId][i] || r.planner; if (!cur) a[planId][i] = 'Accept'; } });
     // also accept every flagged DC-level change so "Accept all changes" clears the full gate
     const dd = Object.assign({}, this.state.alignDcDecisions); dd[planId] = Object.assign({}, dd[planId]);
-    plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change' && r.fb && r.fb.dcCells) {
+    plan.rows.forEach((r, i) => { const fb = mergedFb[i]; if (r.ops === 'Needs Change' && fb && fb.dcCells) {
       dd[planId][i] = Object.assign({}, dd[planId][i]);
-      Object.keys(r.fb.dcCells).forEach(code => {
+      Object.keys(fb.dcCells).forEach(code => {
         dd[planId][i][code] = Object.assign({}, dd[planId][i][code]);
-        const src = r.fb.dcCells[code];
+        const src = fb.dcCells[code];
         ['lat', 'lng', 'tp', 'distance', 'routeCode'].forEach(f => {
           const hasField = f === 'lat' || f === 'lng' ? (src.lat != null || src.lng != null) : src[f] != null;
           const key = (f === 'lat' || f === 'lng') ? 'latLng' : f;
@@ -6390,7 +6384,7 @@ class NDCApp extends React.Component {
     } });
     // also fill per-field route-level decisions (Accept, undecided only) so the card reflects the accept-all
     const fd = Object.assign({}, this.state.alignFieldDec);
-    plan.rows.forEach((r, i) => { if (r.ops === 'Needs Change' && r.fb && r.fb.cells) { const key = planId + ':' + i; fd[key] = Object.assign({}, fd[key]); Object.keys(r.fb.cells).forEach(k => { if (!fd[key][k]) fd[key][k] = 'Accept'; }); } });
+    plan.rows.forEach((r, i) => { const fb = mergedFb[i]; if (r.ops === 'Needs Change' && fb && fb.cells) { const key = planId + ':' + i; fd[key] = Object.assign({}, fd[key]); Object.keys(fb.cells).forEach(k => { if (!fd[key][k]) fd[key][k] = 'Accept'; }); } });
     this.setState({ alignDecisions: a, alignDcDecisions: dd, alignFieldDec: fd });
   }
   confirmAcceptAllPlan() {
