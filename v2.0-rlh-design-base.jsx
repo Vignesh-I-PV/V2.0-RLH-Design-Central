@@ -2205,6 +2205,11 @@ function View(B, self) {
 <div style={css(`display:flex; align-items:center; gap:10px; flex-wrap:wrap;`)}>
 <button onClick={(aSel.dcGroupHeaders[dv.routeIdx] || {}).onOpenReview} style={css(`font-size:12.5px; font-weight:700; color:#003F98; background:none; border:none; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:2px;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).routeCode}</button>
 {((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasErrorIssues) ? (<><span style={css(`padding:1px 7px; border-radius:999px; font-size:9.5px; font-weight:700; background:#D14B4B; color:#fff;`)}>ERROR</span></>) : null}
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasRouteFlags) ? (<>
+<div style={css(`display:flex; gap:5px; flex-wrap:wrap;`)}>
+{((aSel.dcGroupHeaders[dv.routeIdx] || {}).routeFlags || []).map((fl, __iRF) => (<React.Fragment key={__iRF}><span style={css(`padding:2px 8px; border-radius:999px; font-size:9.5px; font-weight:700; background:${fl.bg}; color:${fl.fg}; white-space:nowrap;`)}>{fl.label}</span></React.Fragment>))}
+</div>
+</>) : null}
 {((aSel.dcGroupHeaders[dv.routeIdx] || {}).hasChanges) ? (<>
 <span style={css(`font-size:11.5px; color:${(aSel.dcGroupHeaders[dv.routeIdx] || {}).hasErrorIssues ? '#D14B4B' : '#9A5E00'}; flex:1; min-width:0;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeSummary}</span>
 <span style={css(`font-size:10.5px; font-weight:700; color:${(aSel.dcGroupHeaders[dv.routeIdx] || {}).hasErrorIssues ? '#D14B4B' : '#9A5E00'}; white-space:nowrap;`)}>{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeDecidedCount}/{(aSel.dcGroupHeaders[dv.routeIdx] || {}).changeTotal} decided</span>
@@ -2256,7 +2261,7 @@ function View(B, self) {
 </div>
 {(aSel.routeViewRows || []).map((r, __i101) => (<React.Fragment key={__i101}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{r.segment}{(r.isNewRoute) ? (<><span style={css(`padding:1px 6px; border-radius:999px; font-size:9px; font-weight:700; background:#EAF1FB; color:#1E6FB8;`)}>NEW</span></>) : null}</div>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px; flex-wrap:wrap;`)}>{r.segment}{(r.routeViewFlags || []).map((fl, __iRVF) => (<React.Fragment key={__iRVF}><span style={css(`padding:1px 7px; border-radius:999px; font-size:9px; font-weight:700; background:${fl.bg}; color:${fl.fg};`)}>{fl.label}</span></React.Fragment>))}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
@@ -2541,8 +2546,12 @@ function View(B, self) {
 <button onClick={aSel.alignReviewRoute.onRejectAllRow} style={css(`height:32px; padding:0 13px; border:1px solid #D14B4B; background:#fff; color:#D14B4B; font-family:inherit; font-size:12px; font-weight:600; border-radius:7px; cursor:pointer;`)}>Reject all remaining</button>
 </div>
 </>) : null}
-<div style={css(`padding:16px 22px 20px; display:flex; flex-direction:column; gap:10px;`)}>
-{((aSel.alignReviewRoute.scChanges || []).concat(aSel.alignReviewRoute.dcChanges || [])).map((c, __iRC) => (<React.Fragment key={__iRC}>
+<div style={css(`padding:16px 22px 20px; display:flex; flex-direction:column; gap:16px;`)}>
+{(aSel.alignReviewRoute.bucketedChanges || []).map((grp, __iBK) => (<React.Fragment key={__iBK}>
+<div>
+<div style={css(`font-size:10.5px; font-weight:700; color:#5A5E66; letter-spacing:0.05em; margin-bottom:7px; display:flex; align-items:center; gap:7px;`)}>{grp.bucket.toUpperCase()}<span style={css(`height:1px; flex:1; background:#EEF1F6;`)} /></div>
+<div style={css(`display:flex; flex-direction:column; gap:10px;`)}>
+{(grp.items || []).map((c, __iRC) => (<React.Fragment key={__iRC}>
 <div style={css(`display:flex; align-items:center; gap:12px; padding:11px 13px; background:${c.rowBg}; border:1px solid #EEF1F6; border-radius:8px;`)}>
 <div style={css(`flex:1; min-width:0;`)}>
 <div style={css(`font-size:10px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:2px;`)}>{c.whereLabel} · {c.fieldLabel}</div>
@@ -2556,6 +2565,9 @@ function View(B, self) {
 </>) : (<>
 <span style={css(`font-size:11px; font-weight:700; color:${c.accepted ? '#128A3E' : (c.rejected ? '#D14B4B' : '#8E96A3')}; flex-shrink:0;`)}>{c.accepted ? '✓ Accepted' : (c.rejected ? '✕ Rejected' : 'Pending')}</span>
 </>)}
+</div>
+</React.Fragment>))}
+</div>
 </div>
 </React.Fragment>))}
 </div>
@@ -2818,7 +2830,7 @@ function View(B, self) {
 </div>
 {(oSel.routeViewRows || []).map((r, __i101) => (<React.Fragment key={__i101}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{r.segment}{(r.isNewRoute) ? (<><span style={css(`padding:1px 6px; border-radius:999px; font-size:9px; font-weight:700; background:#EAF1FB; color:#1E6FB8;`)}>NEW</span></>) : null}</div>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px; flex-wrap:wrap;`)}>{r.segment}{(r.routeViewFlags || []).map((fl, __iRVF) => (<React.Fragment key={__iRVF}><span style={css(`padding:1px 7px; border-radius:999px; font-size:9px; font-weight:700; background:${fl.bg}; color:${fl.fg};`)}>{fl.label}</span></React.Fragment>))}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
 <div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
@@ -3877,7 +3889,7 @@ class NDCApp extends React.Component {
           const r = R();
           ops = r < 0.7 ? 'Aligned' : 'Needs Change';
           if (ops !== 'Aligned') {
-            fb = { cells: {}, dcCells: {}, remark: pick(['DC location looks off vs ground truth','Vehicle infeasible at this DC cluster','Route splits the city — please re-cluster','Out-cutoff too tight for NLH landing','TAT not achievable during monsoon']) };
+            fb = { cells: {}, dcCells: {}, remark: pick(['DC location looks off vs ground truth','Vehicle infeasible at this DC cluster','Route splits the city — please re-cluster','Distance entered doesn\u2019t match ground reality','Touch point sequence looks inefficient']) };
             // 2026-07-09 model — Touch Point and Distance are DC-level (a specific DC's breakdown
             // leg / order), not route-level; only Vehicle Type stays route-level.
             if (R() < 0.6 && dcs.length) fb.dcCells[dcs[0]] = Object.assign({}, fb.dcCells[dcs[0]], { tp: String(Math.max(1, tp - 1)) });
@@ -5771,6 +5783,15 @@ class NDCApp extends React.Component {
       const util = vehRecord.cap ? Math.min(0.98, +(rt.volume / vehRecord.cap).toFixed(2)) : (prior ? prior.util : 0.7);
       const over = util > 0.9, under = util < 0.4;
       const tat = prior ? (prior.breakdownTat + 'h') : (+(rt.distance / 42).toFixed(1) + 'h');
+      // 2026-07-14 — Route View only ever shows 2 of the 5 change flags (Vehicle Change, New Route /
+      // Split) — the other 3 (DC Movement, Route Order, Distance) are DC-level concerns Route View
+      // doesn't break down to, so they stay Details-only.
+      const flagVehicleChange = !!(prior && rt.vehName !== prior.veh);
+      const flagNewRouteSplit = !!rt.isNewRoute;
+      const routeViewFlags = [
+        flagVehicleChange ? { key: 'vehicle', label: 'Vehicle Change', bg: '#EAEEFB', fg: '#2F4FC6' } : null,
+        flagNewRouteSplit ? { key: 'split', label: 'New Route / Split', bg: '#E7F0F8', fg: '#1E6FB8' } : null,
+      ].filter(Boolean);
       return {
         lmdc: rt.dcCodes.length ? rt.dcCodes[rt.dcCodes.length - 1] : '—', segment: rt.routeCode, veh: rt.vehName.split(/[\/·]/)[0].trim(),
         count: 1, freq: 'Daily', dist: fmtInt(Math.round(rt.distance)), tat, cps: '₹' + Number(rt.cps).toFixed(2), tps: rt.dcCodes.length,
@@ -5778,7 +5799,7 @@ class NDCApp extends React.Component {
         hasUtilFlag: over || under, utilFlagLabel: over ? 'Over-util' : under ? 'Under-util' : '',
         vol: fmtInt(rt.volume), cap: vehRecord.cap ? fmtInt(vehRecord.cap) : '—',
         latLng: scLatLng,
-        isNewRoute: !!rt.isNewRoute,
+        isNewRoute: !!rt.isNewRoute, routeViewFlags, hasRouteViewFlags: routeViewFlags.length > 0,
       };
     });
   }
@@ -5897,6 +5918,14 @@ class NDCApp extends React.Component {
     if (plan) {
       const locked = ps === 'Acknowledged' || ps === 'Finalised';
       const FIELD = { vehicleType: 'Vehicle Type' }; // route-level cells only ever carry vehicleType now (2026-07-09) — routeCode/distance/touchpoint moved to dcCells
+      // 2026-07-14 — change-flag taxonomy (Vehicle Change / DC Movement / Route Order Change /
+      // Distance Change / New Route·Split), computed from the SAME raw-proposal data the amber bar
+      // already reads (submitted r.fb, unfiltered by decision — consistent with how hasChanges/
+      // mlVehChg etc. already work) so it's one source of truth, not a parallel computation.
+      const existingRouteCodes = new Set(plan.rows.map(rr2 => rr2.routeCode));
+      const submittedFbByIdx = {};
+      plan.rows.forEach((rr3, i3) => { if (ps !== 'Pushed' && rr3.fb) submittedFbByIdx[i3] = rr3.fb; });
+      const flagsHyp = this.computeHypotheticalPlan(plan, submittedFbByIdx);
       const rows = plan.rows.map((r, idx) => {
         // 2026-07-10 — a plan still Pushed (pending feedback) must never show a flagged change to the
         // Planner, even if a row carries co-reviewer-visibility demo data (r.ops/r.fb seeded for the
@@ -5992,8 +6021,9 @@ class NDCApp extends React.Component {
             // Touch Point and Distance independently (not one bundled decision).
             cells.forEach(c => {
               const fdec = _fd[c.key] || (autoApprovable ? 'Accept' : null);
+              const bucket = c.key === 'vehicleType' ? 'Vehicle Change' : 'Other';
               changeList.push({ isRoute: true, isDc: false, scopeLabel: 'This route', scopeSub: c.field,
-                changeText: c.from + ' → ' + c.to,
+                changeText: c.from + ' → ' + c.to, bucket,
                 whereLabel: 'Route', whereBg: '#EAEEFB', whereFg: '#2F4FC6', fieldLabel: c.field, changeVal: c.from + ' → ' + c.to,
                 rowBg: fdec === 'Accept' ? '#F5FAF6' : (fdec === 'Reject' ? '#FCF6F6' : '#FFFCF4'),
                 autoApproved: autoApprovable && !_fd[c.key],
@@ -6005,7 +6035,7 @@ class NDCApp extends React.Component {
             });
           } else {
             changeList.push({ isRoute: true, isDc: false, scopeLabel: 'This route', scopeSub: r.routeCode,
-              changeText: 'Route-level review (see remark)',
+              changeText: 'Route-level review (see remark)', bucket: 'Other',
               whereLabel: 'Route', whereBg: '#EAEEFB', whereFg: '#2F4FC6', fieldLabel: 'Route-level', changeVal: 'See remark',
               rowBg: dec === 'Accept' ? '#F5FAF6' : (dec === 'Reject' ? '#FCF6F6' : '#FFFCF4'),
               autoApproved: autoApprovable,
@@ -6017,9 +6047,9 @@ class NDCApp extends React.Component {
           }
         }
         enrichedDcRows.forEach(dc => { if (!dc.hasChange) return;
-          const pushField = (f, label, valText) => {
+          const pushField = (f, label, valText, bucket) => {
             changeList.push({ isRoute: false, isDc: true, scopeLabel: dc.code, scopeSub: dc.name,
-              changeText: label + ': ' + valText, autoApproved: false,
+              changeText: label + ': ' + valText, autoApproved: false, bucket,
               whereLabel: dc.code + ' · ' + dc.name, whereBg: '#F2F5FA', whereFg: '#5A5E66', fieldLabel: label, changeVal: valText,
               rowBg: f.accepted ? '#F5FAF6' : (f.rejected ? '#FCF6F6' : '#FFFCF4'),
               accepted: f.accepted, rejected: f.rejected, undecided: f.undecided, decided: !f.undecided,
@@ -6027,12 +6057,24 @@ class NDCApp extends React.Component {
               accBg: f.accBg, accFg: f.accFg, rejBg: f.rejBg, rejFg: f.rejFg,
               onAccept: f.onAccept, onReject: f.onReject });
           };
-          if (dc.hasChgTp) pushField(dc.fTp, 'Touch-point order', dc.tpOrder + ' → ' + dc.chgTp);
-          if (dc.hasLatLngChange) pushField(dc.fLatLng, 'Lat/Long', '→ ' + dc.proposedLatLng);
-          if (dc.hasRouteCodeChange) pushField(dc.fRouteCode, 'Route', r.routeCode + ' → ' + dc.proposedRouteCode);
-          if (dc.hasDistChange) pushField(dc.fDistance, 'Distance', dc.dist + ' → ' + dc.proposedDist);
+          if (dc.hasChgTp) pushField(dc.fTp, 'Touch-point order', dc.tpOrder + ' → ' + dc.chgTp, 'Route Order Change');
+          if (dc.hasLatLngChange) pushField(dc.fLatLng, 'Lat/Long', '→ ' + dc.proposedLatLng, 'Other');
+          if (dc.hasRouteCodeChange) pushField(dc.fRouteCode, 'Route', r.routeCode + ' → ' + dc.proposedRouteCode, existingRouteCodes.has(dc.proposedRouteCode) ? 'DC Movement' : 'New Route / Split');
+          if (dc.hasDistChange) pushField(dc.fDistance, 'Distance', dc.dist + ' → ' + dc.proposedDist, 'Distance Change');
         });
         const changeTotal = changeList.length;
+        // 2026-07-14 — route-level flag taxonomy. Each is fully independent (a route can show all 5
+        // at once) and computed off the SAME raw submitted proposal as the rest of this pipeline, not
+        // a separate data source. "Departures" (DCs leaving this route) are knowable from this row
+        // alone; "arrivals" (a DC landing on this route FROM another) need every row's dcCellsObj, so
+        // those are folded in immediately below once every row has been built.
+        const departureTargets = enrichedDcRows.filter(dc => dc.hasRouteCodeChange).map(dc => dc.proposedRouteCode);
+        const flagVehicleChange = mlVehChg;
+        const flagRouteOrderChange = enrichedDcRows.some(dc => dc.hasChgTp);
+        const flagNewRouteSplit = departureTargets.some(rc => !existingRouteCodes.has(rc));
+        const flagDcMovementFromDepartures = departureTargets.some(rc => existingRouteCodes.has(rc));
+        const hypRouteForFlags = (flagsHyp.routes || []).find(x => x.routeCode === r.routeCode);
+        const flagDistanceChange = needsAttn && !!hypRouteForFlags && Math.round(hypRouteForFlags.distance) !== Math.round(r.rtDist);
         const changeDecidedCount = changeList.filter(c => c.decided).length;
         const allChangesDecided = changeTotal > 0 && changeDecidedCount === changeTotal;
         return { idx, routeCode: r.routeCode, veh: r.veh, tp: r.tp, ops: (ps !== 'Pushed' ? r.ops : 'Pending'), opsChip: (ps === 'Pushed' || r.ops === 'Pending') ? '—' : r.ops, opsBg: op.bg, opsFg: op.fg, needsAttn, hasFb: !!effFb, noFb: !effFb, fbText: effFb ? effFb.remark : '', cells, dcChips, hasDcChips: dcChips.length > 0,
@@ -6054,6 +6096,7 @@ class NDCApp extends React.Component {
           dcRows: enrichedDcRows, hasRouteCells, showRouteDecision: needsRouteDecision, noRouteAction: !needsAttn, hasDcChanges: dcChangedCount > 0, dcChangedCount, dcDecidedCount, dcAllDecided, routeDecided, rowFullyDecided,
           dcChangesLabel: dcDecidedCount + '/' + dcChangedCount + ' DC change' + (dcChangedCount === 1 ? '' : 's') + ' decided',
           changeList, changeTotal, hasChanges: needsAttn && changeTotal > 0,
+          dcCellsObj, flagVehicleChange, flagDcMovement: flagDcMovementFromDepartures, flagRouteOrderChange, flagDistanceChange, flagNewRouteSplit,
           scChanges: changeList.filter(c => c.isRoute), dcChanges: changeList.filter(c => c.isDc), hasSc: changeList.some(c => c.isRoute), noSc: needsAttn && !changeList.some(c => c.isRoute), hasDc: changeList.some(c => c.isDc), dcChangeCount: changeList.filter(c => c.isDc).length,
           changeProgressLabel: changeDecidedCount + ' of ' + changeTotal + ' decided', allChangesDecided,
           acceptAllRowShow: (ps === 'Acknowledged') && changeDecidedCount < changeTotal,
@@ -6061,6 +6104,21 @@ class NDCApp extends React.Component {
           onRejectAllRow: () => this.decideRouteChanges(plan.id, idx, changedDcCodes, needsRouteDecision, 'Reject'),
           actionLabel: allChangesDecided ? '✓ All decided' : (changeDecidedCount + '/' + changeTotal + ' decided'),
           actionBg: allChangesDecided ? '#E7F4EC' : '#FBF1DF', actionFg: allChangesDecided ? '#128A3E' : '#C77B00' };
+      });
+      // Fold in "arrivals" — a DC landing on this route FROM another route also counts as DC Movement
+      // on the RECEIVING route, not just the one it left. Needs every row's dcCellsObj, so this has to
+      // happen after the full map above, then builds the final bubble list each route shows.
+      rows.forEach((rr) => {
+        const arrived = rows.some(other => other !== rr && Object.keys(other.dcCellsObj).some(code => other.dcCellsObj[code].routeCode === rr.routeCode));
+        rr.flagDcMovement = rr.flagDcMovement || arrived;
+        rr.routeFlags = [
+          rr.flagVehicleChange ? { key: 'vehicle', label: 'Vehicle Change', bg: '#EAEEFB', fg: '#2F4FC6' } : null,
+          rr.flagDcMovement ? { key: 'dcMove', label: 'DC Movement', bg: '#F2F5FA', fg: '#5A5E66' } : null,
+          rr.flagRouteOrderChange ? { key: 'order', label: 'Route Order Change', bg: '#FBF1DF', fg: '#9A5E00' } : null,
+          rr.flagDistanceChange ? { key: 'dist', label: 'Distance Change', bg: '#FBF1DF', fg: '#9A5E00' } : null,
+          rr.flagNewRouteSplit ? { key: 'split', label: 'New Route / Split', bg: '#E7F0F8', fg: '#1E6FB8' } : null,
+        ].filter(Boolean);
+        rr.hasRouteFlags = rr.routeFlags.length > 0;
       });
       // C1 — only flagged (Needs Change / Blocker) rows require an Accept/Reject. Aligned rows need none,
       // so the Finalise gate must look only at flagged rows or it can never reach "all decided".
@@ -6112,6 +6170,7 @@ class NDCApp extends React.Component {
           return isRouteLevelField ? label : (label + ' (' + n + ' DC' + (n === 1 ? '' : 's') + ')');
         }).join(' · ');
         aDcGroupHeaders.push({ routeCode: rr.routeCode, hasChanges: rr.hasChanges, remark: rr.fbText, hasRemark: !!rr.fbText, needsAttn: rr.needsAttn,
+          routeFlags: rr.routeFlags, hasRouteFlags: rr.hasRouteFlags,
           routeChange, hasRouteChange: !!routeChange, vehOrig: rr.mlVehTxt,
           validationErrors: routeIssues.filter(x => x.sev === 'danger').map(x => x.t),
           validationWarnings: routeIssues.filter(x => x.sev === 'warning').map(x => x.t),
@@ -6151,7 +6210,7 @@ class NDCApp extends React.Component {
       const opsLeads = plan.reviewerNames.map((nm) => {
         const done = submittedReviewersList.indexOf(nm) >= 0;
         const initials = nm.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
-        return { name: nm, done, pending: !done, mark: done ? '✓' : '⏳', statusText: done ? 'Submitted' : 'Awaiting', initials,
+        return { name: nm, done, pending: !done, mark: done ? '✓' : '⏳', statusText: done ? 'Submitted' : 'Not-Submitted', initials,
           chipBg: done ? '#E7F4EC' : '#F2F5FA', chipFg: done ? '#128A3E' : '#5A5E66' };
       });
       const hasSubmissionGap = (ps === 'Acknowledged' || ps === 'Finalised') && opsLeads.some(o => !o.done);
@@ -6233,6 +6292,12 @@ class NDCApp extends React.Component {
         alignReviewRoute: (st.alignReviewRouteIdx != null && rows[st.alignReviewRouteIdx]) ? Object.assign({}, rows[st.alignReviewRouteIdx], {
           scChanges: rows[st.alignReviewRouteIdx].changeList.filter(c => c.isRoute),
           dcChanges: rows[st.alignReviewRouteIdx].changeList.filter(c => c.isDc),
+          // 2026-07-14 — organise this route's feedback under the same flag taxonomy shown on the
+          // amber bar, instead of one flat list, so the planner can jump straight to (say) every
+          // Vehicle Change item without scanning past unrelated DC/route entries.
+          bucketedChanges: ['Vehicle Change', 'DC Movement', 'Route Order Change', 'Distance Change', 'New Route / Split', 'Other']
+            .map(b => ({ bucket: b, items: rows[st.alignReviewRouteIdx].changeList.filter(c => c.bucket === b) }))
+            .filter(g => g.items.length > 0),
         }) : null,
         closeAlignReview: () => this.setState({ alignReviewRouteIdx: null }),
         undecidedFlaggedCount: flaggedRows.filter(r => !r.decision).length,
