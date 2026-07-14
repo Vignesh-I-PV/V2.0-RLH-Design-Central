@@ -4,8 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Network Design Central</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="alternate icon" href="favicon.svg"><!-- older Safari/Firefox fallback -->
+<!-- Favicon set — the SVG alone wasn't enough: Safari (desktop and iOS) doesn't render
+     SVG favicons in the tab at all, and browsers request /favicon.ico directly regardless
+     of these <link> tags on the very first hit. So: .ico first (universal, incl. Safari),
+     the .svg as a crisp progressive upgrade for browsers that do support it, explicit PNG
+     sizes as a middle fallback, apple-touch-icon for Safari bookmarks/iOS/macOS "Add to
+     Dock", and a webmanifest so Android/Chrome home-screen icons resolve too.
+     ?v=2 cache-busts this rollout — browsers cache favicons very aggressively per-origin,
+     so a same-URL swap can silently keep showing the old (missing) icon until this changes. -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="site.webmanifest?v=2">
 
 <!-- React, ReactDOM, and the Babel compiler, loaded from a public CDN so
      there's nothing to install and nothing else to upload. If you're ever
