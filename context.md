@@ -901,3 +901,40 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      shown read-only with a note that it becomes decidable after Acknowledge
      & Freeze. Does not block Finalise (still a warning, not an error) —
      same precedent as the other advisory warnings (util over/under, TP >7).
+
+- **2026-07-14, second pass** — Ops Lead view was hardcoded to a single
+  persona ("Rahul Sharma") everywhere: proposed-change attribution, the
+  submission record, the co-reviewer roster/label, even the top-bar
+  avatar. There was no way to actually simulate a second (or third)
+  reviewer submitting feedback on the same plan — you could only ever be
+  Rahul Sharma. Fixed:
+  1. **Unified the reviewer-name pool.** The random seed loop had its own
+     abbreviated pool (`'Rahul S.'`, `'Megha B.'`, ...) for
+     `reviewerNames`/`proposedBy`, completely disjoint from the full-name
+     hardcoded persona (`'Rahul Sharma'`) and from `NAMES` (the same
+     full-name pool SC POCs already draw from). Replaced it with `NAMES`
+     directly — one consistent name space everywhere, and it's now
+     possible for the acting persona to genuinely be one of a plan's
+     assigned reviewers on ordinary seeded plans, not just the two
+     hand-built demo ones.
+  2. **`opsPersonaName()`** — a real switchable "who am I acting as"
+     concept (`st.opsActingPersona`, defaults to Rahul Sharma so nothing
+     changes until you touch it). Replaced every hardcoded `'Rahul
+     Sharma'` reference that represented "the current live actor" (change
+     attribution, submission provenance, co-reviewer filtering, the
+     top-bar avatar name/initials) with this — seed data / demo-plan
+     literals that represent already-happened history were deliberately
+     left alone.
+  3. **"Acting as" switcher** in the top bar, next to "View as" (Ops Lead
+     only). Lists the open plan's actual `reviewerNames` when a plan is
+     selected (falls back to a general reviewer pool otherwise), and
+     always pins the current persona into the list even if the open
+     plan's roster doesn't include them. Switching clears that plan's
+     not-yet-submitted draft (`opsRowFb`/`opsRowDec`/`opsTpOrder`) so an
+     in-progress edit made as one reviewer can't get silently submitted
+     under a different name — real submitted history
+     (`plan.submittedReviewers`, `opsSubmitted[planId]`) is untouched.
+     Now you can: open a plan as Rahul Sharma, propose a change, submit;
+     switch to Megha Bose, propose something different, submit; open the
+     planner view and see both reviewers' submissions/co-reviewer
+     attribution show up correctly.
