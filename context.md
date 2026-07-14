@@ -859,3 +859,45 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      12 — headers and data were silently misaligned. Rebuilt both to
      match. Shrunk all three tables' `min-width` wrappers to fit the
      now-narrower column set.
+
+- **2026-07-14** — two fixes reported after moving to the new repo/chat.
+  1. **Favicon not showing (reported on Mac).** The filename actually matched
+     (`favicon.svg` / `index.html` both correct — the historical
+     `fevicon.svg` typo was already fixed before this repo). The real cause:
+     a single SVG `<link rel="icon">` isn't enough cross-browser — Safari
+     (desktop and iOS) does not render SVG favicons in the tab at all, and
+     browsers request `/favicon.ico` directly on first load regardless of
+     `<link>` tags. Fixed by generating a full icon set from the existing
+     mark (navy rounded square, white "N") and wiring all of it into
+     `index.html`: `favicon.ico` (multi-res 16/32/48, universal fallback —
+     covers Safari), `favicon.svg` (kept, crisp upgrade for browsers that
+     support it), `favicon-16.png` / `favicon-32.png` (explicit PNG
+     fallback), `apple-touch-icon.png` (180×180, Safari bookmarks/iOS/macOS
+     "Add to Dock"), `android-chrome-192.png` / `-512.png` +
+     `site.webmanifest` (Android/Chrome home-screen). All `<link>` hrefs
+     cache-busted with `?v=2` — favicons are cached very aggressively
+     per-origin, so a same-URL swap can keep showing the old/missing icon
+     until the query string changes or the cache is cleared. If it still
+     doesn't show after pushing: hard-refresh, or open the page in a
+     private/incognito window first to rule out a stale cached favicon.
+  2. **Distance-variance warnings had no planner action.** The >25%
+     entered-vs-calculated distance warning was real and correctly computed
+     in `computeHypotheticalPlan`, but the banner showing it to the planner
+     was pure text — no link to any decision, and it was computed from raw
+     `effectiveFbFor(plan)` every render regardless of what the planner had
+     already decided, so it would have kept showing forever even after a
+     decision. Distance was already one of the four independently
+     decidable per-DC fields (`decideDcRow(planId, idx, dcCode, 'distance',
+     'Accept'|'Reject')`, feeding `effectiveFbForFinalise`) — the gap was
+     that this specific banner wasn't wired to it. Fixed: each flagged DC
+     in the banner now gets its own "Accept anyway" (keeps the entered
+     distance, tags it "Accepted with warning") / "Revert to calculated"
+     (drops the override — `userDistance` goes back to `null`, the engine
+     falls back to the haversine leg, and the entry disappears from the
+     list since there's no longer a mismatch) — both calling the same
+     `decideDcRow` the rest of Details/Finalise already read, so nothing
+     new to keep in sync. Actions are only live once Acknowledged (matches
+     every other per-field decision in the app); pre-Acknowledge it's still
+     shown read-only with a note that it becomes decidable after Acknowledge
+     & Freeze. Does not block Finalise (still a warning, not an error) —
+     same precedent as the other advisory warnings (util over/under, TP >7).
