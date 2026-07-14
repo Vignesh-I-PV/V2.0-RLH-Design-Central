@@ -938,3 +938,41 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      switch to Megha Bose, propose something different, submit; open the
      planner view and see both reviewers' submissions/co-reviewer
      attribution show up correctly.
+
+- **2026-07-14, third pass** — the change-flag taxonomy (Vehicle Change /
+  DC Movement / Route Order Change / Distance Change / New Route·Split),
+  plus two smaller fixes reported alongside it.
+  1. **Flag taxonomy, computed once, used in three places.** Built off the
+     exact same raw-submitted-feedback data the amber bar/Details view
+     already reads (never a parallel computation) — a per-DC pass detects
+     "departures" (this row's own DCs reassigned elsewhere), a second
+     pass folds in "arrivals" (a DC landing on this route FROM another,
+     which needs every row's data so it runs after the main map), and a
+     dedicated submitted-only `computeHypotheticalPlan` call gives the
+     real post-proposal distance to diff against `r.rtDist` for Distance
+     Change (any non-zero difference counts, per instruction — no
+     threshold). All 5 flags are independent (a route can carry all 5 at
+     once, no mutual exclusivity, no "Multiple Changes" catch-all bucket).
+     - **Amber bar (Planner, Details view):** all 5 as bubbles on the
+       route-group header.
+     - **Route View (both personas):** only Vehicle Change and New
+       Route/Split — replaces the old ad-hoc "NEW" badge with the same
+       bubble component so there's one rendering path, not two.
+     - **Review Changes popup:** the flat change list is now grouped into
+       the same named buckets (plus an "Other" bucket for lat/lng-only
+       corrections and remark-only rows that don't fit one of the 5),
+       same Accept/Reject controls, just organised.
+  2. **Acknowledge & Freeze reviewer-status wording** — re-confirmed the
+     honest per-reviewer tracking from the previous pass is still intact
+     (it is — `confirmAck()` never touches `submittedReviewers`), and
+     renamed the pending-reviewer label from "Awaiting" to "Not-Submitted"
+     to match the exact wording asked for.
+  3. **Removed the two canned Ops-feedback remarks that referenced
+     cutoff/TAT** ("Out-cutoff too tight for NLH landing", "TAT not
+     achievable during monsoon") from the seed data's random remark pool —
+     these fields were already removed from every Details table, so a
+     remark citing them was pure leftover clutter. Replaced with two
+     remarks that reference fields that actually still exist. The
+     `outCutoff`/`breakdownTat` fields themselves stay in the data model
+     (still carried forward for internal use, e.g. the Finalise-preview
+     TAT fallback) — only the user-facing feedback text was in scope here.
