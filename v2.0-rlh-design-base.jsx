@@ -151,6 +151,14 @@ function View(B, self) {
 </div>
 </div>
 </>) : null}
+{(showOpsActingSwitcher) ? (<>
+<div style={css(`display:flex; align-items:center; gap:8px; padding:4px 7px 4px 9px; border:1px dashed #C3C9D4; border-radius:999px;`)} title={"Simulate a different Ops Lead reviewer submitting feedback on this plan"}>
+<span style={css(`font-size:9.5px; font-weight:700; letter-spacing:0.07em; color:#5A5E66;`)}>Acting as</span>
+<select value={opsActingCurrent} onChange={onOpsActingChange} style={css(`border:none; background:#F2F5FA; border-radius:999px; padding:5px 26px 5px 11px; font-family:inherit; font-size:12px; font-weight:600; color:#003F98; cursor:pointer; appearance:none; -webkit-appearance:none;`)}>
+{(opsActingOptions || []).map((nm, __iOA) => (<React.Fragment key={__iOA}><option value={nm}>{nm}</option></React.Fragment>))}
+</select>
+</div>
+</>) : null}
 <div style={css(`display:flex; align-items:center; gap:9px; padding-left:4px;`)}>
 <div style={css(`width:33px; height:33px; border-radius:50%; background:linear-gradient(135deg,#003F98,#2F4FC6); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:700; flex-shrink:0;`)}>{personaInitials}</div>
 <div style={css(`line-height:1.2;`)}>
@@ -3627,6 +3635,10 @@ class NDCApp extends React.Component {
     this.standaloneMapMode = _qp.get('mapMode') || '';
     this.state = {
       persona: 'planner',
+      // 2026-07-14 — lets the Ops Lead view be "acted" as any of a plan's assigned reviewers instead
+      // of always being hardcoded to Rahul Sharma, so more-than-one-reviewer scenarios can actually be
+      // simulated (submit as A, switch to B, submit differently, see the co-reviewer overlay update).
+      opsActingPersona: null,
       view: 'inputs', // Command Center hidden for now -- see nav comment near plannerNav
       showCoach: props.showFtux !== false,
       toast: null,
@@ -3842,7 +3854,12 @@ class NDCApp extends React.Component {
     for (let i = 0; i < 4; i++) statusPlan.push('Acknowledged');
     for (let i = 0; i < 7; i++) statusPlan.push('Finalised');
 
-    const REV = ['Aarti N.','Rahul S.','Imran K.','Deepa R.','Suresh M.','Neha T.','Vivek P.','Karthik V.','Pooja G.','Sandeep L.','Megha B.'];
+    // 2026-07-14 — was a separate abbreviated pool ('Rahul S.', 'Megha B.', ...) that could never
+    // string-match the full-name acting Ops-Lead persona ('Rahul Sharma') used elsewhere in the app —
+    // reusing NAMES (the same full-name pool SC POCs already draw from) fixes that mismatch and is
+    // also what makes the Ops-Lead persona switcher below able to show up as an assigned reviewer on
+    // ordinary seeded plans, not just the two hand-built demo ones.
+    const REV = NAMES;
     const plans = [];
     scs.slice(0, 41).forEach((sc, i) => {
       const status = statusPlan[i];
@@ -4010,6 +4027,16 @@ class NDCApp extends React.Component {
   // C8a — entering Creation always starts at step 1 so re-entry never resumes mid-wizard.
   go(view) { if (view === 'creation' && this.state.view !== 'creation') this.setState({ view, creationStep: 1, fixReturnStep: null, focusSC: null, creationView: 'wizard', showCreationGuidelines: true }); else this.setState({ view }); }
   setPersona(p) { this.setState({ persona: p, view: p === 'ops' ? 'align' : 'inputs' }); }
+  // Current "acting" Ops Lead identity — defaults to Rahul Sharma (the original single hardcoded
+  // persona) so nothing changes until the person deliberately switches who they're simulating.
+  opsPersonaName() { return this.state.opsActingPersona || 'Rahul Sharma'; }
+  switchOpsPersona(name, planId) {
+    // Clear any not-yet-submitted draft on the currently open plan when switching identity, so an
+    // in-progress edit made "as" one reviewer doesn't silently get submitted under a different name.
+    const clr = (obj) => { const o = Object.assign({}, obj); if (planId) delete o[planId]; return o; };
+    this.setState({ opsActingPersona: name, opsRowFb: clr(this.state.opsRowFb), opsRowDec: clr(this.state.opsRowDec), opsTpOrder: clr(this.state.opsTpOrder) });
+    this.showToast('Now acting as ' + name, '#2F4FC6');
+  }
   comingSoon(label) { this.showToast((label || 'This action') + ' — coming soon', '#C77B00'); }
   // Reusable table pager. PAGE SIZE = 10. Given the full post-filter list, the raw page from state,
   // and the state key to write, returns the current page's rows + the footer control model.
@@ -6593,8 +6620,9 @@ class NDCApp extends React.Component {
     });
     const dcCount = Object.keys(dcCells).length;
     // §10 O2 — attribute this proposed change to the current reviewer so co-reviewers + the planner
-    // see "Change proposed by <name>". Ops Lead persona = Rahul Sharma in this prototype.
-    const reviewerName = st.persona === 'planner' ? 'Pranita Sapkal' : 'Rahul Sharma';
+    // see "Change proposed by <name>". Ops Lead persona is now switchable (opsPersonaName()), not
+    // hardcoded, so more-than-one-reviewer scenarios can be simulated on the same plan.
+    const reviewerName = st.persona === 'planner' ? 'Pranita Sapkal' : this.opsPersonaName();
     const fb = { cells, dcCells, dcCount, remark: (st.ncRemark || '').trim() || 'Needs change', by: reviewerName };
     const a = Object.assign({}, st.opsRowFb); a[r.planId] = Object.assign({}, a[r.planId]); a[r.planId][r.idx] = fb;
     // mirror the attribution onto the live row so the Ops-Lead row indicator updates immediately
@@ -6620,13 +6648,13 @@ class NDCApp extends React.Component {
         if (dv === 'Needs Change') return Object.assign({}, r, { ops: 'Needs Change', fb: fbN || { cells: {}, remark: 'Needs change' }, proposedBy: propN });
         return r; // Pending / untouched rows keep their seeded state
       });
-      return Object.assign({}, p, { rows, feedbackReceived: true, submittedReviewers: Array.from(new Set([...(p.submittedReviewers || []), 'Rahul Sharma'])) });
+      return Object.assign({}, p, { rows, feedbackReceived: true, submittedReviewers: Array.from(new Set([...(p.submittedReviewers || []), this.opsPersonaName()])) });
     });
     const alignStatus = Object.assign({}, st.alignStatus); alignStatus[planId] = 'In Alignment';
     // Provenance for the multi-reviewer audit trail — stamp who submitted and when (persists in the panel record).
     const now = new Date(); const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const at = String(now.getDate()).padStart(2, '0') + ' ' + MON[now.getMonth()] + ' · ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    const s = Object.assign({}, st.opsSubmitted); s[planId] = { by: 'Rahul Sharma', at: at };
+    const s = Object.assign({}, st.opsSubmitted); s[planId] = { by: this.opsPersonaName(), at: at };
     this.setState({ data: Object.assign({}, d, { plans }), alignStatus, opsSubmitted: s });
     this.showToast('Feedback submitted to planner · recorded ' + at, '#128A3E');
   }
@@ -6639,7 +6667,7 @@ class NDCApp extends React.Component {
     // record — who submitted, when. D4 — also keep it after the planner acknowledges/finalises: instead of
     // vanishing, a frozen plan stays as a read-only "Locked" record so the POC sees which plans are closed.
     const assigned = d.plans.filter(p => { const s = st.alignStatus[p.id] || p.status; return s === 'Pushed' || !!st.opsSubmitted[p.id] || s === 'Acknowledged' || s === 'Finalised'; });
-    const selfName = 'Rahul Sharma'; // current Ops-Lead persona (see ~line 3538); co-reviewers = everyone else on the plan
+    const selfName = this.opsPersonaName(); // current acting Ops-Lead persona; co-reviewers = everyone else on the plan
     // Ops-Lead status of a plan (drives the rail filter segment + the card pill).
     // Four states tied directly to plan lifecycle + this reviewer's own submission --
     // replaces the old row-progress-based "In progress" bucket for a cleaner mental model.
@@ -6695,7 +6723,7 @@ class NDCApp extends React.Component {
       const dec = st.opsRowDec[plan.id] || {};
       const OP = { 'Aligned': { bg: '#E7F4EC', fg: '#128A3E' }, 'Needs Change': { bg: '#FBF1DF', fg: '#C77B00' } };
       const subInfoSel = st.opsSubmitted[plan.id]; const submitted = !!subInfoSel;
-      const subBySel = (subInfoSel && subInfoSel.by) || 'Rahul Sharma'; const subAtSel = (subInfoSel && subInfoSel.at) || '';
+      const subBySel = (subInfoSel && subInfoSel.by) || this.opsPersonaName(); const subAtSel = (subInfoSel && subInfoSel.at) || '';
       // KRD §11 — editing locks only when the planner acknowledges; submitted-but-not-acknowledged rows stay editable.
       const planStatus = st.alignStatus[plan.id] || plan.status;
       const planLocked = planStatus === 'Acknowledged' || planStatus === 'Finalised';
@@ -6798,10 +6826,10 @@ class NDCApp extends React.Component {
       });
       // (per-route "Node Details" list removed with the Node Details tab)
       // §10 O2 — plan-level co-reviewer summary + roster (awareness "the same way" the planner sees feedback received).
-      const propRows = rows.filter(r => r.hasProposed && r.proposedBy !== 'Rahul Sharma');
+      const propRows = rows.filter(r => r.hasProposed && r.proposedBy !== selfName);
       const propByNames = [...new Set(propRows.map(r => r.proposedBy))].filter(Boolean);
       const oProp = propRows.length;
-      const coReviewerLabel = (plan.reviewerNames || []).filter(n => n !== 'Rahul Sharma').join(', ');
+      const coReviewerLabel = (plan.reviewerNames || []).filter(n => n !== selfName).join(', ');
       const SECS = [['details', 'Details'], ['route', 'Route View']];
       oSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone,
         scCoords: plan.rows[0] ? (Number(plan.rows[0].oLat).toFixed(4) + ', ' + Number(plan.rows[0].oLng).toFixed(4)) : '—',
@@ -8024,12 +8052,21 @@ class NDCApp extends React.Component {
     const subTabs = { show: subTabsArr.length > 0, tabs: subTabsArr,
       showSearch: st.view === 'review', searchVal: st.reviewSearch || '', searchPlaceholder: 'Search SC…', onSearch: (e) => this.setState({ reviewSearch: e.target.value }) };
 
+    // 2026-07-14 — acting Ops-Lead persona switcher: lets the person simulate "more than one reviewer"
+    // on the very same plan by picking who they're currently submitting as. Scoped to the open plan's
+    // own reviewerNames when one is selected (so switching stays meaningful to that plan's assignment);
+    // falls back to the general reviewer pool otherwise.
+    const opsOpenPlan = (!planner && st.opsPlanId) ? (d.plans || []).find(p => p.id === st.opsPlanId) : null;
+    const opsActingPool = (opsOpenPlan && opsOpenPlan.reviewerNames && opsOpenPlan.reviewerNames.length) ? opsOpenPlan.reviewerNames.slice() : ['Rahul Sharma', 'Megha Bose', 'Neha Tiwari', 'Aarti Nair', 'Imran Khan', 'Deepa Rao', 'Vivek Pillai', 'Karthik Varma', 'Pooja Gupta', 'Sandeep Lal'];
+    if (opsActingPool.indexOf(this.opsPersonaName()) < 0) opsActingPool.unshift(this.opsPersonaName());
+    const opsActingCurrent = this.opsPersonaName();
+
     return {
       contentPad: '28px 34px',
       isPlanner: planner, isOps: !planner,
-      personaName: planner ? 'Pranita Sapkal' : 'Rahul Sharma',
+      personaName: planner ? 'Pranita Sapkal' : this.opsPersonaName(),
       personaRole: planner ? 'Central Network Planner' : 'Ops Lead · South',
-      personaInitials: planner ? 'PS' : 'RS',
+      personaInitials: planner ? 'PS' : this.opsPersonaName().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase(),
       view: st.view, isCommand: st.view === 'command', isInputs: st.view === 'inputs', isStub: !(st.view === 'command' || st.view === 'inputs' || st.view === 'creation' || st.view === 'review' || st.view === 'align' || st.view === 'map' || st.view === 'finalise' || st.view === 'cyclesummary'),
       ...this.creationVals(),
       ...this.reviewVals(),
@@ -8060,6 +8097,9 @@ class NDCApp extends React.Component {
       plannerSegBg: planner ? '#fff' : 'transparent', plannerSegFg: planner ? '#003F98' : '#5A5E66',
       opsSegBg: !planner ? '#fff' : 'transparent', opsSegFg: !planner ? '#003F98' : '#5A5E66',
       showPersonaToggle: st.view === 'align',
+      showOpsActingSwitcher: !planner && st.view === 'align',
+      opsActingCurrent, opsActingOptions: opsActingPool,
+      onOpsActingChange: (e) => this.switchOpsPersona(e.target.value, st.opsPlanId),
       setPlanner: () => this.setPersona('planner'), setOps: () => this.setPersona('ops'),
       comingSoonSearch: () => this.showToast('Search is coming — use the filters and zone chips to narrow your view for now.', '#1E6FB8'), openCycle: () => this.comingSoon('Cycle switcher'),
       goCommand: () => this.go('inputs'), dismissCoach: () => this.setState({ showCoach: false }),
