@@ -1857,42 +1857,18 @@ function View(B, self) {
 <button onClick={reviewDetail.close} aria-label={"Close detail"} style={css(`display:flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid #E6EBF2; border-radius:8px; background:#fff; cursor:pointer; color:#5A5E66;`)}><svg width={"17"} height={"17"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2"}><path d={"M6 6l12 12M18 6L6 18"} strokeLinecap={"round"} /></svg></button>
 </div>
 <div style={css(`flex:1; overflow-y:auto; padding:22px 26px;`)}>
-{/* Plan Detail / Route View tabs — same pattern as Ops Alignment */}
-<div style={css(`display:flex; gap:22px; border-bottom:1px solid #E6EBF2; margin-bottom:18px;`)}>
-{(reviewDetail.sections || []).map((t, __iRDT) => (<React.Fragment key={__iRDT}>
-<button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button>
-</React.Fragment>))}
-</div>
-{/* metrics summary — always visible above the tab-gated content, not tab-gated (2026-07-15, mirrors Ops Alignment's aSel/oSel pattern) */}
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Output metrics</span></div>
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(118px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:18px;`)}>
-{(reviewDetail.metrics || []).map((m, __i64) => (<React.Fragment key={__i64}>
-<div style={css(`background:#fff; padding:14px 15px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:21px; font-weight:500; color:${m.valueColor}; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11.5px; font-weight:600; color:#14171F; margin-top:7px;`)}>{m.label}</div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>{m.sub}</div>{(m.hasDelta) ? (<><div style={css(`font-size:9.5px; font-weight:600; color:${m.deltaColor}; margin-top:4px; white-space:nowrap;`)}>{m.delta}</div></>) : null}</div>
-</React.Fragment>))}
-</div>
-{/* warnings — always visible above the tab-gated content, same reasoning as metrics above */}
-{(reviewDetail.hasFlags) ? (<>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 18px; margin-bottom:18px;`)}>
-<div style={css(`font-size:13px; font-weight:700; color:#14171F; margin-bottom:9px;`)}>Validation flags</div>
-<div style={css(`display:flex; flex-direction:column; gap:7px;`)}>
-{(reviewDetail.flags || []).map((fl, __i66) => (<React.Fragment key={__i66}><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}><span style={css(`display:inline-flex; align-items:center; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:700; background:${fl.sevBg}; color:${fl.sevFg}; flex-shrink:0;`)}>{fl.sevLabel}</span><span style={css(`font-size:12.5px; color:#5A5E66;`)}>{fl.t}</span></div></React.Fragment>))}
-</div>
-</div>
-</>) : null}
-{(reviewDetail.noFlags) ? (<><div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:#128A3E;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>No validation flags on this run.</div></>) : null}
-{(reviewDetail.secDetails) ? (<>
-{/* inputs strip */}
-<div style={css(`display:flex; flex-wrap:wrap; gap:20px 36px; padding:15px 18px; background:#fff; border:1px solid #E6EBF2; border-radius:8px; margin-bottom:18px;`)}>
+{/* SECTION 1 — Plan Inputs (SC details, vehicles used, related details) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Inputs</span></div>
+<div style={css(`display:flex; flex-wrap:wrap; gap:20px 36px; padding:15px 18px; background:#fff; border:1px solid #E6EBF2; border-radius:8px; margin-bottom:12px;`)}>
 <div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Nodes (input)</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{reviewDetail.nodes}</div></div>
 <div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Volume (input)</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{reviewDetail.volume}</div></div>
 <div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Historical weight (input)</div><div style={css(`font-size:15px; font-weight:600; color:#14171F;`)}>{reviewDetail.hwLabel} · {reviewDetail.hwTag}</div></div>
 <div style={css(`min-width:200px;`)}><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Vehicle type · count (input)</div><div style={css(`font-size:13.5px; font-weight:600; color:#14171F;`)}>{reviewDetail.vehInput}</div></div>
 <div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>SC coordinates</div><div style={css(`font-size:13.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{reviewDetail.scCoords}</div></div>
 </div>
-{/* vehicles by type */}
 {(reviewDetail.hasVeh) ? (<>
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:18px 20px; margin-bottom:18px;`)}>
-<div style={css(`display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:13px;`)}><div style={css(`font-size:13px; font-weight:700; color:#14171F;`)}>Vehicles by type</div><div style={css(`font-size:11.5px; color:#5A5E66;`)}>{reviewDetail.vehTotal} total</div></div>
+<div style={css(`display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:13px;`)}><div style={css(`font-size:13px; font-weight:700; color:#14171F;`)}>Vehicles used</div><div style={css(`font-size:11.5px; color:#5A5E66;`)}>{reviewDetail.vehTotal} total</div></div>
 <div style={css(`display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;`)}>
 {(reviewDetail.vehArr || []).map((v, __i65) => (<React.Fragment key={__i65}>
 <div style={css(`display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 13px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}>
@@ -1903,45 +1879,31 @@ function View(B, self) {
 </div>
 </div>
 </>) : null}
-</>) : null}
-{(reviewDetail.secRoute) ? (<>
-{/* per-route breakdown — §P3.2 toggle: Detail View (DC × Route) / Route View, left-aligned */}
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; overflow:hidden;`)}>
-<div style={css(`padding:12px 16px; border-bottom:1px solid #EEF1F6; display:flex; align-items:center; gap:12px; flex-wrap:wrap;`)}>
-<div style={css(`display:flex; border:1px solid #E6EBF2; border-radius:6px; overflow:hidden; flex-shrink:0;`)}>
-<button onClick={reviewDetail.onDcView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; border-right:1px solid #E6EBF2; cursor:pointer; font-family:inherit; background:${reviewDetail.dcViewBg}; color:${reviewDetail.dcViewFg};`)}>Detail View (DC × Route)</button>
-<button onClick={reviewDetail.onRouteView} style={css(`height:30px; padding:0 12px; font-size:12px; font-weight:600; border:none; cursor:pointer; font-family:inherit; background:${reviewDetail.routeViewBg}; color:${reviewDetail.routeViewFg};`)}>Route View</button>
-</div>
-</div>
-{/* Route View (Pivot at Route) — default */}
-{(reviewDetail.isRouteView) ? (<>
-<div style={css(`overflow-x:auto;`)}>
-<div style={css(`min-width:820px;`)}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT OF NODES</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL VOLUME</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL DISTANCE (KM)</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTILISATION</div>
-<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAPACITY</div>
-</div>
-{(reviewDetail.routeRows || []).map((r, __i67) => (<React.Fragment key={__i67}>
-<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
-<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.segment}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
-<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
-<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
-</div>
+{/* SECTION 2 — Plan Outputs (metric views) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Outputs</span></div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(118px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:18px;`)}>
+{(reviewDetail.metrics || []).map((m, __i64) => (<React.Fragment key={__i64}>
+<div style={css(`background:#fff; padding:14px 15px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:21px; font-weight:500; color:${m.valueColor}; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11.5px; font-weight:600; color:#14171F; margin-top:7px;`)}>{m.label}</div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>{m.sub}</div>{(m.hasDelta) ? (<><div style={css(`font-size:9.5px; font-weight:600; color:${m.deltaColor}; margin-top:4px; white-space:nowrap;`)}>{m.delta}</div></>) : null}</div>
 </React.Fragment>))}
 </div>
+{/* SECTION 3 — Validation Flags */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Validation Flags</span></div>
+{(reviewDetail.hasFlags) ? (<>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 18px; margin-bottom:18px;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:7px;`)}>
+{(reviewDetail.flags || []).map((fl, __i66) => (<React.Fragment key={__i66}><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}><span style={css(`display:inline-flex; align-items:center; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:700; background:${fl.sevBg}; color:${fl.sevFg}; flex-shrink:0;`)}>{fl.sevLabel}</span><span style={css(`font-size:12.5px; color:#5A5E66;`)}>{fl.t}</span></div></React.Fragment>))}
+</div>
 </div>
 </>) : null}
-{/* Detail View (DC × Route) — §P3.2 */}
-{(reviewDetail.isDcView) ? (<>
+{(reviewDetail.noFlags) ? (<><div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:#128A3E;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>No validation flags on this run.</div></>) : null}
+{/* SECTION 4 — Plan Details (tabs: Plan Details / Route View) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Details</span></div>
+<div style={css(`display:flex; gap:22px; border-bottom:1px solid #E6EBF2; margin-bottom:18px;`)}>
+{(reviewDetail.sections || []).map((t, __iRDT) => (<React.Fragment key={__iRDT}>
+<button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button>
+</React.Fragment>))}
+</div>
+{(reviewDetail.secDetails) ? (<>
 <div style={css(`overflow-x:auto;`)}>
 <div style={css(`min-width:980px;`)}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 0.75fr 0.7fr 0.7fr 1fr 0.45fr 0.7fr 0.9fr 0.7fr; background:#E6EBF2;`)}>
@@ -1971,6 +1933,30 @@ function View(B, self) {
 </div>
 </div>
 </>) : null}
+{(reviewDetail.secRoute) ? (<>
+<div style={css(`overflow-x:auto;`)}>
+<div style={css(`min-width:820px;`)}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>ROUTE CODE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:center;`)}>COUNT OF NODES</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL VOLUME</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>TOTAL DISTANCE (KM)</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em;`)}>VEHICLE TYPE</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>UTILISATION</div>
+<div style={css(`padding:10px 12px; font-size:10px; font-weight:700; color:#5A5E66; letter-spacing:0.04em; text-align:right;`)}>CAPACITY</div>
+</div>
+{(reviewDetail.routeRows || []).map((r, __i67) => (<React.Fragment key={__i67}>
+<div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`)} onMouseEnter={(e) => hoverOn(e, `background:#FAFBFD;`)} onMouseLeave={(e) => hoverOff(e, `display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; align-items:center; border-top:1px solid #EEF1F6;`, `background:#FAFBFD;`)}>
+<div style={css(`padding:11px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.segment}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tps}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.vol}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
+<div style={css(`padding:11px 12px; text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:5px;`)}><span style={css(`font-size:12px; font-weight:600; color:${r.utilColor}; font-variant-numeric:tabular-nums;`)}>{r.util}</span>{(r.hasUtilFlag) ? (<><span style={css(`padding:1px 5px; border-radius:3px; font-size:9px; font-weight:700; background:#FBF1DF; color:#C77B00; white-space:nowrap;`)}>{r.utilFlagLabel}</span></>) : null}</div>
+<div style={css(`padding:11px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
+</div>
+</React.Fragment>))}
+</div>
 </div>
 </>) : null}
 </div>
@@ -2125,15 +2111,7 @@ function View(B, self) {
 </div>
 {/* Plan-level Simulate impact button (planner) moved to the top bar — see aSel.canPlanSim above */}
 </div>
-{/* Unified outer tabs — same "Plan Detail" / "Route View" pattern as Design Review and the Ops-Lead view, applied across every plan status (Pushed / In Alignment / Acknowledged / Finalised). */}
-<div style={css(`display:flex; align-items:center; gap:20px; border-bottom:1px solid #E6EBF2; margin-bottom:16px;`)}>
-{(aSel.sections || []).map((t, __i73c) => (<React.Fragment key={__i73c}><button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button></React.Fragment>))}
-</div>
-{/* metrics summary — always visible above the tabs, not tab-gated (2026-07-10, mirrors Ops Lead) */}
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:16px;`)}>
-{(aSel.metrics || []).map((m, __i73) => (<React.Fragment key={__i73}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
-</div>
-{/* status banners — vary by state, sit above the tabs so they're visible regardless of which tab is open */}
+{/* lifecycle status banners — plan-state messaging, kept near the top rather than folded into Validation Flags */}
 {(aSel.isPushed) ? (<>
 <div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:13px; overflow:hidden; margin-bottom:16px;`)}>
 <div style={css(`display:flex; align-items:center; gap:12px; padding:16px 20px;`)}>
@@ -2149,13 +2127,40 @@ function View(B, self) {
 </React.Fragment>))}
 </div>
 </>) : null}
-{(aSel.needsAckToDecide) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#EAF1FB; border:1px solid #CFE0F1; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>Ops feedback is in. Review it under Details, then <strong>Acknowledge & freeze</strong> to start accepting or rejecting each flagged change.</span></div></>) : null}
-{(aSel.isAck) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#E7F0F8; border:1px solid #CFE0F1; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"}><path d={"M7 11V8a5 5 0 0110 0v3M5.5 11h13v9.5h-13z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>Ops editing is <strong>locked</strong> — reviewers can no longer change this plan. Accept or reject each flagged change under Details, then Finalise.</span></div></>) : null}
-{(aSel.isFinal) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#E7F4EC; border:1px solid #BFE3CC; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#128A3E"} strokeWidth={"2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>This plan is <strong>finalised & frozen</strong> — shown as committed, no pending remarks. {(aSel.finalWarningsCount > 0) ? (<>{aSel.finalWarningsCount} advisory warning{aSel.finalWarningsCount === 1 ? '' : 's'} below.</>) : ('No outstanding warnings.')}</span></div></>) : null}
-{(aSel.isFinal && aSel.finalWarningsCount > 0) ? (<>
-<div style={css(`display:flex; align-items:flex-start; gap:9px; padding:10px 14px; margin-bottom:12px; background:#FBF1DF; border:1px solid #F0DBA8; border-radius:8px;`)}>
-<svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#C77B00"} strokeWidth={"2"} style={css(`flex-shrink:0; margin-top:1px;`)}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
-<div style={css(`flex:1;`)}>{(aSel.finalWarnings || []).map((w, __iFW) => (<React.Fragment key={__iFW}><div style={css(`font-size:11.5px; color:#9A5E00; margin-bottom:2px;`)}>{w}</div></React.Fragment>))}</div>
+{(aSel.needsAckToDecide) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#EAF1FB; border:1px solid #CFE0F1; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>Ops feedback is in. Review it under Plan Details, then <strong>Acknowledge & freeze</strong> to start accepting or rejecting each flagged change.</span></div></>) : null}
+{(aSel.isAck) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#E7F0F8; border:1px solid #CFE0F1; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"1.8"}><path d={"M7 11V8a5 5 0 0110 0v3M5.5 11h13v9.5h-13z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>Ops editing is <strong>locked</strong> — reviewers can no longer change this plan. Accept or reject each flagged change under Plan Details, then Finalise.</span></div></>) : null}
+{(aSel.isFinal) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#E7F4EC; border:1px solid #BFE3CC; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#128A3E"} strokeWidth={"2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}>This plan is <strong>finalised & frozen</strong> — shown as committed, no pending remarks. {(aSel.finalWarningsCount > 0) ? (<>{aSel.finalWarningsCount} advisory warning{aSel.finalWarningsCount === 1 ? '' : 's'} under Validation Flags.</>) : ('No outstanding warnings.')}</span></div></>) : null}
+{/* SECTION 1 — Plan Inputs (SC details, vehicles used, related details) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Inputs</span></div>
+<div style={css(`display:flex; flex-wrap:wrap; gap:20px 36px; padding:15px 18px; background:#fff; border:1px solid #E6EBF2; border-radius:8px; margin-bottom:12px;`)}>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Nodes</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{aSel.inputNodes}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Volume</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{aSel.inputVolume}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Historical weight</div><div style={css(`font-size:15px; font-weight:600; color:#14171F;`)}>{aSel.hwLabel} · {aSel.hwTag}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>SC coordinates</div><div style={css(`font-size:13.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{aSel.inputScCoords}</div></div>
+</div>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:18px 20px; margin-bottom:18px;`)}>
+<div style={css(`display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:13px;`)}><div style={css(`font-size:13px; font-weight:700; color:#14171F;`)}>Vehicles used</div><div style={css(`font-size:11.5px; color:#5A5E66;`)}>{aSel.inputVehTotal} total</div></div>
+<div style={css(`display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;`)}>
+{(aSel.inputVehArr || []).map((v, __iIV) => (<React.Fragment key={__iIV}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 13px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}>
+<span style={css(`font-size:12.5px; color:#14171F; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{v.veh}</span>
+<span style={css(`font-size:13px; font-weight:700; color:#003F98; flex-shrink:0;`)}>×{v.n}</span>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+{/* SECTION 2 — Plan Outputs (metric views) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Outputs</span></div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:18px;`)}>
+{(aSel.metrics || []).map((m, __i73) => (<React.Fragment key={__i73}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
+</div>
+{/* SECTION 3 — Validation Flags */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Validation Flags</span></div>
+{(aSel.hasPlanFlags) ? (<>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 18px; margin-bottom:12px;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:7px;`)}>
+{(aSel.planFlags || []).map((fl, __iPF) => (<React.Fragment key={__iPF}><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}><span style={css(`display:inline-flex; align-items:center; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:700; background:${fl.sevBg}; color:${fl.sevFg}; flex-shrink:0;`)}>{fl.sevLabel}</span><span style={css(`font-size:12.5px; color:#5A5E66;`)}>{fl.t}</span></div></React.Fragment>))}
+</div>
 </div>
 </>) : null}
 {(aSel.hasSubmissionGap) ? (<>
@@ -2177,6 +2182,12 @@ function View(B, self) {
 </div>
 </div>
 </>) : null}
+{(aSel.noPlanFlags && !aSel.hasSubmissionGap && !aSel.hasDistanceVariance) ? (<><div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:#128A3E;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>No validation flags on this plan.</div></>) : null}
+{/* SECTION 4 — Plan Details (tabs: Plan Details / Route View) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Details</span></div>
+<div style={css(`display:flex; align-items:center; gap:20px; border-bottom:1px solid #E6EBF2; margin-bottom:16px;`)}>
+{(aSel.sections || []).map((t, __i73c) => (<React.Fragment key={__i73c}><button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button></React.Fragment>))}
+</div>
 {/* DETAILS — flat DC × Route list, same layout as Design Review / Ops Lead. Ops's proposed
     changes (if any, and if this plan isn't Finalised) are overlaid inline with Accept/Reject. */}
 {(aSel.secDetails) ? (<>
@@ -2340,6 +2351,27 @@ function View(B, self) {
 <div style={css(`flex:1;`)}>
 <div style={css(`font-size:9.5px; color:${sc.suggestedLabelFg}; font-weight:700; margin-bottom:2px; text-transform:uppercase; letter-spacing:0.04em;`)}>{sc.suggestedLabel}</div>
 <div style={css(`font-size:18px; font-weight:700; color:${sc.propFg}; font-variant-numeric:tabular-nums; line-height:1.1;`)}>{sc.propVal}</div>
+</div>
+</div>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+{/* SECTION 1B: VEHICLE MIX — original plan vehicles vs suggested vehicles */}
+<div>
+<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Vehicle mix — original vs. suggested</div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;`)}>
+{(aSel.planSimVehCards || []).map((vc, __iPSV) => (<React.Fragment key={__iPSV}>
+<div style={css(`background:#fff; border:${vc.cardBd}; border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px;`)}>
+<div style={css(`font-size:10.5px; font-weight:600; color:#7A8094; letter-spacing:0.04em; text-transform:uppercase; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{vc.veh}</div>
+<div style={css(`display:flex; align-items:baseline; gap:10px; margin-top:4px;`)}>
+<div style={css(`flex:1;`)}>
+<div style={css(`font-size:9.5px; color:#8E96A3; font-weight:500; margin-bottom:2px;`)}>Original</div>
+<div style={css(`font-size:18px; font-weight:700; color:#5A5E66; font-variant-numeric:tabular-nums; line-height:1.1;`)}>×{vc.orig}</div>
+</div>
+<div style={css(`flex:1;`)}>
+<div style={css(`font-size:9.5px; color:${vc.changed ? '#C77B00' : '#8E96A3'}; font-weight:700; margin-bottom:2px; text-transform:uppercase; letter-spacing:0.04em;`)}>{vc.changed ? 'Suggested change' : 'Suggested'}</div>
+<div style={css(`font-size:18px; font-weight:700; color:${vc.suggFg}; font-variant-numeric:tabular-nums; line-height:1.1;`)}>×{vc.sugg}</div>
 </div>
 </div>
 </div>
@@ -2668,7 +2700,7 @@ function View(B, self) {
 </div>
 {(finPreviewRows || []).map((r, __iFR) => (<React.Fragment key={__iFR}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 1.2fr 0.5fr 0.8fr 0.8fr 0.8fr 0.7fr; align-items:center; border-top:1px solid #EEF1F6;`)}>
-<div style={css(`padding:9px 12px; font-size:12px; font-weight:600; color:#003F98; display:flex; align-items:center; gap:5px;`)}>{r.routeCode}{(r.isNew) ? (<><span style={css(`padding:1px 6px; border-radius:999px; font-size:9px; font-weight:700; background:#EAF1FB; color:#1E6FB8;`)}>NEW</span></>) : null}</div>
+<div style={css(`padding:9px 12px; font-size:12px; font-weight:600; color:#003F98;`)}>{r.routeCode}</div>
 <div style={css(`padding:9px 12px; font-size:12px; color:#14171F;`)}>{r.veh}</div>
 <div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:center;`)}>{r.tpN}</div>
 <div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.dist}</div>
@@ -2676,14 +2708,6 @@ function View(B, self) {
 <div style={css(`padding:9px 12px; font-size:12px; color:#14171F; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cps}</div>
 <div style={css(`padding:9px 12px; font-size:12px; color:#5A5E66; text-align:right; font-variant-numeric:tabular-nums;`)}>{r.cap}</div>
 </div>
-{(r.hasReorder) ? (<>
-<div style={css(`padding:6px 12px 9px; border-top:1px dashed #EEF1F6; background:#FAFBFD; display:flex; flex-wrap:wrap; gap:5px 10px;`)}>
-<span style={css(`font-size:9.5px; font-weight:700; color:#8E96A3; letter-spacing:0.04em;`)}>TOUCH-POINT ORDER</span>
-{(r.dcOrder || []).map((o, __iDCO) => (<React.Fragment key={__iDCO}>
-<span style={css(`font-size:10.5px; color:${o.moved ? '#9A5E00' : '#5A5E66'}; font-weight:${o.moved ? '700' : '500'};`)} title={o.moved ? ('Was: ' + o.fromLabel) : 'Unchanged'}>TP{o.tp}: {o.code}{(o.moved) ? ' ↺' : ''}</span>
-</React.Fragment>))}
-</div>
-</>) : null}
 </React.Fragment>))}
 </div>
 </>) : null}
@@ -2797,14 +2821,53 @@ function View(B, self) {
 {(oSel.submitted) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:14px; background:#E7F4EC; border:1px solid #B6E0C6; border-radius:8px;`)}><svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#128A3E"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; color:#14171F;`)}><strong style={css(`font-weight:700;`)}>{oSel.submittedRecord}</strong> — the planner can now review your row decisions.</span></div></>) : null}
 {/* §10 O2 — plan-level co-reviewer awareness: surface "someone has proposed a change" up front (the same way the planner sees feedback received), not only row-by-row. */}
 {(oSel.hasProp) ? (<><div style={css(`display:flex; align-items:center; gap:9px; padding:11px 14px; margin-bottom:14px; background:#EAF3FB; border:1px solid #C4DDF2; border-radius:8px; flex-wrap:wrap;`)}><svg aria-hidden={"true"} width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#1E6FB8"} strokeWidth={"2"} style={css(`flex-shrink:0;`)}><path d={"M5 21V4M5 4h11l-2 4 2 4H5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg><span style={css(`font-size:12px; font-weight:700; color:#14171F;`)}>{oSel.propSummary}</span><span style={css(`font-size:12px; color:#5A5E66;`)}>Review the flagged rows before you submit your feedback.</span></div></>) : null}
-{/* metrics summary — always visible above the tabs, not tab-gated */}
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:16px;`)}>
+{/* SECTION 1 — Plan Inputs (SC details, vehicles used, related details) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Inputs</span></div>
+<div style={css(`display:flex; flex-wrap:wrap; gap:20px 36px; padding:15px 18px; background:#fff; border:1px solid #E6EBF2; border-radius:8px; margin-bottom:12px;`)}>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Nodes</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{oSel.inputNodes}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Volume</div><div style={css(`font-size:15px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{oSel.inputVolume}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>Historical weight</div><div style={css(`font-size:15px; font-weight:600; color:#14171F;`)}>{oSel.hwLabel} · {oSel.hwTag}</div></div>
+<div><div style={css(`font-size:10.5px; color:#5A5E66;`)}>SC coordinates</div><div style={css(`font-size:13.5px; font-weight:600; color:#14171F; font-variant-numeric:tabular-nums;`)}>{oSel.inputScCoords}</div></div>
+</div>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:18px 20px; margin-bottom:18px;`)}>
+<div style={css(`display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:13px;`)}><div style={css(`font-size:13px; font-weight:700; color:#14171F;`)}>Vehicles used</div></div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px;`)}>
+{(oSel.mixArr || []).map((v, __i96b) => (<React.Fragment key={__i96b}>
+<div style={css(`display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 13px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}>
+<span style={css(`font-size:12.5px; color:#14171F; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{v.veh}</span>
+<span style={css(`font-size:12.5px; font-weight:700; color:#003F98; flex-shrink:0;`)}>{v.n} routes</span>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+{/* SECTION 2 — Plan Outputs (metric views) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Outputs</span></div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(108px,1fr)); gap:1px; background:#EEF1F6; border:1px solid #EEF1F6; border-radius:8px; overflow:hidden; margin-bottom:18px;`)}>
 {(oSel.metrics || []).map((m, __i93) => (<React.Fragment key={__i93}><div style={css(`background:#fff; padding:13px 14px;`)}><div style={css(`font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:500; color:#14171F; line-height:1;`)}>{m.value}</div><div style={css(`font-size:11px; color:#5A5E66; margin-top:5px;`)}>{m.label}</div></div></React.Fragment>))}
 </div>
-{/* section tabs */}
+{/* SECTION 3 — Validation Flags */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Validation Flags</span></div>
+{(oSel.hasSubmissionGap) ? (<>
+<div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; margin-bottom:12px; background:#FBEAEA; border:1px solid #F3C6C6; border-radius:8px;`)}>
+<svg width={"16"} height={"16"} viewBox={"0 0 24 24"} fill={"none"} stroke={"#D14B4B"} strokeWidth={"1.9"}><path d={"M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>
+<span style={css(`font-size:12px; color:#D14B4B; font-weight:600;`)}>⚠ {oSel.submissionGapMsg}</span>
+</div>
+</>) : null}
+{(oSel.hasPlanFlags) ? (<>
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:16px 18px; margin-bottom:12px;`)}>
+<div style={css(`display:flex; flex-direction:column; gap:7px;`)}>
+{(oSel.planFlags || []).map((fl, __iOPF) => (<React.Fragment key={__iOPF}><div style={css(`display:flex; align-items:center; gap:9px; padding:10px 14px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}><span style={css(`display:inline-flex; align-items:center; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:700; background:${fl.sevBg}; color:${fl.sevFg}; flex-shrink:0;`)}>{fl.sevLabel}</span><span style={css(`font-size:12.5px; color:#5A5E66;`)}>{fl.t}</span></div></React.Fragment>))}
+</div>
+</div>
+</>) : null}
+{(oSel.noPlanFlags && !oSel.hasSubmissionGap) ? (<><div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:#128A3E;`)}><svg width={"15"} height={"15"} viewBox={"0 0 24 24"} fill={"none"} stroke={"currentColor"} strokeWidth={"2.2"}><path d={"M20 6L9 17l-5-5"} strokeLinecap={"round"} strokeLinejoin={"round"} /></svg>No validation flags on this plan.</div></>) : null}
+{/* SECTION 4 — Plan Details (tabs: Plan Details / Route View) */}
+<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:12px 16px; margin-bottom:12px; display:flex; align-items:center; gap:9px;`)}><div style={css(`width:4px; height:18px; background:#003F98; border-radius:2px;`)} /><span style={css(`font-size:15px; font-weight:700; color:#14171F;`)}>Plan Details</span></div>
 <div style={css(`display:flex; gap:22px; border-bottom:1px solid #E6EBF2; margin-bottom:16px;`)}>
 {(oSel.sections || []).map((t, __i92) => (<React.Fragment key={__i92}><button onClick={t.onClick} style={css(`position:relative; padding:0 0 12px; border:none; background:transparent; cursor:pointer; font-family:inherit; font-size:13px; font-weight:${t.weight}; color:${t.color};`)}>{t.label}{(t.active) ? (<><span style={css(`position:absolute; left:0; right:0; bottom:0; height:3px; background:#003F98; border-radius:3px 3px 0 0;`)} /></>) : null}</button></React.Fragment>))}
 </div>
+{/* DETAILS — flat DC × Route list, same column layout as Design Review's Detail View. Editable
+    (route-group Aligned / Needs-Change actions) whenever the plan isn't locked yet. */}
 {/* DETAILS — flat DC × Route list, same column layout as Design Review's Detail View. Editable
     (route-group Aligned / Needs-Change actions) whenever the plan isn't locked yet. */}
 {(oSel.secDetails) ? (<>
@@ -2860,17 +2923,6 @@ function View(B, self) {
 </>) : null}
 {/* ROUTE VIEW — read-only pivot, one row per route, same layout as Design Review's Route View. */}
 {(oSel.secRoute) ? (<>
-<div style={css(`background:#fff; border:1px solid #E6EBF2; border-radius:8px; padding:14px 16px; margin-bottom:14px;`)}>
-<div style={css(`font-size:11px; font-weight:700; color:#8E96A3; letter-spacing:0.04em; margin-bottom:10px;`)}>VEHICLE MIX ACROSS ROUTES</div>
-<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px;`)}>
-{(oSel.mixArr || []).map((v, __i96) => (<React.Fragment key={__i96}>
-<div style={css(`display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 13px; background:#F7F8FB; border:1px solid #EEF1F6; border-radius:8px;`)}>
-<span style={css(`font-size:12.5px; color:#14171F; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{v.veh}</span>
-<span style={css(`font-size:12.5px; font-weight:700; color:#003F98; flex-shrink:0;`)}>{v.n} routes</span>
-</div>
-</React.Fragment>))}
-</div>
-</div>
 <div style={css(`overflow-x:auto;`)}>
 <div style={css(`min-width:820px;`)}>
 <div style={css(`display:grid; grid-template-columns:1.1fr 0.9fr 0.9fr 1fr 1.1fr 0.9fr 0.9fr; background:#E6EBF2;`)}>
@@ -2975,6 +3027,27 @@ function View(B, self) {
 <div style={css(`flex:1;`)}>
 <div style={css(`font-size:9.5px; color:${sc.suggestedLabelFg}; font-weight:700; margin-bottom:2px; text-transform:uppercase; letter-spacing:0.04em;`)}>{sc.suggestedLabel}</div>
 <div style={css(`font-size:18px; font-weight:700; color:${sc.propFg}; font-variant-numeric:tabular-nums; line-height:1.1;`)}>{sc.propVal}</div>
+</div>
+</div>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+{/* SECTION 1B: VEHICLE MIX — original plan vehicles vs suggested vehicles */}
+<div>
+<div style={css(`font-size:10px; font-weight:700; color:#7A8094; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;`)}>Vehicle mix — original vs. suggested</div>
+<div style={css(`display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;`)}>
+{(oSel.opsSimVehCards || []).map((vc, __iOSV) => (<React.Fragment key={__iOSV}>
+<div style={css(`background:#fff; border:${vc.cardBd}; border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px;`)}>
+<div style={css(`font-size:10.5px; font-weight:600; color:#7A8094; letter-spacing:0.04em; text-transform:uppercase; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;`)}>{vc.veh}</div>
+<div style={css(`display:flex; align-items:baseline; gap:10px; margin-top:4px;`)}>
+<div style={css(`flex:1;`)}>
+<div style={css(`font-size:9.5px; color:#8E96A3; font-weight:500; margin-bottom:2px;`)}>Original</div>
+<div style={css(`font-size:18px; font-weight:700; color:#5A5E66; font-variant-numeric:tabular-nums; line-height:1.1;`)}>×{vc.orig}</div>
+</div>
+<div style={css(`flex:1;`)}>
+<div style={css(`font-size:9.5px; color:${vc.changed ? '#C77B00' : '#8E96A3'}; font-weight:700; margin-bottom:2px; text-transform:uppercase; letter-spacing:0.04em;`)}>{vc.changed ? 'Suggested change' : 'Suggested'}</div>
+<div style={css(`font-size:18px; font-weight:700; color:${vc.suggFg}; font-variant-numeric:tabular-nums; line-height:1.1;`)}>×{vc.sugg}</div>
 </div>
 </div>
 </div>
@@ -3958,6 +4031,12 @@ class NDCApp extends React.Component {
           if (status === 'Acknowledged' || status === 'Finalised') planner = ops === 'Aligned' ? 'Accept' : (R() < 0.6 ? 'Accept' : 'Reject');
           else if (status === 'In Alignment') planner = R() < 0.35 ? (R() < 0.5 ? 'Accept' : 'Reject') : null;
         }
+        // 2026-07-16 — a plan seeded straight into 'Finalised' never passes through confirmFin(), so
+        // without this it would keep whatever Needs-Change/fb/proposedBy the generic journey above
+        // randomly assigned — a real Finalised plan has none of that (confirmFin() nulls fb and resets
+        // ops on every row). Match that exactly so Review Changes / Accept-Reject / reviewer tags
+        // genuinely don't appear on a Finalised plan, seeded or real.
+        if (status === 'Finalised') { ops = 'Aligned'; planner = 'Accept'; fb = null; proposedBy = null; }
         rows.push({ routeCode: sc.cityCode + '-R' + String(j + 1).padStart(2, '0'), veh: veh.name, vehTp: veh.tp, tp, dcs, rtDist: ri(60, 360), breakdownTat: +rf(0.5, 2.6).toFixed(1), outCutoff: pick(['22:30','23:00','23:30','00:15','01:00']), oLat: sc.lat, oLng: sc.lng, volume: Math.round(run.volume / rowCount * rf(0.6, 1.4)), util: +rf(0.42, 0.95).toFixed(2), cps: +(run.cps * rf(0.9, 1.12)).toFixed(2), ops, planner, fb, proposedBy });
       }
       const rn = [REV[Math.floor(R() * REV.length)], REV[Math.floor(R() * REV.length)]];
@@ -5738,7 +5817,7 @@ class NDCApp extends React.Component {
         }
         flatDcs.push({
           code: dc.code, name: dc.name,
-          originalRouteCode: row.routeCode,
+          originalRouteCode: row.routeCode, originalTp: dc.tpOrder,
           vol: dc.vol,
           tp: (ov && ov.tp != null && ov.tp !== '') ? Number(ov.tp) : dc.tpOrder,
           lat: (ov && ov.lat != null && ov.lat !== '') ? Number(ov.lat) : Number(dc.lat),
@@ -5776,7 +5855,19 @@ class NDCApp extends React.Component {
       // clean 1..N sequence over the result. This is exactly "remove TP3, TP4/5 become TP3/4" and
       // "insert at TP2, whatever was at 2+ shifts up by one" from the product spec, applied
       // uniformly instead of requiring the Ops Lead to hand-renumber every other affected node.
-      const dcsSorted = groupsMap[code].slice().sort((a, b) => (a.tp - b.tp) || ((b.hasOverride ? 1 : 0) - (a.hasOverride ? 1 : 0)));
+      // 2026-07-16 — tie-break was direction-blind: the mover always won a tie at its target TP,
+      // which is correct for moving EARLIER (insert-before, resident shifts forward) but wrong for
+      // moving LATER (should insert-after, so only the resident at-and-before the target shifts back
+      // by exactly one and the mover lands cleanly on the target slot — real remove-then-insert list
+      // semantics, not "whoever has an override wins"). e.g. TP3->TP6 with TP4/5/6 occupied: TP4,5,6
+      // must become 3,4,5 and the mover lands on 6 — not the mover landing on 5 and bumping TP6 later.
+      const dcsSorted = groupsMap[code].slice().sort((a, b) => {
+        if (a.tp !== b.tp) return a.tp - b.tp;
+        const movingLater = (x) => x.hasOverride && x.effectiveRouteCode === x.originalRouteCode && x.originalTp != null && x.originalTp < x.tp;
+        const aLater = movingLater(a), bLater = movingLater(b);
+        if (aLater !== bLater) return aLater ? 1 : -1; // the one moving to a later position sorts after
+        return (b.hasOverride ? 1 : 0) - (a.hasOverride ? 1 : 0); // existing fallback: mover wins (correct for moving earlier / cross-route arrivals)
+      });
       const dcs = dcsSorted.map((dc, i) => Object.assign({}, dc, { tp: i + 1 }));
       const n = dcs.length;
       // TP > 7 warning
@@ -5987,6 +6078,17 @@ class NDCApp extends React.Component {
       onClick: () => this.setState({ alignFilter: t[0], alignPage: 0, pgRoutes: 1, alignPlanId: null, alignDetailOpen: false }) }));
     if (plan) {
       const locked = ps === 'Acknowledged' || ps === 'Finalised';
+      const HWTAG_A = { 0: 'Re-optimise', 0.5: 'Balanced', 1: 'Preserve routes' };
+      const hwLabelOfA = (hw) => hw === 0 ? 'HW 0' : hw === 0.5 ? 'HW 0.5' : 'HW 1';
+      // Plan Inputs (2026-07-16) — SC details + vehicles used. Vehicle mix is tallied straight off
+      // plan.rows (never merged with in-progress/proposed feedback) so it shows the ORIGINAL plan pre-
+      // Finalise and automatically becomes the FINAL aligned mix post-Finalise, since plan.rows only
+      // changes at the moment confirmFin() commits — no separate "which state to show" logic needed.
+      const inputNodes = plan.rows.reduce((a, r) => a + (r.dcs ? r.dcs.length : 0), 0);
+      const inputVolume = plan.rows.reduce((a, r) => a + (r.volume || 0), 0);
+      const inputScCoords = plan.rows[0] ? (Number(plan.rows[0].oLat).toFixed(4) + ', ' + Number(plan.rows[0].oLng).toFixed(4)) : '—';
+      const inputVehMix = {}; plan.rows.forEach(r => { inputVehMix[r.veh] = (inputVehMix[r.veh] || 0) + 1; });
+      const inputVehArr = Object.keys(inputVehMix).map(k => ({ veh: k, n: inputVehMix[k] }));
       const FIELD = { vehicleType: 'Vehicle Type' }; // route-level cells only ever carry vehicleType now (2026-07-09) — routeCode/distance/touchpoint moved to dcCells
       // 2026-07-14 — change-flag taxonomy (Vehicle Change / DC Movement / Route Order Change /
       // Distance Change / New Route·Split), computed from the SAME raw-proposal data the amber bar
@@ -5996,6 +6098,12 @@ class NDCApp extends React.Component {
       const submittedFbByIdx = {};
       plan.rows.forEach((rr3, i3) => { if (ps !== 'Pushed' && rr3.fb) submittedFbByIdx[i3] = rr3.fb; });
       const flagsHyp = this.computeHypotheticalPlan(plan, submittedFbByIdx);
+      // Validation Flags (2026-07-16) — structural errors/warnings for the always-visible section.
+      // Distance-variance warnings (tagged with dcCode) are excluded here since they already have
+      // their own dedicated banner (aSel.hasDistanceVariance) with route-scoped decision context.
+      const planFlags = []
+        .concat(flagsHyp.errors.map(e => ({ sevLabel: 'Error', sevBg: '#D14B4B', sevFg: '#fff', t: e.t })))
+        .concat(flagsHyp.warnings.filter(w => !w.dcCode).map(w => ({ sevLabel: 'Warning', sevBg: '#FBF1DF', sevFg: '#C77B00', t: w.t })));
       // 2026-07-15 — same ripple-display lookup as the Ops Lead side: shows auto-renumbered TPs on DCs
       // that didn't move themselves (display-only, doesn't reorder rows or touch distances early).
       const hypTpByRoute = {};
@@ -6005,7 +6113,7 @@ class NDCApp extends React.Component {
         // Planner, even if a row carries co-reviewer-visibility demo data (r.ops/r.fb seeded for the
         // Ops Lead side's "see what another reviewer already proposed" demo, see buildSeed()'s
         // demoPushed block). Feedback only becomes visible to the Planner once it's actually "in."
-        const needsAttn = ps !== 'Pushed' && r.ops === 'Needs Change';
+        const needsAttn = ps !== 'Pushed' && ps !== 'Finalised' && r.ops === 'Needs Change';
         const manualDec = (st.alignDecisions[plan.id] && st.alignDecisions[plan.id][idx]) || null;
         // A6 — deterministic per-row CPS delta of the proposed change; |Δ| <= 0.5% auto-approves (planner can still override by rejecting).
         const cpsDeltaPct = needsAttn ? ((((idx * 37 + Math.round(r.rtDist)) % 21) - 10) / 10) : 0;
@@ -6325,8 +6433,11 @@ class NDCApp extends React.Component {
       const distanceVariancePendingCount = distanceVarianceEntries.length;
       aSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone,
         scCoords: plan.rows[0] ? (Number(plan.rows[0].oLat).toFixed(4) + ', ' + Number(plan.rows[0].oLng).toFixed(4)) : '—',
+        inputNodes: fmtInt(inputNodes), inputVolume: fmtInt(inputVolume), inputScCoords, inputVehArr, inputVehTotal: plan.rows.length,
+        hwLabel: hwLabelOfA(plan.hw), hwTag: HWTAG_A[plan.hw],
         statusLabel: STPILL[ps].l, statusBg: STPILL[ps].bg, statusFg: STPILL[ps].fg,
         hasDistanceVariance: distanceVarianceEntries.length > 0, distanceVarianceCount: distanceVariancePendingCount, distanceVarianceEntries,
+        planFlags, hasPlanFlags: planFlags.length > 0, noPlanFlags: planFlags.length === 0,
         finalWarnings: finalWarningsMsgs, finalWarningsCount: finalWarningsMsgs.length,
         hasSubmissionGap, submissionGapMsg,
         sentDate: plan.sentDate, reviewers: plan.reviewerNames.join(', '), opsLeads,
@@ -6355,7 +6466,7 @@ class NDCApp extends React.Component {
         cardHwLabel: plan.hw === 0 ? 'HW 0 \u00b7 Re-optimise' : plan.hw === 0.5 ? 'HW 0.5 \u00b7 Balanced' : 'HW 1 \u00b7 Preserve routes',
         cardNodes: fmtInt(plan.rows.reduce((a, r) => a + r.tp, 0)), cardVolume: fmtInt(plan.rows.reduce((a, r) => a + r.volume, 0)),
         cardVehSummary: Object.entries(plan.rows.reduce((m, r) => { m[r.veh] = (m[r.veh] || 0) + 1; return m; }, {})).map(([k, v]) => k + ' \u00d7' + v).join(' \u00b7 '),
-        sections: [['details', 'Plan Detail'], ['route', 'Route View']].map(sx => ({ label: sx[1], active: (st.alignSection || 'details') === sx[0], color: (st.alignSection || 'details') === sx[0] ? '#003F98' : '#5A5E66', weight: (st.alignSection || 'details') === sx[0] ? '700' : '600', onClick: () => this.setState({ alignSection: sx[0] }) })),
+        sections: [['details', 'Plan Details'], ['route', 'Route View']].map(sx => ({ label: sx[1], active: (st.alignSection || 'details') === sx[0], color: (st.alignSection || 'details') === sx[0] ? '#003F98' : '#5A5E66', weight: (st.alignSection || 'details') === sx[0] ? '700' : '600', onClick: () => this.setState({ alignSection: sx[0] }) })),
         secDetails: (st.alignSection || 'details') === 'details', secRoute: (st.alignSection || 'details') === 'route',
         // 2026-07-08 — Accept/Reject now unlocks only AFTER Acknowledge & Freeze, not the moment
         // feedback arrives. While a plan is still In Alignment, the planner can read what Ops
@@ -6465,6 +6576,16 @@ class NDCApp extends React.Component {
               mkCard('SC CPS (₹)', +planCpsOriginal.toFixed(2), +pC.toFixed(2), v => '₹' + v.toFixed(2)),
             ];
           })();
+          // Vehicle mix comparison (2026-07-16, per product decision on Plan Inputs) — original tally
+          // from plan.rows as committed vs. suggested tally from the same hypothetical planSimCards
+          // above already reads, so Simulate shows the vehicle-mix consequence alongside the metrics.
+          const planSimVehOrigMix = {}; plan.rows.forEach(rr4 => { planSimVehOrigMix[rr4.veh] = (planSimVehOrigMix[rr4.veh] || 0) + 1; });
+          const planSimVehSuggMix = {}; (planHyp.routes || []).forEach(rt => { planSimVehSuggMix[rt.vehName] = (planSimVehSuggMix[rt.vehName] || 0) + 1; });
+          const planSimVehAllTypes = Array.from(new Set([...Object.keys(planSimVehOrigMix), ...Object.keys(planSimVehSuggMix)]));
+          const planSimVehCards = planSimVehAllTypes.map(veh => {
+            const orig = planSimVehOrigMix[veh] || 0, sugg = planSimVehSuggMix[veh] || 0, changed = orig !== sugg;
+            return { veh, orig, sugg, changed, suggFg: changed ? '#C77B00' : '#5A5E66', cardBd: changed ? '2px solid #C77B00' : '1px solid #E6EBF2' };
+          });
           // Section 2: route-level reference — kept as the ORIGINAL structure with a "touched" flag;
           // see the identical note on the Ops Lead side for why a per-route proposed CPS isn't shown.
           const planSimRouteRows = plan.rows.map((r, ri) => {
@@ -6525,7 +6646,7 @@ class NDCApp extends React.Component {
             closePlanSim: () => this.setState({ planSimOpen: false, planSimMapOpen: false, planSmOrigSearch: '', planSmPropSearch: '', planSmOrigRoute: 'All', planSmPropRoute: 'All', planSmOrigLegendOpen: false, planSmPropLegendOpen: false }),
             planSimPlanName: plan.scCode + ' · ' + plan.scName,
             planSimOpen: !!st.planSimOpen, planSimRows,
-            planSimCards,
+            planSimCards, planSimVehCards,
             planSimRouteRows,
             planSimCpsHeadwind, planSimHeadwindPositive, planSimHeadwindLabel, planSimHeadwindColor, planSimHeadwindBg, planSimHeadwindBd,
             planSimSubtitle: nFlagged + ' Needs Change row' + (nFlagged === 1 ? '' : 's') + ' · indicative, not a re-solve',
@@ -6670,7 +6791,7 @@ class NDCApp extends React.Component {
       finOpen: st.finOpen, finPlanName: finPlan ? (finPlan.scCode + ' \u00b7 ' + finPlan.scName) : '', finAccepted: finAcceptedCount, finRejected: finRejectedCount, confirmFin: () => this.confirmFin(), closeFin: () => this.setState({ finOpen: false }),
       finPreviewDcViewRows,
       finPreviewSecDetails: finPreviewSection === 'details', finPreviewSecRoute: finPreviewSection === 'route',
-      finPreviewSections: [['details', 'Plan Detail'], ['route', 'Route View']].map(s => ({ label: s[1], active: finPreviewSection === s[0], color: finPreviewSection === s[0] ? '#003F98' : '#5A5E66', weight: finPreviewSection === s[0] ? '700' : '600', onClick: () => this.setState({ finPreviewSection: s[0] }) })),
+      finPreviewSections: [['details', 'Plan Details'], ['route', 'Route View']].map(s => ({ label: s[1], active: finPreviewSection === s[0], color: finPreviewSection === s[0] ? '#003F98' : '#5A5E66', weight: finPreviewSection === s[0] ? '700' : '600', onClick: () => this.setState({ finPreviewSection: s[0] }) })),
       finPreviewRows, finPreviewWarnings: finPreviewHyp ? finPreviewHyp.warnings.map(w => w.t) : [], finOrigRoutes, finNewRoutes, finOrigDistance: fmtInt(finOrigDistance), finNewDistance: fmtInt(finNewDistance),
       finRoutesDelta: finDelta(finOrigRoutes, finNewRoutes, 0), finRoutesDeltaColor: finDeltaColor(finOrigRoutes, finNewRoutes),
       finDistDelta: finDelta(finOrigDistance, finNewDistance, 0), finDistDeltaColor: finDeltaColor(finOrigDistance, finNewDistance),
@@ -6958,6 +7079,19 @@ class NDCApp extends React.Component {
           dcRows: _dcRows, notEditable: planLocked, tpReorderTouched: _tpTouched, tpReorderValid: _tpValid, tpReorderMsg: _tpMsg }; });
       const alignedN = rows.filter(r => r.decision === 'Aligned').length, ncN = rows.filter(r => r.decision === 'Needs Change').length, pendN = rows.filter(r => r.decision === 'Pending').length;
       const mix = {}; plan.rows.forEach(r => { mix[r.veh] = (mix[r.veh] || 0) + 1; }); const mixArr = Object.keys(mix).map(k => ({ veh: k, n: mix[k], pctW: Math.round(mix[k] / plan.rows.length * 100) + '%' }));
+      // Plan Inputs (2026-07-16) — SC details + vehicles used, same basis as the Planner side: vehicle
+      // mix (mixArr above) is tallied off plan.rows directly, never merged with in-progress feedback,
+      // so it's the original plan pre-Finalise and the final aligned mix post-Finalise automatically.
+      const HWTAG_O = { 0: 'Re-optimise', 0.5: 'Balanced', 1: 'Preserve routes' };
+      const hwLabelOfO = (hw) => hw === 0 ? 'HW 0' : hw === 0.5 ? 'HW 0.5' : 'HW 1';
+      const inputNodesO = plan.rows.reduce((a, r2) => a + (r2.dcs ? r2.dcs.length : 0), 0);
+      const inputVolumeO = plan.rows.reduce((a, r2) => a + (r2.volume || 0), 0);
+      const inputScCoordsO = plan.rows[0] ? (Number(plan.rows[0].oLat).toFixed(4) + ', ' + Number(plan.rows[0].oLng).toFixed(4)) : '—';
+      // Validation Flags (2026-07-16) — structural errors/warnings off the same opsHypTop everything
+      // else in this view already reads (submitted + in-progress feedback).
+      const opsPlanFlags = []
+        .concat(opsHypTop.errors.map(e => ({ sevLabel: 'Error', sevBg: '#D14B4B', sevFg: '#fff', t: e.t })))
+        .concat(opsHypTop.warnings.map(w => ({ sevLabel: 'Warning', sevBg: '#FBF1DF', sevFg: '#C77B00', t: w.t })));
       // 2026-07-10 — Route View pivot (one row per route) and Details (flat DC × Route) tables,
       // matching Design Review's exact column layout, but built from this plan's REAL rows/DCs
       // rather than Design Review's synthetic RNG fill (there's no live plan data to synthesize —
@@ -6978,7 +7112,7 @@ class NDCApp extends React.Component {
       const oDcViewRows = [];
       plan.rows.forEach((r, ri) => {
         const baseDcs = this.genDcRows(r);
-        const liveFbR = (st.opsRowFb[plan.id] || {})[ri] || r.fb;
+        const liveFbR = (planStatus === 'Finalised') ? null : ((st.opsRowFb[plan.id] || {})[ri] || r.fb);
         const dcCellsR = (liveFbR && liveFbR.dcCells) || {};
         const routeVehChanged = !!(liveFbR && liveFbR.cells && liveFbR.cells.vehicleType);
         const routeVehProposed = routeVehChanged ? liveFbR.cells.vehicleType.to : '';
@@ -7036,13 +7170,15 @@ class NDCApp extends React.Component {
       const propByNames = [...new Set(propRows.map(r => r.proposedBy))].filter(Boolean);
       const oProp = propRows.length;
       const coReviewerLabel = (plan.reviewerNames || []).filter(n => n !== selfName).join(', ');
-      const SECS = [['details', 'Details'], ['route', 'Route View']];
+      const SECS = [['details', 'Plan Details'], ['route', 'Route View']];
       oSel = { exists: true, empty: false, id: plan.id, code: plan.scCode, name: plan.scName, zone: plan.zone,
         scCoords: plan.rows[0] ? (Number(plan.rows[0].oLat).toFixed(4) + ', ' + Number(plan.rows[0].oLng).toFixed(4)) : '—',
         sentDate: plan.sentDate, submitted, notSubmitted: !submitted,
         planLocked, opsAck: planStatus === 'Acknowledged', opsFinal: planStatus === 'Finalised',
         hasSubmissionGap: (planStatus === 'Acknowledged' || planStatus === 'Finalised') && (plan.submittedReviewers || []).length < (plan.reviewerNames || []).length,
         submissionGapMsg: 'Frozen with ' + ((plan.reviewerNames || []).length - (plan.submittedReviewers || []).length) + ' of ' + (plan.reviewerNames || []).length + ' reviewers not having submitted feedback.',
+        inputNodes: fmtInt(inputNodesO), inputVolume: fmtInt(inputVolumeO), inputScCoords: inputScCoordsO, hwLabel: hwLabelOfO(plan.hw), hwTag: HWTAG_O[plan.hw],
+        planFlags: opsPlanFlags, hasPlanFlags: opsPlanFlags.length > 0, noPlanFlags: opsPlanFlags.length === 0,
         detailOpen: !!st.opsDetailOpen, showCard: !st.opsDetailOpen,
         openDetail: () => this.setState({ opsDetailOpen: true }), backToCards: () => this.setState({ opsDetailOpen: false }),
         onDownloadCsv: () => { const head = 'Route,Vehicle,Touch Points,Round-Trip Dist (km),Breakdown TAT (h),Out Cutoff,Volume,Utilisation,CPS\n'; const body = plan.rows.map(r => [r.routeCode, r.veh, r.tp, r.rtDist, r.breakdownTat, r.outCutoff, r.volume, Math.round(r.util * 100) + '%', r.cps.toFixed(2)].join(',')).join('\n'); this.downloadText(plan.scCode + '-plan.csv', head + body); this.showToast('CSV downloaded \u00b7 ' + plan.rows.length + ' routes', '#128A3E'); },
@@ -7293,6 +7429,18 @@ class NDCApp extends React.Component {
           mkCard('SC CPS (₹)', +opsHyp.originalScCPS.toFixed(2), +opsHyp.scCPS.toFixed(2), v => '₹' + v.toFixed(2)),
         ];
       })();
+      // Vehicle mix comparison (2026-07-16) — mirrors the Planner side: original tally from
+      // opsPlan.rows as committed vs. suggested tally from the same opsHyp used just above.
+      const opsSimVehCards = (() => {
+        if (!canOpsSim || !opsPlan) return [];
+        const origMix = {}; opsPlan.rows.forEach(rr5 => { origMix[rr5.veh] = (origMix[rr5.veh] || 0) + 1; });
+        const suggMix = {}; (opsHyp.routes || []).forEach(rt => { suggMix[rt.vehName] = (suggMix[rt.vehName] || 0) + 1; });
+        const allTypes = Array.from(new Set([...Object.keys(origMix), ...Object.keys(suggMix)]));
+        return allTypes.map(veh => {
+          const orig = origMix[veh] || 0, sugg = suggMix[veh] || 0, changed = orig !== sugg;
+          return { veh, orig, sugg, changed, suggFg: changed ? '#C77B00' : '#5A5E66', cardBd: changed ? '2px solid #C77B00' : '1px solid #E6EBF2' };
+        });
+      })();
       // Section 2: per-route reference — kept as the ORIGINAL structure with a status indicator only.
       // A true per-route proposed-CPS column isn't shown here because routes can split/merge under
       // feedback, so "this original route's new CPS" isn't always a well-defined 1:1 mapping — the
@@ -7338,7 +7486,7 @@ class NDCApp extends React.Component {
       opsSimPlanName: opsPlan ? (opsPlan.scCode + ' · ' + opsPlan.scName) : '',
       opsSimOpen: st.opsSimOpen,
       opsSimRows,
-      opsSimCards,
+      opsSimCards, opsSimVehCards,
       opsSimRouteRows,
       opsSimCpsHeadwind, opsSimHeadwindPositive, opsSimHeadwindLabel, opsSimHeadwindColor, opsSimHeadwindBg, opsSimHeadwindBd,
       opsSimSubtitle: opsNcRows.length + ' Needs Change row' + (opsNcRows.length === 1 ? '' : 's') + ' · indicative, not a re-solve',
@@ -7864,7 +8012,7 @@ class NDCApp extends React.Component {
         dcRows, hasDcRows: dcRows.length > 0,
         onDownloadCsv: () => { const head = 'Route Code,Count of Nodes,Total Volume,Total Distance (km),Vehicle Type,Utilisation,Capacity\n'; const body = dRouteRows.map(r => [r.segment, r.tps, r.vol, r.dist, r.veh, r.util, r.cap].join(',')).join('\n'); this.downloadText(detailRun.runId + '-routes.csv', head + body); this.showToast('Route breakdown downloaded · ' + dRouteRows.length + ' routes', '#128A3E'); },
         onMap: () => openRunMap(detailRun), close: () => this.setState({ reviewDetailRunId: null }),
-        sections: [['details', 'Plan Detail'], ['route', 'Route View']].map(t => ({ label: t[1], active: rdt === t[0], color: rdt === t[0] ? '#003F98' : '#5A5E66', weight: rdt === t[0] ? '700' : '600', onClick: () => this.setState({ reviewDetailTab: t[0] }) })),
+        sections: [['details', 'Plan Details'], ['route', 'Route View']].map(t => ({ label: t[1], active: rdt === t[0], color: rdt === t[0] ? '#003F98' : '#5A5E66', weight: rdt === t[0] ? '700' : '600', onClick: () => this.setState({ reviewDetailTab: t[0] }) })),
         secDetails: rdt === 'details', secRoute: rdt === 'route' };
     }
 
