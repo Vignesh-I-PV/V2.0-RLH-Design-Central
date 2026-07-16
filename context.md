@@ -87,7 +87,7 @@ Alignment screen** (top-right), not on other screens.
 | **AutoDML** | Read-only source of truth for active network nodes; the panel surfaces only flagged warnings as a pre-plan gate |
 | **Design Review** | Per-run metrics review (Coverage / CPS / Utilisation / Routes / Vehicles / Distance / Cost). No reject — un-pushed runs are discarded |
 | **Ops Alignment** | The feedback loop: Ops Lead reviews route rows and flags cells with suggested corrections; Planner **Simulates** (metric delta only), Accepts/Rejects, then **Acknowledges** (freeze) → **Finalises** |
-| **Acknowledge** | Irreversible freeze — locks Ops-Lead editing. A first-class guarded action with a confirm dialog |
+| **Acknowledge** | Freeze — locks Ops-Lead editing. A first-class guarded action with a confirm dialog. As of 2026-07-15, reversible via **Unfreeze** (Planner-only, Received tab or plan detail): reopens Ops-Lead editing, resets the Planner's own Accept/Reject decisions, keeps all submitted feedback intact. Guarded by its own confirm dialog warning that decisions reset |
 | **Simulate** | Shows metric movement (Δ km/cost/time/vehicles) for a proposed change — NOT a full re-plan |
 | **Lifecycle** | Draft → Running → Created → In Review → Pushed → In Alignment → Acknowledged → Finalised → (RFQ handoff) |
 | **L1→L4 pattern** | The navigation shape shared by Design Review and Ops Alignment: **L1** status/zone chips (rail header) → **L2** SC list (rail body) → **L3** a compact plan **card** in the main pane (one per plan; click a card's icon to drill in) → **L4** the full plan detail (Plan Details / Route View tabs). See "L3/L4 card pattern" below before touching either screen. |
@@ -102,7 +102,7 @@ location, node volume.)
 3. **Design Cycle** scopes all runs; cap ≤80 per group (not 240 stacked).
 4. Persistence = **2 versions only** (published baseline + finalised). No per-edit audit log.
 5. **Simulate = metric delta only**, wired per-row inline (not a footer button).
-6. **Acknowledge = irreversible freeze**, guarded action with a confirm dialog naming who's locked.
+6. **Acknowledge = freeze**, guarded action with a confirm dialog naming who's locked. As of 2026-07-15, reversible via Unfreeze (Planner-only) — see Domain glossary.
 7. **3-HW comparison is mandatory for V1** (not deferred). Un-pushed runs are discarded (no reject button).
 8. **Reference-plan smart defaults** — carry forward last cycle's finalised plan; only manually pick for new SCs.
 9. **No inline field-level validation on inputs** — "showing a file error is good enough" (shallow validation).
@@ -976,3 +976,138 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      `outCutoff`/`breakdownTat` fields themselves stay in the data model
      (still carried forward for internal use, e.g. the Finalise-preview
      TAT fallback) — only the user-facing feedback text was in scope here.
+- **2026-07-15** — Design Review L4 layout, plus a batch of Ops Alignment ·
+  Planner fixes, discussed and scoped before building.
+  1. **Design Review L4 now matches Ops Alignment's layout exactly**:
+     output metrics and the validation-flags panel were hoisted out of the
+     Plan Detail tab to sit right under the tab bar, always visible
+     regardless of which tab is active (Plan Detail or Route View) — same
+     "tabs → metrics → warnings → tab-gated content" stacking `aSel`/`oSel`
+     already used. Inputs strip and vehicles-by-type stay inside Plan
+     Detail (Ops Alignment has no equivalent of these, so there was
+     nothing to mirror there).
+  2. **Reviewer attribution tag on every proposed change** (Planner side):
+     `changeList` entries already carried the data (`fb.by`, surfaced as
+     `propBy`) but never rendered it. Added a small name tag next to each
+     entry in the Review Changes popup, and one on the route-group header's
+     change summary.
+  3. **Distance-variance (>25% entered vs. calculated) moved into the
+     route's own feedback stage.** The old plan-wide banner had its own
+     bespoke "Accept anyway / Revert to calculated" buttons; that decision
+     was always just the ordinary per-DC Distance field's Accept/Reject
+     under a different name (`decideDcRow(..., 'distance', ...)` either
+     way). Removed the special buttons — a flagged DC's Distance entry in
+     Review Changes now just carries a small ⚠ variance note alongside its
+     normal tick/cross, and the flat Details table shows a ⚠ next to the
+     value. The plan-wide banner still exists but is now pure information
+     (errors/warnings only, no action controls) and only lists what's
+     still unresolved — once decided at the route level, it drops off the
+     banner automatically.
+  4. **Finalised plans no longer show a clickable "Review changes"
+     trigger.** `onOpenReview` was wired unconditionally on every route's
+     code in the Details table, including Finalised ones (where `fb` is
+     already null and there's nothing to review — it would just open an
+     empty popup). Route code now renders as plain text once `aSel.isFinal`.
+  5. **Unfreeze** — new Planner-only action reversing Acknowledge & Freeze.
+     Available on the Received-tab card and inside the plan's L4 detail,
+     only once a plan is `Acknowledged`. Guarded by its own confirm dialog
+     (warns that decisions reset). `confirmUnfreeze()` reverts status to
+     `In Alignment` — **not** back to `Pushed`/"Pending": that status is
+     one the Planner's own row-computation deliberately blinds itself to
+     (built to stop seeded co-reviewer demo data leaking pre-submission),
+     so reusing it here would have hidden real, already-submitted feedback
+     from the Planner until Ops resubmitted — the opposite of the ask.
+     `In Alignment` is the status that already means "Ops can edit,
+     feedback stays visible, nothing decided yet," which is exactly what
+     Unfreeze needs. Only the Planner's own `alignDecisions` /
+     `alignDcDecisions` / `alignFieldDec` entries for that plan are
+     cleared; `plan.rows[i].fb` and `plan.submittedReviewers` are
+     untouched. See the updated Domain-glossary "Acknowledge" entry — this
+     is a real reversal of what was previously documented as an
+     irreversible action, by explicit product decision.
+     - **Found and fixed a real bug while wiring this up**: the Ops Lead's
+       own "Submitted" vs "To Review" status (`opsStatusOf` in `opsVals()`)
+       was reading a single plan-level `opsSubmitted[planId]` flag —
+       whoever submitted first — instead of checking whether *this acting
+       persona* had submitted. Under the Acting-persona switcher (added
+       2026-07-14), this meant every reviewer saw the same "Submitted"
+       state regardless of whether they personally had submitted.
+       Necessary for Unfreeze to correctly show each Ops Lead their own
+       real state afterward, but fixes the general multi-reviewer case
+       too. Switched every read (the rail list, the selected-plan view,
+       the "plan stays visible" filter, and the Command Center stage-rail
+       counts) to check `plan.submittedReviewers` for the current
+       `opsPersonaName()` instead.
+  6. **Finalise preview is now a full-screen page, not a modal.** Clicking
+     "Finalise plan" (once eligible) opens the same full-screen overlay
+     chrome used everywhere else in this app, with a top bar titled
+     "Finalise this plan?" that doubles as the confirmation step itself —
+     Confirm commits (`confirmFin()`), Back/Cancel returns to the
+     Acknowledged detail with nothing committed; no second nested "are you
+     sure" on top of it. Body shows the same always-visible
+     metrics-then-warnings pattern, then real Plan Detail (flat DC × Route
+     table) / Route View (per-route pivot, touch-point reorder ripple
+     inline) tabs — built from the exact same pseudo-row construction
+     `confirmFin()` itself commits into `plan.rows`, so what's previewed
+     here is byte-for-byte what Finalise will produce, not a separate
+     approximation.
+- **2026-07-15 (second pass)** — Ops Alignment · Ops Lead fixes, plus two
+  cross-cutting bugs found while building them.
+  1. **Eye icon landed on a blank screen** — root cause: `opsSection`
+     initialised to `'summary'`, a value left over from before the tabs
+     were renamed to "Plan Detail"/"Route View" (2026-07-08). It matched
+     neither `'details'` nor `'route'`, so the content area rendered
+     nothing until a tab was clicked. Default is now `'details'`.
+  2. **REVIEW column now shows the reviewer's name** instead of the
+     generic "Feedback pending" text, so a plan with more than one
+     reviewer shows who proposed what. Falls back to the acting persona
+     for an in-progress (not-yet-submitted) edit of your own.
+  3. **Auto TP-reorder ripple is now visible before Finalise** — scoped
+     exception to "no live reordering during review": when a DC leaves or
+     joins a route, the OTHER DCs left behind get silently renumbered by
+     the recompute engine, but that ripple was never shown until Finalise
+     actually committed it. Built a `routeCode -> {dcCode: newTp}` lookup
+     from the same hypothetical each view already computes (Ops Lead:
+     `opsHypTop`, submitted + in-progress; Planner: `flagsHyp`,
+     submitted-only, matching how the rest of that row loop already reads
+     data) and render it as a strikethrough old-TP -> new-TP, same visual
+     language as an explicit edit but in blue rather than amber to signal
+     "consequence of another change, not something to accept/reject on
+     its own." Display-only — doesn't reorder rows, touch distances, or
+     mutate anything early. Built for both Planner and Ops Lead.
+  4. **Mandatory + reset TP for a DC moving into a new/pending route.**
+     Previously the TP input's placeholder always showed the DC's OLD
+     touch-point as a fallback, and it was never required — so moving a
+     second DC into an already-pending split route (e.g. DC24 into
+     RT-02_A, which DC1 split off into earlier) gave no signal that its
+     position in that new route was undecided. Rule: whenever a DC's
+     target Route Code is **not yet a committed row in `plan.rows`** —
+     covers both a fresh split via the "Split this route" sentinel AND
+     selecting an already-pending split code created by an earlier DC's
+     proposal — its TP is cleared (no carried-over placeholder) and
+     required to submit. Moving into an existing, already-committed route
+     is unaffected. `setNcDcRouteCode()` now clears the DC's `tp` in the
+     same state update as the route-code change (avoided a two-setState
+     race that could otherwise clobber the just-set route code with stale
+     `ncDcCells`).
+  5. **Needs Change view shows the destination route at a glance** — a
+     DC's collapsed row header previously only showed its ORIGINAL
+     lat/lng/TP/leg; you had to expand it and check the Route Code
+     dropdown to see where a move was headed. Added a small tag next to
+     the DC name ("Moving to RT-05" / "Split \u2192 RT-02-A") whenever a
+     route-code change is proposed, visible without expanding.
+  6. **The screen-jump bug** (Planner and Ops Lead both) — an action like
+     Submit, Acknowledge, or Finalise changes a plan's status without the
+     user switching tabs. On the very next render, the "is my open plan
+     still in view" check was matching against the *tab-filtered* list
+     (`listPlans` / `filteredAssigned`), and a plan that just moved to a
+     different status tab no longer appeared there — so the code silently
+     fell back to "the first plan in the current filter," landing the
+     user on an unrelated plan. Fixed by checking membership against the
+     full plan set instead (`plans` for the Planner, `assigned` for Ops
+     Lead) — the detail view now survives a status change and only resets
+     when the user actually navigates (clicking a filter tab or zone chip
+     already explicitly clears `alignPlanId`/`opsPlanId`, untouched by
+     this fix). The list itself was never the problem — it already
+     recomputes from live status every render, so once the user does
+     navigate, the plan correctly shows up wherever it now belongs.
