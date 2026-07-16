@@ -1111,3 +1111,88 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      this fix). The list itself was never the problem — it already
      recomputes from live status every render, so once the user does
      navigate, the plan correctly shows up wherever it now belongs.
+- **2026-07-16** — L4 detail page restructured to a unified 4-section
+  order across all three views (Design Review, Ops Alignment · Planner,
+  Ops Alignment · Ops Lead), plus four follow-up gaps and a Simulate
+  enhancement, all discussed and scoped before building.
+  1. **Unified L4 structure**: every plan/run detail page now reads, top
+     to bottom, **Plan Inputs** (SC details + vehicles used) → **Plan
+     Outputs** (metric views) → **Validation Flags** → **Plan Details**
+     (tabs: "Plan Details" / "Route View", now gating only the two actual
+     tables — no more nested inner toggle on the Design Review side, which
+     used to bury the DC × Route table one level deeper than Route View).
+     - Design Review: inputs strip + "Vehicles by type" (renamed "Vehicles
+       used") hoisted out of the old Plan Detail tab to the new Plan
+       Inputs section; the old outer "Route View" tab's nested Detail
+       View/Route View toggle is now flattened into the two outer tabs
+       directly.
+     - Ops Alignment (Planner + Ops Lead): Plan Inputs is genuinely new —
+       neither view had an equivalent section before. Nodes/volume/SC
+       coordinates are derived from `plan.rows` (there's no stored
+       "input" on an Ops Alignment plan the way Design Review's `run`
+       object has one). Vehicle mix is tallied straight off `plan.rows`,
+       **never** merged with in-progress/proposed feedback — a deliberate
+       product decision (see this session's Q1): this makes it read as
+       the *original* plan pre-Finalise and the *final, aligned* mix
+       post-Finalise automatically, since `plan.rows` only changes at the
+       moment `confirmFin()` commits, with zero extra "which state to
+       show" branching needed. Ops Lead's existing "Vehicle Mix Across
+       Routes" panel (previously living inside the Route View tab) was
+       hoisted up into Plan Inputs, not duplicated.
+     - Validation Flags groups structural errors/warnings (from the same
+       `computeHypotheticalPlan` result each view already reads — filtered
+       to exclude the dcCode-tagged distance-variance ones, which keep
+       their own dedicated banner with route-scoped decision context) with
+       the distance-variance notice and the submission-gap reminder.
+       Lifecycle status messaging (Pending/Acknowledged-locked/Finalised
+       banners) deliberately stays near the top bar rather than folding
+       into this section — see this session's Q2.
+     - Tab label renamed "Plan Detail" → "Plan Details" everywhere
+       (Design Review, Planner, Ops Lead, and the Finalise-preview
+       screen), matching the exact wording asked for.
+  2. **Finalised plans were still showing Review Changes / accepted-
+     rejected feedback / reviewer tags.** Root cause: the 7 seed plans
+     built straight into `Finalised` status never passed through
+     `confirmFin()` — they kept whatever random Needs-Change/`fb`/
+     `proposedBy` the generic seeded-journey logic assigned on the way
+     there, since only `confirmFin()` itself ever nulls that data. A
+     *real* Finalised plan (reached via the actual Acknowledge → Finalise
+     flow) was already clean; only the seeded demo ones weren't. Fixed the
+     seed builder to reset `ops`/`fb`/`proposedBy` to exactly what
+     `confirmFin()` produces for any row seeded straight into Finalised,
+     and added belt-and-suspenders guards on both the Planner
+     (`needsAttn` now explicitly excludes Finalised) and Ops Lead (per-DC
+     change detection short-circuits to "no feedback" when Finalised) so
+     this class of bug can't resurface even if seed data drifts again.
+     This same fix is what makes Ops Lead's Finalised view "clean, no
+     tags, no flags" — it was the identical root cause, not a second bug.
+  3. **Finalise-preview Route View tab was showing diff artifacts** (the
+     "NEW" route badge and the touch-point reorder breakdown) even though
+     the whole point of this screen is to preview the *clean, final*
+     structure. Removed both — Route View here now shows only the plain
+     final table (route code, vehicle, TPs, dist, volume, cps, cap),
+     matching the "clean version of the finalised plan" principle behind
+     fix #2 above.
+  4. **TP auto-reorder tie-break was direction-blind.** In
+     `computeHypotheticalPlan`'s route sort, a moved DC always won a tie
+     at its target TP against whatever was already sitting there — correct
+     when moving to an EARLIER position (insert-before: resident shifts
+     forward), wrong when moving LATER (should insert-after: only the
+     resident at-and-before the target shifts back, and the mover lands
+     cleanly on the target slot — real remove-then-insert list semantics).
+     Concretely: moving a DC from TP3 to TP6 in a 7-node route used to
+     produce TP4→3, TP5→4, mover→5, TP6→6 (mover jumping in front of the
+     TP6 occupant); it now produces TP4→3, TP5→4, TP6→5, mover→6 — matches
+     the reported expectation exactly, verified against both this case and
+     the pre-existing "moving earlier" case (TP5→TP2), which still works
+     unchanged. Direction is determined per-DC by comparing its own
+     original TP (within its original route) against its target TP — only
+     applies to same-route moves; cross-route arrivals keep their existing
+     tie-break behavior, which wasn't reported as broken.
+  5. **Simulate impact now shows a vehicle-mix comparison** (original vs.
+     suggested), alongside its existing plan-level metrics comparison, on
+     both the Planner and Ops Lead sides — per this session's Q1: Plan
+     Inputs itself stays single-state (always `plan.rows`, never dual),
+     and the "show me both" behavior lives specifically in Simulate, where
+     an original-vs-hypothetical comparison already exists for other
+     metrics.
