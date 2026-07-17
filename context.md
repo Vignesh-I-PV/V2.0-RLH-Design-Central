@@ -1196,3 +1196,26 @@ RNG-based approximation. Read the method's own comment block first; the short ve
      and the "show me both" behavior lives specifically in Simulate, where
      an original-vs-hypothetical comparison already exists for other
      metrics.
+
+- **2026-07-17** — Ops Alignment rail: Planner now has a real 4th stage,
+  plus a shared filter-segment style across both personas. Discussed and
+  scoped before building.
+  1. **Planner rail split into 4 stages** (`Pending Feedback` /
+     `Feedback Received` / `Acknowledged` / `Finalised`), matching the Ops
+     Lead's own 4-stage rail (`To Review` / `Submitted` / `Acknowledged` /
+     `Finalised`) that already existed. Previously `Feedback Received` was
+     a catch-all special-cased to match both `In Alignment` AND
+     `Acknowledged` status (`FILTERS` only had 3 entries) — the plan
+     status model itself already had all 4 real values (`Pushed` →
+     `In Alignment` → `Acknowledged` → `Finalised`); this was purely
+     narrowing `Feedback Received` back to `In Alignment` only and giving
+     `Acknowledged` its own tab, in `FILTERS`/`fmap`/`PSEG`/`segCount`/
+     `listPlans` — no change to the underlying status transitions,
+     `confirmAck()`, or Unfreeze.
+  2. **Ops Lead's filter rail restyled to match the Planner's shared-track
+     segmented-control look** — a single light-grey (`#F2F5FA`) track
+     container holding `flex:1` buttons, transparent when inactive, solid
+     navy (`#003F98`) block on the active one — replacing the older
+     free-floating pill-per-segment style (each its own grey pill,
+     `flex-wrap`, no shared track). Both rails are now visually identical;
+     with the Planner's new 4th segment they line up 1:1.
