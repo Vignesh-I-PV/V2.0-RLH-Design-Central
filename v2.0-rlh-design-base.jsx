@@ -2728,8 +2728,10 @@ function View(B, self) {
 {/* ===== MASTER RAIL: assigned plan list (persistent, like Design Review) ===== */}
 {(opsIsL1) ? (<>
 <aside style={css(`width:300px; flex-shrink:0; border-right:1px solid #E6EBF2; background:#fff; display:flex; flex-direction:column; min-height:0;`)}>
-<div style={css(`padding:12px 12px 8px; flex-shrink:0; display:flex; gap:5px; flex-wrap:wrap;`)}>
-{(opsFilterSeg || []).map((fs, __i90) => (<React.Fragment key={__i90}><button onClick={fs.onClick} style={css(`height:26px; padding:0 10px; border:none; border-radius:999px; background:${fs.bg}; color:${fs.fg}; font-family:inherit; font-size:10.5px; font-weight:${fs.weight}; cursor:pointer; white-space:nowrap;`)}>{fs.label} {fs.count}</button></React.Fragment>))}
+<div style={css(`padding:12px 12px 8px; flex-shrink:0;`)}>
+<div style={css(`display:flex; gap:3px; background:#F2F5FA; border-radius:8px; padding:3px;`)}>
+{(opsFilterSeg || []).map((fs, __i90) => (<React.Fragment key={__i90}><button onClick={fs.onClick} title={fs.label} style={css(`flex:1; min-width:0; height:29px; border:none; border-radius:6px; background:${fs.bg}; color:${fs.fg}; font-family:inherit; font-size:11px; font-weight:${fs.weight}; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;`)}>{fs.label} {fs.count}</button></React.Fragment>))}
+</div>
 </div>
 {/* zone-chip row — mirrors Design Review's zone filter */}
 <div style={css(`padding:0 12px 8px; display:flex; gap:5px; flex-wrap:wrap; flex-shrink:0;`)}>
@@ -6031,14 +6033,17 @@ class NDCApp extends React.Component {
     // pipeline funnel removed — its counts now live in the Tier-2 filter tabs.
 
     // F2 — filter-chip labels now match the pipeline wording EXACTLY (no "Awaiting" vs "Awaiting feedback" drift).
-    // Received = any plan with feedback activity not yet finalised (In Alignment or Acknowledged);
-    // Finalised = terminal state only. This gives every plan exactly one home across the 3 tabs.
-    const FILTERS = ['Pending Feedback', 'Feedback Received', 'Finalised'];
-    const fmap = { 'Pending Feedback': 'Pushed', 'Finalised': 'Finalised' };
+    // Received = feedback submitted, not yet frozen (In Alignment only);
+    // Acknowledged = frozen by the Planner, per-field decisions in progress (Acknowledged only);
+    // Finalised = terminal state only. This gives every plan exactly one home across the 4 tabs.
+    // 2026-07-17 — Acknowledged split out of Feedback Received into its own tab, mirroring the
+    // Ops Lead's own 4-stage rail (To Review / Submitted / Acknowledged / Finalised).
+    const FILTERS = ['Pending Feedback', 'Feedback Received', 'Acknowledged', 'Finalised'];
+    const fmap = { 'Pending Feedback': 'Pushed', 'Feedback Received': 'In Alignment', 'Acknowledged': 'Acknowledged', 'Finalised': 'Finalised' };
     const af = st.alignFilter || 'Pending Feedback';
     const STPILL = { 'Pushed': { l: 'Pending Feedback', bg: '#F2F5FA', fg: '#5A5E66' }, 'In Alignment': { l: 'Feedback Received', bg: '#FBF1DF', fg: '#C77B00' }, 'Acknowledged': { l: 'Acknowledged \u00b7 locked', bg: '#E7F0F8', fg: '#1E6FB8' }, 'Finalised': { l: 'Finalised', bg: '#E7F4EC', fg: '#128A3E' } };
     const order = { 'In Alignment': 0, 'Acknowledged': 1, 'Pushed': 2, 'Finalised': 3 };
-    let listPlans = plans.filter(p => { const s = eff(p); if (af === 'Feedback Received') return s === 'In Alignment' || s === 'Acknowledged'; return s === fmap[af]; }).slice().sort((a, b) => order[eff(a)] - order[eff(b)]);
+    let listPlans = plans.filter(p => eff(p) === fmap[af]).slice().sort((a, b) => order[eff(a)] - order[eff(b)]);
     // 2026-07-10 — zone filter, mirroring Design Review's zone-chip row, applied after the status filter.
     const alignZone = st.alignZone || 'All';
     listPlans = listPlans.filter(p => alignZone === 'All' || p.zone === alignZone);
@@ -6071,8 +6076,8 @@ class NDCApp extends React.Component {
     const hasPlansInList = listPlans.length > 0;
     let aSel = { exists: false, empty: !hasPlansInList, unselected: hasPlansInList && !curId, routesPager: { showPager: false, pageButtons: [] } };
     // Rail filter segment (replaces the old top Tier-2 filter tab-strip for Ops Alignment).
-    const PSEG = [['Pending Feedback', 'Pending'], ['Feedback Received', 'Received'], ['Finalised', 'Finalised']];
-    const segCount = (label) => plans.filter(p => { const s = eff(p); if (label === 'Feedback Received') return s === 'In Alignment' || s === 'Acknowledged'; return s === fmap[label]; }).length;
+    const PSEG = [['Pending Feedback', 'Pending'], ['Feedback Received', 'Received'], ['Acknowledged', 'Acknowledged'], ['Finalised', 'Finalised']];
+    const segCount = (label) => plans.filter(p => eff(p) === fmap[label]).length;
     const alignFilterSeg = PSEG.map(t => ({ label: t[0], short: t[1], count: segCount(t[0]), active: af === t[0],
       bg: af === t[0] ? '#003F98' : 'transparent', fg: af === t[0] ? '#fff' : '#5A5E66', weight: af === t[0] ? '700' : '600',
       onClick: () => this.setState({ alignFilter: t[0], alignPage: 0, pgRoutes: 1, alignPlanId: null, alignDetailOpen: false }) }));
@@ -7379,7 +7384,7 @@ class NDCApp extends React.Component {
     const opsIsL1 = !noneAssigned;
     const opsIsL2 = !!curId;
     const opsFilterSeg = OPSFILTERS.map(f => ({ label: f, count: allOpsPlans.filter(p => p.status === f).length, active: opsFilter === f,
-      bg: opsFilter === f ? '#003F98' : '#F2F5FA', fg: opsFilter === f ? '#fff' : '#5A5E66', weight: opsFilter === f ? '700' : '600',
+      bg: opsFilter === f ? '#003F98' : 'transparent', fg: opsFilter === f ? '#fff' : '#5A5E66', weight: opsFilter === f ? '700' : '600',
       onClick: () => this.setState({ opsFilter: f, opsPage: 0, opsPlanId: null, opsDetailOpen: false }) }));
     // Pagination for L1 ops plan list (~12 per page).
     const OPS_PER_PAGE = 12;
